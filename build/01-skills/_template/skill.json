@@ -1,0 +1,23 @@
+{
+  "name": "skill-name",
+  "type": "skill",
+  "version": "1.0.0",
+  "status": "draft",
+
+  "description": "Descrição objetiva do que a skill faz — usada pelo Claude para correspondência automática.",
+  "tags": [],
+
+  "scope": "project",
+  "auto_load": false,
+
+  "source": "",
+  "project": "",
+  "dependencies": [],
+  "checksum": "",
+
+  "triggers": [],
+
+  "author": "",
+  "created": "",
+  "updated": ""
+}

@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-05-11",
+  "commands": [
+    {
+      "name": "claude-start",
+      "version": "1.0.0",
+      "description": "Setup global do Claude Code na máquina",
+      "file": "hub/commands/claude-start.md"
+    },
+    {
+      "name": "setup-claude",
+      "version": "1.0.0",
+      "description": "Configura a estrutura .claude/ em um novo projeto",
+      "file": "hub/commands/setup-claude.md"
+    },
+    {
+      "name": "install-resource",
+      "version": "1.0.0",
+      "description": "Instala um recurso do hub no projeto atual",
+      "file": "hub/commands/install-resource.md"
+    },
+    {
+      "name": "build-resource",
+      "version": "1.0.0",
+      "description": "Cria um novo recurso no projeto atual a partir do template",
+      "file": "hub/commands/build-resource.md"
+    },
+    {
+      "name": "publish-resource",
+      "version": "1.0.0",
+      "description": "Normaliza e publica um recurso do projeto no hub",
+      "file": "hub/commands/publish-resource.md"
+    },
+    {
+      "name": "test-publish",
+      "version": "1.0.1",
+      "description": "Comando de teste para validar o fluxo de publicação",
+      "tags": [],
+      "updated": "2026-05-11"
+    }
+  ],
+  "skills": [],
+  "agents": [],
+  "hooks": [],
+  "instructions": [],
+  "plugins": []
+}

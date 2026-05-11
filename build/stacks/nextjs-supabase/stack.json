@@ -1,0 +1,8 @@
+{
+  "name": "nextjs-supabase",
+  "description": "Full-stack — Next.js + Tailwind + Supabase",
+  "version": "1.0.0",
+  "technologies": ["nextjs", "tailwind", "supabase", "typescript"],
+  "plugins": [],
+  "instructions": []
+}
