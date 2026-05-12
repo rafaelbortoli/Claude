@@ -13,6 +13,12 @@
 # Logs
 *.log
 
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
 # Dependencies (se install.sh ganhar dependências)
 node_modules/
 
