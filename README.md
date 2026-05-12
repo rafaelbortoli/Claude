@@ -27,13 +27,17 @@ updated: ""
 
 # Claude
 
-Repositório de recursos para Claude Code — hub de recursos reutilizáveis, templates de build e script de instalação.
+Repositório de recursos para Claude Code — hub de recursos reutilizáveis, templates de build e CLI Python.
 
 ## Estrutura
 
 ```
 .
-├── install.sh          ← script de instalação (backend de todos os comandos)
+├── cli/                ← módulo Python — backend de todos os comandos
+│   ├── commands/       ← implementação de cada comando
+│   ├── utils/          ← frontmatter, registry, files, templates
+│   └── tests/          ← testes unitários (pytest)
+├── install.sh          ← DEPRECATED — substituído por python -m cli
 ├── registry.json       ← índice dos recursos publicados no hub
 ├── CHANGELOG.md        ← histórico de publicações
 │
@@ -50,8 +54,7 @@ Repositório de recursos para Claude Code — hub de recursos reutilizáveis, te
 │   ├── 01-skills/      ← template de skill
 │   ├── 02-hooks/       ← template de hook
 │   ├── 03-agents/      ← template de agente
-│   ├── 04-plugins/     ← template de plugin e command
-│   └── stacks/         ← definições de stack (nextjs-supabase, generic)
+│   └── 04-plugins/     ← template de plugin e command
 │
 ├── global/             ← arquivos globais (~/.claude/)
 │   ├── CLAUDE.md       ← instruções globais
@@ -104,4 +107,21 @@ Normaliza e copia o recurso do projeto para o hub.
 
 ---
 
-Os comandos `/...` são slash commands do Claude Code instalados via `/install-resource command <nome>`. O `install.sh` é o backend — o usuário não o executa diretamente.
+Os comandos `/...` são slash commands do Claude Code instalados via `/install-resource command <nome>`. O backend é `python -m cli` — o usuário não o executa diretamente.
+
+## CLI (uso direto)
+
+```bash
+python -m cli --help
+python -m cli claude-start
+python -m cli setup-claude --path ~/Code/MeuProjeto --name "Meu Projeto"
+python -m cli build-resource --type skill --name code-review
+python -m cli install-resource --type skill --name code-review
+python -m cli publish-resource --type skill --name code-review
+```
+
+Requer Python 3.10+ e o ambiente virtual ativo (`.venv/`):
+
+```bash
+python -m venv .venv && .venv/bin/pip install -e ".[dev]"
+```

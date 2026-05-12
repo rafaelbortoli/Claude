@@ -2,7 +2,14 @@
 set -euo pipefail
 
 # ─────────────────────────────────────────────────────────────────────────────
-# install.sh — Gerenciador de recursos Claude
+# DEPRECATED — install.sh será removido após período de validação.
+# Use o módulo Python:
+#   python -m cli <comando> [argumentos]
+#   python -m cli --help
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─────────────────────────────────────────────────────────────────────────────
+# install.sh — Gerenciador de recursos Claude (legado)
 # Uso: install.sh <comando> [tipo] [nome] [flags]
 # ─────────────────────────────────────────────────────────────────────────────
 
