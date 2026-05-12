@@ -1,12 +1,6 @@
 import re
 
 
-def fill(template: str, context: dict) -> str:
-    for key, value in context.items():
-        template = template.replace(f'{{{{{key}}}}}', value)
-    return template
-
-
 def normalize_body(content: str, project_name: str) -> str:
     m = re.match(r'^(---\n.*?\n---\n)', content, re.DOTALL)
     if m:

@@ -13,30 +13,6 @@ Instalado em /Users/bortoli/Code/MeuProjeto pelo time MeuProjeto.
 SAMPLE_WITHOUT_HEADER = "Arquivo em /home/user/projetos sem frontmatter.\n"
 
 
-class TestFill:
-    def test_replaces_placeholder(self):
-        result = templates.fill("Olá, {{nome}}!", {'nome': 'Mundo'})
-        assert result == "Olá, Mundo!"
-
-    def test_replaces_multiple_placeholders(self):
-        result = templates.fill(
-            "{{tipo}} chamado {{nome}}",
-            {'tipo': 'Skill', 'nome': 'code-review'}
-        )
-        assert result == "Skill chamado code-review"
-
-    def test_leaves_unknown_placeholder(self):
-        result = templates.fill("Valor: {{desconhecido}}", {'outro': 'x'})
-        assert result == "Valor: {{desconhecido}}"
-
-    def test_empty_context(self):
-        original = "Sem {{substituicao}}"
-        assert templates.fill(original, {}) == original
-
-    def test_empty_template(self):
-        assert templates.fill("", {'chave': 'valor'}) == ""
-
-
 class TestNormalizeBody:
     def test_replaces_users_path(self):
         result = templates.normalize_body(SAMPLE_WITHOUT_HEADER, '')
