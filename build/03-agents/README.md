@@ -1,28 +1,24 @@
 ---
-# identity
+# about
 name: build-agents-readme
 type: readme
-version: 1.0.0
-status: stable
-
-# context
+project: ""
 description: Documentação do layer 03 — templates para criação de agentes.
 tags: [agents, build]
 
-# loading
-scope: global
-auto_load: false
-
-# traceability — preenchidos pelo install.sh
-source: ""
-project: ""
-dependencies: []
-checksum: ""
-
-# metadata
+# history
 author: ""
 created: 2026-05-10
+status: stable
+version: 1.0.0
 updated: ""
+
+# system
+scope: global
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # 03 — Agents

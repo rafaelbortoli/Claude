@@ -1,29 +1,25 @@
 ---
-# identity
+# about
 name: project-name
 type: doc
-version: 1.0.0
-status: draft
-
-# context
+project: ""
 description: (preencher)
 tags: []
 
-# loading
-scope: project
-auto_load: true
-
-# traceability — preenchidos pelo /setup-claude
-source: build/00-claude-md/project.md
-project: ""
-dependencies: []
-checksum: ""
-
-# metadata
+# history
 author: ""
 created: ""
+status: stable
+version: 1.0.0
 updated: ""
 stack: ""
+
+# system
+scope: project
+source: build/00-claude-md/project.md
+auto_load: true
+checksum: ""
+dependencies: []
 ---
 
 # [NOME DO PROJETO] — Instruções do Projeto

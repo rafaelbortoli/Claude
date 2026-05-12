@@ -1,28 +1,26 @@
 {
   "name": "hook-name",
   "type": "hook",
-  "version": "1.0.0",
-  "status": "draft",
-
+  "project": "",
   "description": "(preencher)",
   "tags": [],
 
-  "scope": "project",
-  "auto_load": false,
+  "author": "",
+  "created": "",
+  "status": "draft",
+  "version": "1.0.0",
+  "updated": "",
 
+  "scope": "project",
   "source": "",
-  "project": "",
-  "dependencies": [],
+  "auto_load": false,
   "checksum": "",
+  "dependencies": [],
 
   "event": "PreToolUse",
   "matcher": {
     "tool": "Bash",
     "command_pattern": null
   },
-  "script": "hook.sh",
-
-  "author": "",
-  "created": "",
-  "updated": ""
+  "script": "hook.sh"
 }

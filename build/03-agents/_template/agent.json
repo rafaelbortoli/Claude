@@ -1,19 +1,21 @@
 {
   "name": "agent-name",
   "type": "agent",
-  "version": "1.0.0",
-  "status": "draft",
-
+  "project": "",
   "description": "Descrição objetiva da responsabilidade única deste agente.",
   "tags": [],
 
-  "scope": "project",
-  "auto_load": false,
+  "author": "",
+  "created": "",
+  "status": "draft",
+  "version": "1.0.0",
+  "updated": "",
 
+  "scope": "project",
   "source": "",
-  "project": "",
-  "dependencies": [],
+  "auto_load": false,
   "checksum": "",
+  "dependencies": [],
 
   "tools": [
     "Read",
@@ -27,9 +29,5 @@
       "Descreva o que o agente não faz — limites explícitos"
     ]
   },
-  "returns": "Descrição do formato e conteúdo do que o agente retorna.",
-
-  "author": "",
-  "created": "",
-  "updated": ""
+  "returns": "Descrição do formato e conteúdo do que o agente retorna."
 }

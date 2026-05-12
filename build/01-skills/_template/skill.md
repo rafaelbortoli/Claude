@@ -1,29 +1,25 @@
 ---
-# identity
+# about
 name: skill-name
 type: skill
-version: 1.0.0
-status: draft
-
-# context
+project: ""
 # description: frase objetiva — o Claude usa este campo para decidir quando invocar a skill
 description: (preencher)
 tags: []
 
-# loading
-scope: project
-auto_load: false
-
-# traceability — preenchidos pelo install.sh
-source: ""
-project: ""
-dependencies: []
-checksum: ""
-
-# metadata
+# history
 author: ""
 created: ""
+status: draft
+version: 1.0.0
 updated: ""
+
+# system
+scope: project
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # [Nome da Skill]

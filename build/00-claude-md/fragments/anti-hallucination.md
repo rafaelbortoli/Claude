@@ -1,28 +1,24 @@
 ---
-# identity
+# about
 name: fragment-anti-hallucination
 type: fragment
-version: 1.0.0
-status: stable
-
-# context
+project: ""
 description: Protocolo anti-alucinação — regras para verificar antes de afirmar e declarar limitações.
 tags: [anti-hallucination, safety]
 
-# loading
-scope: global
-auto_load: false
-
-# traceability — preenchidos pelo install.sh
-source: ""
-project: ""
-dependencies: []
-checksum: ""
-
-# metadata
+# history
 author: ""
 created: 2026-05-10
+status: stable
+version: 1.0.0
 updated: ""
+
+# system
+scope: global
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 ## Protocolo Anti-Alucinação

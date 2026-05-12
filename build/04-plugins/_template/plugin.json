@@ -1,27 +1,25 @@
 {
   "name": "plugin-name",
   "type": "plugin",
-  "version": "1.0.0",
-  "status": "draft",
-
+  "project": "",
   "description": "Descrição objetiva do que este plugin entrega como conjunto.",
   "tags": [],
 
-  "scope": "project",
-  "auto_load": false,
+  "author": "",
+  "created": "",
+  "status": "draft",
+  "version": "1.0.0",
+  "updated": "",
 
+  "scope": "project",
   "source": "",
-  "project": "",
-  "dependencies": [],
+  "auto_load": false,
   "checksum": "",
+  "dependencies": [],
 
   "skills": [],
   "agents": [],
   "hooks": [],
   "commands": [],
-  "stack": [],
-
-  "author": "",
-  "created": "",
-  "updated": ""
+  "stack": []
 }

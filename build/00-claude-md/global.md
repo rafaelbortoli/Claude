@@ -153,62 +153,50 @@ Verificar antes de afirmar. Nenhuma informação sobre o estado do sistema, arqu
 
 ---
 
-## Padrão de frontmatter
+## Padrão de Frontmatter
 
-Todo arquivo de recurso (skill, agent, hook, plugin, command, instruction) deve ter frontmatter YAML completo no topo do arquivo.
+Todo arquivo de recurso (skill, agent, hook, plugin, command, instruction, doc, fragment, readme) deve ter frontmatter YAML completo no topo do arquivo.
 
 ### Campos obrigatórios
 
 ```yaml
-# identity
-id: unique-resource-id        # identificador único em kebab-case — não muda após criação
-name: resource-name           # nome legível em kebab-case
+# about
+name: resource-name           # nome em kebab-case
 type: skill                   # tipo do recurso (ver valores aceitos abaixo)
-version: 1.0.0                # semântico: major.minor.patch
-status: draft                 # ciclo de vida (ver valores aceitos abaixo)
-
-# context
+project: ""                   # projeto onde está instalado
 description: ""               # uma frase objetiva — usada pelo Claude para correspondência
-summary: ""                   # uma linha sobre o conteúdo — usada para decisão de carregamento
-category: ""                  # agrupamento semântico (ex: code-quality, project-setup, ai)
-tags: []                      # lista de tags em kebab-case
+tags: []                      # categorias em kebab-case
 
-# loading
-scope: project                # onde o recurso é instalado (ver valores aceitos abaixo)
-context_priority: medium      # prioridade de carregamento no contexto
-auto_load: false              # carregar automaticamente na sessão ou apenas sob demanda
-
-# traceability — preenchidos pelo install.sh, não manualmente
-source: ""                    # hub/<type>/<name>@<version> ou local
-project: ""                   # nome do projeto onde está instalado
-dependencies: []              # recursos que precisam estar instalados antes deste
-checksum: ""                  # hash SHA-256 do conteúdo — gerado automaticamente
-
-# metadata
+# history
 author: ""
 created: ""                   # YYYY-MM-DD
+status: draft                 # ciclo de vida (ver valores aceitos abaixo)
+version: 1.0.0                # semântico: major.minor.patch
 updated: ""                   # YYYY-MM-DD — atualizado automaticamente pelo install.sh
+
+# system
+scope: project                # onde o recurso é instalado (ver valores aceitos abaixo)
+source: ""                    # hub/<type>/<name>@<version> | local
+auto_load: false              # carregar automaticamente na sessão ou apenas sob demanda
+checksum: ""                  # SHA-256 do conteúdo — gerado automaticamente
+dependencies: []              # recursos que precisam estar instalados antes deste
 ```
 
 ### Valores aceitos
 
-**`type`**: `skill` | `agent` | `hook` | `plugin` | `command` | `instruction` | `doc`
+**`type`**: `skill` | `agent` | `hook` | `plugin` | `command` | `instruction` | `doc` | `fragment` | `readme`
 
 **`status`**: `draft` | `review` | `stable` | `deprecated`
 
 **`scope`**: `global` (em `~/.claude/`) | `project` (em `.claude/`)
 
-**`context_priority`**: `high` | `medium` | `low`
-
 ### Campos gerados automaticamente pelo install.sh
 
-Nunca preencher manualmente: `source`, `project`, `checksum`, `updated`.
+Nunca preencher manualmente: `project`, `source`, `checksum`, `updated`.
 
 ### Regras
 
-- `id` nunca muda após criação — usar `name` para renomear
 - `auto_load: true` é exceção — usar apenas para recursos invariavelmente necessários em toda sessão
-- `context_priority: high` é reservado para recursos críticos — abusar degrada performance do contexto
 - Recursos com `status: deprecated` não devem ser instalados em novos projetos
 
 ---

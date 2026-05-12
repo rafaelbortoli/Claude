@@ -1,29 +1,25 @@
 ---
-# identity
+# about
 name: agent-name
 type: agent
-version: 1.0.0
-status: draft
-
-# context
+project: ""
 # description: responsabilidade única deste agente — uma frase objetiva
 description: (preencher)
 tags: []
 
-# loading
-scope: project
-auto_load: false
-
-# traceability — preenchidos pelo install.sh
-source: ""
-project: ""
-dependencies: []
-checksum: ""
-
-# metadata
+# history
 author: ""
 created: ""
+status: draft
+version: 1.0.0
 updated: ""
+
+# system
+scope: project
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # [Nome do Agente]

@@ -137,8 +137,8 @@ def set_field(text, key, value):
     repl = f'{key}: {value}'
     if re.search(pattern, text, re.MULTILINE):
         return re.sub(pattern, repl, text, flags=re.MULTILINE)
-    if '# traceability' in text:
-        return re.sub(r'(# traceability)', rf'{repl}\n\1', text, count=1)
+    if '# system' in text:
+        return re.sub(r'(# system)', rf'{repl}\n\1', text, count=1)
     return text + f'\n{repl}'
 
 fm = set_field(fm, 'project', project)
@@ -574,7 +574,7 @@ content = set_field(content, 'updated', today)
 content = set_field(content, 'tags', f'[{stack}]')
 content = set_field(content, 'stack', stack)
 content = content.replace('[NOME DO PROJETO]', project_name)
-content = content.replace('(preencher)', '')
+content = content.replace('(preencher)', '""')
 
 open(file, 'w').write(content)
 EOF
@@ -671,7 +671,32 @@ _write_readme() {
   local dir="$1" title="$2" description="$3"
   local readme="$dir/README.md"
   [[ -f "$readme" ]] && return 0
+  local name
+  name="$(basename "$dir")"
   cat > "$readme" <<EOF
+---
+# about
+name: $name
+type: readme
+project: ""
+description: $description
+tags: []
+
+# history
+author: ""
+created: $TODAY
+status: stable
+version: 1.0.0
+updated: ""
+
+# system
+scope: project
+source: local
+auto_load: false
+checksum: ""
+dependencies: []
+---
+
 # $title
 
 $description

@@ -1,28 +1,24 @@
 ---
-# identity
+# about
 name: build-claude-md-readme
 type: readme
-version: 1.0.0
-status: stable
-
-# context
+project: ""
 description: Documentação do layer 00 — templates e fragments para CLAUDE.md.
 tags: [claude-md, build]
 
-# loading
-scope: global
-auto_load: false
-
-# traceability — preenchidos pelo install.sh
-source: ""
-project: ""
-dependencies: []
-checksum: ""
-
-# metadata
+# history
 author: ""
 created: 2026-05-10
+status: stable
+version: 1.0.0
 updated: ""
+
+# system
+scope: global
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # 00 — CLAUDE.md

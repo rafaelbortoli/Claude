@@ -1,28 +1,24 @@
 ---
-# identity
+# about
 name: fragment-tools
 type: fragment
-version: 1.0.0
-status: stable
-
-# context
+project: ""
 description: Regras de uso de ferramentas — hierarquia, paralelismo, Bash e invocação de agentes.
 tags: [tools, bash, agents, parallelism]
 
-# loading
-scope: global
-auto_load: false
-
-# traceability — preenchidos pelo install.sh
-source: ""
-project: ""
-dependencies: []
-checksum: ""
-
-# metadata
+# history
 author: ""
 created: 2026-05-10
+status: stable
+version: 1.0.0
 updated: ""
+
+# system
+scope: global
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 ## Uso de Ferramentas
