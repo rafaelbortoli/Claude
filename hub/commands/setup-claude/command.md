@@ -31,6 +31,7 @@ Inicializa a estrutura `.claude/` e cria as pastas do projeto.
 | `--path` | Pergunte: "Qual é a pasta do projeto? (ex: ~/Code/MeuProjeto)" |
 | `--name` | Pergunte: "Qual o nome do projeto?" |
 | `--vision` | Pergunte: "Descreva o projeto em uma frase." (opcional) |
+| `--stack` | Pergunte: "Qual a stack do projeto?" somente se diferente do padrão `nextjs-supabase-vercel-claude`. Omitir se padrão. |
 
 ## Execução
 
