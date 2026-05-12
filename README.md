@@ -13,7 +13,7 @@ tags: [overview]
 scope: global
 auto_load: false
 
-# traceability — preenchidos pelo install.sh
+# traceability
 source: ""
 project: ""
 dependencies: []
@@ -54,7 +54,8 @@ Repositório de recursos para Claude Code — hub de recursos reutilizáveis, te
 │   ├── 01-skills/      ← template de skill
 │   ├── 02-hooks/       ← template de hook
 │   ├── 03-agents/      ← template de agente
-│   └── 04-plugins/     ← template de plugin e command
+│   ├── 04-plugins/     ← template de plugin e command
+│   └── stacks/         ← definições de stack (nextjs-supabase, generic)
 │
 ├── global/             ← arquivos globais (~/.claude/)
 │   ├── CLAUDE.md       ← instruções globais
@@ -120,8 +121,9 @@ python -m cli install-resource --type skill --name code-review
 python -m cli publish-resource --type skill --name code-review
 ```
 
-Requer Python 3.10+ e o ambiente virtual ativo (`.venv/`):
+Requer Python 3.10+ e deve ser executado a partir da raiz do repositório. Para criar o ambiente:
 
 ```bash
-python -m venv .venv && .venv/bin/pip install -e ".[dev]"
+python -m venv .venv
+.venv/bin/pip install pytest
 ```
