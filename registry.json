@@ -40,7 +40,20 @@
       "updated": "2026-05-11"
     }
   ],
-  "skills": [],
+  "skills": [
+    {
+      "name": "ux-writing-review",
+      "version": "1.0.0",
+      "description": "Revisa, melhora ou reescreve textos de interface aplicando princípios de UX Writing.",
+      "tags": [
+        "ux-writing",
+        "copy",
+        "review",
+        "interface"
+      ],
+      "updated": "2026-05-11"
+    }
+  ],
   "agents": [],
   "hooks": [],
   "instructions": [],
