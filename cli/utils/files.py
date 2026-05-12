@@ -1,17 +1,28 @@
+import hashlib
+import shutil
 from pathlib import Path
 
 
 def copy_template(src: Path, dest: Path, overwrite: bool = False) -> None:
-    raise NotImplementedError("files.copy_template: implementação pendente (Fase 1)")
+    if dest.exists() and not overwrite:
+        raise FileExistsError(f"Arquivo já existe: {dest}")
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src, dest)
 
 
 def ensure_dir(path: Path) -> None:
-    raise NotImplementedError("files.ensure_dir: implementação pendente (Fase 1)")
+    path.mkdir(parents=True, exist_ok=True)
 
 
 def checksum(file: Path) -> str:
-    raise NotImplementedError("files.checksum: implementação pendente (Fase 1)")
+    h = hashlib.sha256()
+    h.update(file.read_bytes())
+    return h.hexdigest()
 
 
 def bump_version(version: str) -> str:
-    raise NotImplementedError("files.bump_version: implementação pendente (Fase 1)")
+    parts = version.split('.')
+    if len(parts) == 3:
+        parts[2] = str(int(parts[2]) + 1)
+        return '.'.join(parts)
+    return version

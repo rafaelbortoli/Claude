@@ -1,6 +1,22 @@
+import re
+
+
 def fill(template: str, context: dict) -> str:
-    raise NotImplementedError("templates.fill: implementação pendente (Fase 1)")
+    for key, value in context.items():
+        template = template.replace(f'{{{{{key}}}}}', value)
+    return template
 
 
 def normalize_body(content: str, project_name: str) -> str:
-    raise NotImplementedError("templates.normalize_body: implementação pendente (Fase 1)")
+    m = re.match(r'^(---\n.*?\n---\n)', content, re.DOTALL)
+    if m:
+        header = m.group(1)
+        body = content[m.end():]
+    else:
+        header, body = '', content
+
+    body = re.sub(r'/(?:Users|home)/\S+', '<path>', body)
+    if project_name:
+        body = body.replace(project_name, '<project-name>')
+
+    return header + body
