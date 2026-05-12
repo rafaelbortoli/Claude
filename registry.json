@@ -1,36 +1,36 @@
 {
   "version": "1.0.0",
-  "updated": "2026-05-11",
+  "updated": "2026-05-12",
   "commands": [
     {
       "name": "claude-start",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "description": "Setup global do Claude Code na máquina",
-      "file": "hub/commands/claude-start.md"
+      "file": "hub/commands/claude-start/command.md"
     },
     {
       "name": "setup-claude",
-      "version": "1.0.0",
+      "version": "1.4.0",
       "description": "Configura a estrutura .claude/ em um novo projeto",
-      "file": "hub/commands/setup-claude.md"
+      "file": "hub/commands/setup-claude/command.md"
     },
     {
       "name": "install-resource",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "description": "Instala um recurso do hub no projeto atual",
-      "file": "hub/commands/install-resource.md"
+      "file": "hub/commands/install-resource/command.md"
     },
     {
       "name": "build-resource",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "description": "Cria um novo recurso no projeto atual a partir do template",
-      "file": "hub/commands/build-resource.md"
+      "file": "hub/commands/build-resource/command.md"
     },
     {
       "name": "publish-resource",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "description": "Normaliza e publica um recurso do projeto no hub",
-      "file": "hub/commands/publish-resource.md"
+      "file": "hub/commands/publish-resource/command.md"
     },
     {
       "name": "test-publish",
