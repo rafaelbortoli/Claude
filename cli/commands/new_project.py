@@ -1,3 +1,4 @@
+import json
 import re
 import shutil
 from datetime import date
@@ -5,6 +6,9 @@ from pathlib import Path
 
 from cli import config
 from cli.utils import files, frontmatter
+from cli.utils.files import git_author
+from cli.utils.logger import log
+from cli.commands.install_resource import _install_plugin, _install_instruction
 
 _FRAGMENT_ORDER = [
     "language.md",
@@ -74,6 +78,7 @@ def register(sub):
     p.add_argument("--name", required=True, help="Nome do projeto")
     p.add_argument("--description", default="", help="Descrição do projeto em uma frase")
     p.add_argument("--tags", default="", help="Tags do projeto separadas por vírgula (ex: saas, fintech)")
+    p.add_argument("--stack", default="nextjs-supabase", help="Stack a instalar (padrão: nextjs-supabase)")
     p.set_defaults(func=run)
 
 
@@ -83,12 +88,47 @@ def run(args):
     claude_dir = dest / ".claude"
     today = str(date.today())
 
+    author = git_author()
+
     _create_claude_dirs(claude_dir)
-    _setup_claude_md(hub, claude_dir, args.name, args.description, args.tags, today)
+    _setup_claude_md(hub, claude_dir, args.name, args.description, args.tags, today, author)
     _copy_settings(hub, claude_dir)
-    _create_project_folders(dest, args.name, today)
+    _create_project_folders(dest, args.name, today, author)
+    _apply_stack(hub, claude_dir, args.stack, args.name)
+
+    log(claude_dir, "project.created", {
+        "name":        args.name,
+        "description": args.description,
+        "tags":        args.tags,
+        "stack":       args.stack,
+        "path":        str(dest),
+    })
 
     print(f"  [ok] Projeto '{args.name}' configurado em {dest}")
+
+
+def _apply_stack(hub: Path, claude_dir: Path, stack_name: str, project_name: str) -> None:
+    stack_file = hub / "build" / "stacks" / stack_name / "stack.json"
+    if not stack_file.exists():
+        print(f"  [aviso] Stack '{stack_name}' não encontrada em {stack_file} — ignorada")
+        return
+
+    with open(stack_file) as f:
+        stack = json.load(f)
+
+    plugins = stack.get("plugins", [])
+    instructions = stack.get("instructions", [])
+
+    if not plugins and not instructions:
+        print(f"  -> Stack '{stack_name}' sem recursos para instalar")
+        return
+
+    print(f"  -> Aplicando stack '{stack_name}'...")
+    for name in plugins:
+        _install_plugin(hub, claude_dir, name, project_name)
+    for name in instructions:
+        _install_instruction(hub, claude_dir, name, project_name)
+    print(f"  [ok] Stack '{stack_name}' aplicada")
 
 
 def _parse_tags(raw: str) -> str:
@@ -103,7 +143,7 @@ def _create_claude_dirs(claude_dir: Path) -> None:
         files.ensure_dir(claude_dir / subdir)
 
 
-def _setup_claude_md(hub: Path, claude_dir: Path, name: str, description: str, tags: str, today: str) -> None:
+def _setup_claude_md(hub: Path, claude_dir: Path, name: str, description: str, tags: str, today: str, author: str = "") -> None:
     claude_md = claude_dir / "CLAUDE.md"
 
     if claude_md.exists():
@@ -128,6 +168,8 @@ def _setup_claude_md(hub: Path, claude_dir: Path, name: str, description: str, t
     }
     if description:
         fm_fields["description"] = description
+    if author:
+        fm_fields["author"] = author
     frontmatter.write(claude_md, fm_fields)
 
     _append_fragments(hub, claude_md)
@@ -158,33 +200,33 @@ def _copy_settings(hub: Path, claude_dir: Path) -> None:
         print(f"  -> settings.json já existe — mantido")
 
 
-def _create_project_folders(dest: Path, project_name: str, today: str) -> None:
+def _create_project_folders(dest: Path, project_name: str, today: str, author: str = "") -> None:
     for subpath, title, description in _DESIGN_PARENT_READMES:
         path = dest / subpath
         files.ensure_dir(path)
-        _write_readme(path, title, description, project_name, today)
+        _write_readme(path, title, description, project_name, today, author)
 
     for subpath, title, description in _DESIGN_DIRS:
         path = dest / subpath
         files.ensure_dir(path)
-        _write_readme(path, title, description, project_name, today)
+        _write_readme(path, title, description, project_name, today, author)
 
     print(f"  [ok] design/ criado")
 
     for subpath, title, description in _DEV_PARENT_READMES:
         path = dest / subpath
         files.ensure_dir(path)
-        _write_readme(path, title, description, project_name, today)
+        _write_readme(path, title, description, project_name, today, author)
 
     for subpath, title, description in _DEV_DIRS:
         path = dest / subpath
         files.ensure_dir(path)
-        _write_readme(path, title, description, project_name, today)
+        _write_readme(path, title, description, project_name, today, author)
 
     print(f"  [ok] dev/ criado (nextjs-supabase)")
 
 
-def _write_readme(dir_path: Path, title: str, description: str, project_name: str, today: str) -> None:
+def _write_readme(dir_path: Path, title: str, description: str, project_name: str, today: str, author: str = "") -> None:
     readme = dir_path / "README.md"
     if readme.exists():
         return
@@ -199,7 +241,7 @@ def _write_readme(dir_path: Path, title: str, description: str, project_name: st
         f"tags: []\n"
         f"\n"
         f"# history\n"
-        f"author: \"\"\n"
+        f"author: \"{author}\"\n"
         f"created: {today}\n"
         f"status: stable\n"
         f"version: 1.0.0\n"

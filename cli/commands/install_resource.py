@@ -7,6 +7,7 @@ from pathlib import Path
 
 from cli import config
 from cli.utils import files, frontmatter
+from cli.utils.logger import log
 
 
 def register(sub):
@@ -71,14 +72,24 @@ def _install_md_resource(hub: Path, dest_dir: Path, resource_type: str, name: st
         frontmatter.inject(tmp, project_name, f"hub/{resource_type}s/{name}@{version}")
         files.ensure_dir(type_dir)
         if dest.exists():
-            v_dest = frontmatter.read(dest).get("version", "?")
-            shutil.copy2(tmp, dest)
-            print(f"  [ok] Atualizado: {dest} ({v_dest} -> {version})")
+            dest_fields = frontmatter.read(dest)
+            if dest_fields.get("locked", "").lower() == "true":
+                print(f"  -> Ignorado: {dest} está bloqueado (locked: true) — personalizações mantidas")
+                log(dest_dir, "resource.locked", {"type": resource_type, "name": name, "hub_version": version})
+            else:
+                v_dest = dest_fields.get("version", "?")
+                shutil.copy2(tmp, dest)
+                print(f"  [ok] Atualizado: {dest} ({v_dest} -> {version})")
+                log(dest_dir, "resource.updated", {"type": resource_type, "name": name, "version_from": v_dest, "version_to": version})
         else:
             shutil.copy2(tmp, dest)
             print(f"  [ok] Instalado: {dest}")
+            log(dest_dir, "resource.installed", {"type": resource_type, "name": name, "version": version})
     finally:
         tmp.unlink(missing_ok=True)
+
+    if resource_type in ("skill", "agent"):
+        _create_proxy(dest_dir, resource_type, name)
 
 
 def _install_hook(hub: Path, dest_dir: Path, name: str, project_name: str) -> None:
@@ -98,10 +109,14 @@ def _install_hook(hub: Path, dest_dir: Path, name: str, project_name: str) -> No
     version = hook_meta.get("version", "0.0.0")
 
     dest_hook_dir = dest_dir / "hooks" / name
+    hook_event = "resource.installed"
+    hook_log_data = {"type": "hook", "name": name, "version": version}
     if dest_hook_dir.exists():
         with open(dest_hook_dir / "hook.json") as f:
             v_dest = json.load(f).get("version", "?")
         print(f"  -> Hook {name} já instalado ({v_dest} -> {version}) — sobrescrevendo")
+        hook_event = "resource.updated"
+        hook_log_data = {"type": "hook", "name": name, "version_from": v_dest, "version_to": version}
 
     dest_hook_dir.mkdir(parents=True, exist_ok=True)
 
@@ -113,6 +128,7 @@ def _install_hook(hub: Path, dest_dir: Path, name: str, project_name: str) -> No
     shutil.copy2(hook_sh_src, dest_hook_dir / "hook.sh")
     (dest_hook_dir / "hook.sh").chmod(0o755)
     print(f"  [ok] Hook instalado: {dest_hook_dir}/")
+    log(dest_dir, hook_event, hook_log_data)
 
     settings_file = dest_dir / "settings.json"
     _update_settings(settings_file, name, dest_hook_dir / "hook.json")
@@ -172,6 +188,7 @@ def _install_plugin(hub: Path, dest_dir: Path, name: str, project_name: str) -> 
     plugins_dir.mkdir(exist_ok=True)
     (plugins_dir / f"{name}.json").write_text(json.dumps(plugin_record, indent=2) + "\n")
     print(f"  [ok] Plugin registrado: .claude/plugins/{name}.json")
+    log(dest_dir, "resource.installed", {"type": "plugin", "name": name, "version": version})
 
 
 def _install_instruction(hub: Path, dest_dir: Path, name: str, project_name: str) -> None:
@@ -196,3 +213,25 @@ def _install_instruction(hub: Path, dest_dir: Path, name: str, project_name: str
         f.write(f"\n{marker}\n" + fragment.strip() + "\n")
 
     print(f"  [ok] Instruction '{name}' adicionada ao CLAUDE.md")
+    log(dest_dir, "resource.installed", {"type": "instruction", "name": name})
+
+
+def _create_proxy(dest_dir: Path, resource_type: str, name: str) -> None:
+    commands_dir = dest_dir / "commands"
+    proxy = commands_dir / f"{name}.md"
+    files.ensure_dir(commands_dir)
+
+    # Lê o body da skill/agent (sem frontmatter) para embedar no proxy
+    source_file = dest_dir / f"{resource_type}s" / f"{name}.md"
+    body = ""
+    if source_file.exists():
+        content = source_file.read_text()
+        m = re.match(r'^---\n.*?\n---\n', content, re.DOTALL)
+        body = content[m.end():].strip() if m else content.strip()
+
+    action = "Atualizado" if proxy.exists() else "Criado"
+    proxy.write_text(
+        f"<!-- proxy:{resource_type}:{name} -->\n\n"
+        f"{body}\n"
+    )
+    print(f"  [ok] Proxy {action.lower()}: /{name} → .claude/{resource_type}s/{name}.md")
