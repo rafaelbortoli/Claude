@@ -1,69 +1,73 @@
 ---
+# about
+id: cmd-003
 name: install-resource
 type: command
-version: 1.1.0
-status: stable
-
+project: ""
 description: Instala um recurso do hub no projeto atual — skill, agent, hook, command ou plugin.
 tags: [install, resource, hub]
 
-scope: global
-auto_load: false
-
-source: ""
-project: ""
-dependencies: []
-checksum: ""
-
+# history
 author: ""
 created: 2026-05-10
-updated: 2026-05-10
+status: stable
+version: 1.4.0
+updated: 2026-05-13
+
+# system
+scope: global
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # /install-resource
 
-> **Instruções de execução — siga esta sequência:**
->
-> 1. Verifique se `~/.claude/hub-path` existe:
->    ```bash
->    cat ~/.claude/hub-path
->    ```
->    Se não existir, peça ao usuário para executar `/claude-start` primeiro.
->
-> 2. Se o tipo não foi informado, pergunte:
->    "Qual o tipo do recurso? Opções: `skill`, `agent`, `hook`, `command`, `plugin`"
->
-> 3. Se o nome não foi informado, pergunte:
->    "Qual o nome do recurso?"
->
-> 4. Execute:
->    ```bash
->    HUB_DIR="$(cat ~/.claude/hub-path)"
->    bash "$HUB_DIR/install.sh" install-resource <tipo> <nome>
->    ```
->
-> 5. Se o script perguntar sobre conflito de versão (`[s] sobrescrever [p] pular [c] cancelar`), repasse a pergunta ao usuário e responda com a escolha dele.
->
-> 6. Mostre a saída e confirme o que foi instalado.
+Instala um recurso do hub em um projeto.
 
----
+## Passo 1 — Projeto destino
 
-## Referência
+Informe o caminho do projeto onde o recurso será instalado:
 
-Instala um recurso publicado no hub dentro do projeto atual.
-
-### Tipos disponíveis
-
-| Tipo | Destino |
-|---|---|
-| `skill` | `.claude/skills/<nome>.md` |
-| `agent` | `.claude/agents/<nome>.md` |
-| `hook` | `.claude/hooks/<nome>/hook.json` + `hook.sh` |
-| `command` | `.claude/commands/<nome>.md` |
-| `plugin` | instala todos os recursos do plugin em sequência |
-
-### Flags
-
+```bash
+pwd
 ```
---dry-run   mostra o que seria feito sem executar
+
+Se o diretório atual for o projeto correto, use-o. Caso contrário, pergunte: "Qual o caminho do projeto? (ex: ~/Code/MeuProjeto)"
+
+Guarde o caminho como `<projeto>` para usar nos próximos passos.
+
+## Passo 2 — Tipo
+
+Pergunte: "Qual o tipo de recurso? (`skill`, `agent`, `hook`, `command`, `plugin`, `instruction`)"
+
+Aguarde a resposta antes de continuar.
+
+## Passo 3 — Listar recursos disponíveis
+
+Execute obrigatoriamente o comando abaixo e exiba o resultado completo ao usuário antes de fazer qualquer pergunta:
+
+```bash
+HUB_DIR="$(cat ~/.claude/hub-path)"
+"$HUB_DIR/.venv/bin/python" -m cli list-resources --type "<tipo>"
 ```
+
+Se não houver recursos disponíveis, informe o usuário e encerre.
+
+## Passo 4 — Seleção
+
+Pergunte: "Qual o ID do recurso que deseja instalar?"
+
+Se o usuário informar um ID (ex: `sk-001`), resolva o nome correspondente a partir da tabela exibida no passo anterior.
+
+## Execução
+
+```bash
+HUB_DIR="$(cat ~/.claude/hub-path)"
+"$HUB_DIR/.venv/bin/python" -m cli install-resource --type "<tipo>" --name "<nome>" --dest "<projeto>/.claude"
+```
+
+## Pós-execução
+
+Mostre o output ao usuário confirmando o que foi instalado ou atualizado.

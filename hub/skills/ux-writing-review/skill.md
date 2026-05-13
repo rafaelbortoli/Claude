@@ -1,5 +1,6 @@
 ---
 # about
+id: sk-001
 name: ux-writing-review
 type: skill
 description: Revisa, melhora ou reescreve textos de interface aplicando princípios de UX Writing.

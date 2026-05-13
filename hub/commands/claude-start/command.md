@@ -1,55 +1,44 @@
 ---
+# about
+id: cmd-001
 name: claude-start
 type: command
-version: 1.1.0
-status: stable
-
+project: ""
 description: Setup global do Claude Code na máquina — copia CLAUDE.md e settings.json para ~/.claude/.
 tags: [setup, global, machine]
 
-scope: global
-auto_load: false
-
-source: ""
-project: ""
-dependencies: []
-checksum: ""
-
+# history
 author: ""
 created: 2026-05-10
-updated: 2026-05-10
+status: stable
+version: 1.2.0
+updated: 2026-05-12
+
+# system
+scope: global
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # /claude-start
 
-> **Instruções de execução — siga esta sequência:**
->
-> 1. Verifique se `~/.claude/hub-path` existe:
->    ```bash
->    cat ~/.claude/hub-path
->    ```
->    Se não existir, informe: "hub-path não encontrado. Execute o instalador manualmente:
->    `bash <caminho-do-repositório>/install.sh claude-start`"
->
-> 2. Se existir, execute:
->    ```bash
->    HUB_DIR="$(cat ~/.claude/hub-path)"
->    bash "$HUB_DIR/install.sh" claude-start
->    ```
->
-> 3. Mostre a saída ao usuário e confirme o que foi instalado ou mantido.
+Setup global do Claude Code na máquina.
 
----
+## Execução
 
-## Referência
-
-Configura o ambiente global do Claude Code na máquina. Executar uma única vez por máquina — pode ser re-executado com segurança (idempotente).
-
-Copia os arquivos globais para `~/.claude/`, sem sobrescrever arquivos existentes:
-
-```
-global/CLAUDE.md     → ~/.claude/CLAUDE.md      (apenas se não existir)
-global/settings.json → ~/.claude/settings.json   (apenas se não existir)
+```bash
+HUB_DIR="$(cat ~/.claude/hub-path)"
+"$HUB_DIR/.venv/bin/python" -m cli claude-start
 ```
 
-Também salva `~/.claude/hub-path` com o caminho do repositório, necessário para os demais comandos.
+Se `~/.claude/hub-path` não existir ainda, o usuário deve informar o caminho do repositório e executar:
+
+```bash
+"<caminho-do-hub>/.venv/bin/python" -m cli claude-start
+```
+
+## Pós-execução
+
+Mostre o output ao usuário confirmando o que foi instalado ou mantido.

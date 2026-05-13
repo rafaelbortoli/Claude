@@ -1,27 +1,25 @@
 ---
-# identity
+# about
+id: cmd-006
 name: test-publish
 type: command
-version: 1.0.1
-status: draft
-
-# context
-# description: o que o comando faz — usado pelo Claude e pelo usuário para descoberta
+project: ""
 description: Comando de teste para validar o fluxo de publicação
 tags: []
 
-# loading
-scope: global
-auto_load: false
-
-# traceability — preenchidos pelo install.sh
-dependencies: []
-checksum: ""
-
-# metadata
+# history
 author: ""
 created: 2026-05-11
+status: draft
+version: 1.0.1
 updated: 2026-05-11
+
+# system
+scope: global
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # /test-publish
