@@ -109,12 +109,11 @@ def _setup_claude_md(hub: Path, claude_dir: Path, name: str, vision: str, stack:
 
     content = claude_md.read_text()
     content = content.replace("[NOME DO PROJETO]", name)
-    if vision:
-        content = content.replace("(preencher)", vision, 1)
-    content = content.replace("(preencher)", '""')
+    content = content.replace("(descricao)", vision if vision else '""')
+    content = content.replace("(visao-geral)", vision)
     claude_md.write_text(content)
 
-    frontmatter.write(claude_md, {
+    fm_fields = {
         "name":    name,
         "status":  "stable",
         "project": name,
@@ -122,7 +121,10 @@ def _setup_claude_md(hub: Path, claude_dir: Path, name: str, vision: str, stack:
         "updated": today,
         "tags":    f"[{stack}]",
         "stack":   stack,
-    })
+    }
+    if vision:
+        fm_fields["description"] = vision
+    frontmatter.write(claude_md, fm_fields)
 
     _append_fragments(hub, claude_md)
     print(f"  [ok] CLAUDE.md gerado")

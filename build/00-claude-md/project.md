@@ -3,7 +3,7 @@
 name: project-name
 type: doc
 project: ""
-description: (preencher)
+description: (descricao)
 tags: []
 
 # history
@@ -16,7 +16,7 @@ stack: ""
 
 # system
 scope: project
-source: build/00-claude-md/project.md
+source: ""
 auto_load: true
 checksum: ""
 dependencies: []
@@ -28,7 +28,7 @@ dependencies: []
 
 ## Visão Geral
 
-(preencher)
+(visao-geral)
 
 ---
 
@@ -94,13 +94,6 @@ dependencies: []
 ---
 
 ## Recursos Instalados
-
-<!-- Atualizado automaticamente pelo install-resource.
-     Exemplo:
-     | Recurso | Tipo | Versão | Instalado em |
-     |---|---|---|---|
-     | `/skill-name` | skill | 1.0.0 | 2026-05-10 |
--->
 
 ---
 
