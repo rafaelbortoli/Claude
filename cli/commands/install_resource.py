@@ -181,7 +181,7 @@ def _install_instruction(hub: Path, dest_dir: Path, name: str, project_name: str
     if not src.exists():
         raise FileNotFoundError(f"Instruction não encontrada: {src}")
     if not claude_md.exists():
-        raise FileNotFoundError(f"CLAUDE.md não encontrado — execute /setup-claude primeiro")
+        raise FileNotFoundError(f"CLAUDE.md não encontrado — execute /new-project primeiro")
 
     marker = f"<!-- instruction: {name} -->"
     if marker in claude_md.read_text():

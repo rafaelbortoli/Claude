@@ -15,8 +15,6 @@ _FRAGMENT_ORDER = [
     "frontmatter.md",
 ]
 
-_DEFAULT_STACK = "nextjs-supabase-vercel-claude"
-
 _DESIGN_DIRS = [
     ("design/01-branding/research", "Pesquisa de marca",
      "Resultados de pesquisa e discovery de marca: benchmarking, moodboard e insights."),

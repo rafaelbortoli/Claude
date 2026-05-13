@@ -22,7 +22,7 @@ updated: ""
 
 # Build — Stacks
 
-Cada stack define quais plugins e instruções são instalados por padrão no `setup-claude`.
+Cada stack define quais plugins e instruções são instalados por padrão no `new-project`.
 
 | Stack | Descrição |
 |---|---|
