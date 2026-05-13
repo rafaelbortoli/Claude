@@ -65,6 +65,5 @@ def inject(file: Path, project: str, source: str) -> None:
         return text + f'\n{repl}'
 
     fm = set_field(fm, 'project', project)
-    fm = set_field(fm, 'created', today)
     fm = set_field(fm, 'source', source)
     file.write_text(m.group(1) + fm + m.group(3) + content[m.end():])

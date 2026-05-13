@@ -97,6 +97,8 @@ def _restore_plugin(dest_dir: Path, name: str) -> None:
 
     if not plugin_file.exists():
         raise FileNotFoundError(f"Plugin não encontrado na lixeira")
+    if not trash_json_file.exists():
+        raise FileNotFoundError(f"Metadados da lixeira ausentes: {trash_json_file}")
 
     with open(trash_json_file) as f:
         meta = json.load(f)

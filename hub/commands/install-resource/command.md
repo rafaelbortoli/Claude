@@ -1,12 +1,25 @@
 ---
+# about
 id: cmd-003
 name: install-resource
 type: command
+project: ""
 description: Instala um recurso do hub no projeto atual — skill, agent, hook, command ou plugin.
 tags: [install, resource, hub]
-version: 1.4.0
+
+# history
+author: ""
+created: 2026-05-10
 status: stable
+version: 1.4.0
+updated: 2026-05-13
+
+# system
 scope: global
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # /install-resource

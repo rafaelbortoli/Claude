@@ -15,35 +15,40 @@
       "name": "claude-start",
       "version": "1.2.0",
       "description": "Setup global do Claude Code na máquina",
-      "file": "hub/commands/claude-start/command.md"
+      "tags": ["setup", "global", "machine"],
+      "updated": "2026-05-13"
     },
     {
       "id": "cmd-002",
       "name": "new-project",
       "version": "1.0.0",
       "description": "Inicializa a estrutura .claude/ e as pastas de um novo projeto",
-      "file": "hub/commands/new-project/command.md"
+      "tags": ["new", "project", "setup"],
+      "updated": "2026-05-13"
     },
     {
       "id": "cmd-003",
       "name": "install-resource",
-      "version": "1.2.0",
-      "description": "Instala um recurso do hub no projeto atual",
-      "file": "hub/commands/install-resource/command.md"
+      "version": "1.4.0",
+      "description": "Instala um recurso do hub no projeto atual — skill, agent, hook, command ou plugin.",
+      "tags": ["install", "resource", "hub"],
+      "updated": "2026-05-13"
     },
     {
       "id": "cmd-004",
       "name": "build-resource",
       "version": "1.2.0",
-      "description": "Cria um novo recurso no projeto atual a partir do template",
-      "file": "hub/commands/build-resource/command.md"
+      "description": "Cria um novo recurso no projeto atual a partir do template correspondente.",
+      "tags": ["build", "resource", "template"],
+      "updated": "2026-05-13"
     },
     {
       "id": "cmd-005",
       "name": "publish-resource",
       "version": "1.2.0",
-      "description": "Normaliza e publica um recurso do projeto no hub",
-      "file": "hub/commands/publish-resource/command.md"
+      "description": "Normaliza e publica um recurso do projeto no hub para reutilização em outros projetos.",
+      "tags": ["publish", "resource", "hub"],
+      "updated": "2026-05-13"
     },
     {
       "id": "cmd-006",
@@ -56,7 +61,7 @@
     {
       "id": "cmd-007",
       "name": "remove-resource",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Move um recurso instalado no projeto para a lixeira, com remoção permanente após 30 dias.",
       "tags": ["remove", "resource", "trash"],
       "updated": "2026-05-13"
@@ -64,7 +69,7 @@
     {
       "id": "cmd-008",
       "name": "restore-resource",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Restaura um recurso da lixeira do projeto para sua localização original.",
       "tags": ["restore", "resource", "trash"],
       "updated": "2026-05-13"

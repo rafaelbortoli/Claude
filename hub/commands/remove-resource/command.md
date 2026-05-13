@@ -1,12 +1,25 @@
 ---
+# about
 id: cmd-007
 name: remove-resource
 type: command
+project: ""
 description: Move um recurso instalado no projeto para a lixeira, com remoção permanente após 30 dias.
 tags: [remove, resource, trash]
-version: 1.1.0
+
+# history
+author: ""
+created: 2026-05-13
 status: stable
+version: 1.1.0
+updated: 2026-05-13
+
+# system
 scope: global
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # /remove-resource

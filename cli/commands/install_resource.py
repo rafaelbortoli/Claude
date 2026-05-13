@@ -72,7 +72,8 @@ def _install_md_resource(hub: Path, dest_dir: Path, resource_type: str, name: st
     type_dir = config.dest_dir_for_type(dest_dir, resource_type)
     dest = type_dir / f"{name}.md"
 
-    tmp = Path(tempfile.mktemp(suffix=".md"))
+    with tempfile.NamedTemporaryFile(suffix=".md", delete=False) as tf:
+        tmp = Path(tf.name)
     try:
         shutil.copy2(src, tmp)
         frontmatter.inject(tmp, project_name, f"hub/{resource_type}s/{name}@{version}")
@@ -119,8 +120,8 @@ def _install_hook(hub: Path, dest_dir: Path, name: str, project_name: str) -> No
     hook_event = "resource.installed"
     hook_log_data = {"type": "hook", "name": name, "version": version}
     if dest_hook_dir.exists():
-        with open(dest_hook_dir / "hook.json") as f:
-            v_dest = json.load(f).get("version", "?")
+        existing_json = dest_hook_dir / "hook.json"
+        v_dest = json.load(open(existing_json)).get("version", "?") if existing_json.exists() else "?"
         print(f"  -> Hook {name} já instalado ({v_dest} -> {version}) — sobrescrevendo")
         hook_event = "resource.updated"
         hook_log_data = {"type": "hook", "name": name, "version_from": v_dest, "version_to": version}

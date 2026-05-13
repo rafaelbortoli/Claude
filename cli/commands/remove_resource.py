@@ -5,7 +5,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from cli import config
-from cli.utils import files, frontmatter
+from cli.utils import frontmatter
 from cli.utils.files import git_author
 from cli.utils.logger import log
 
@@ -139,7 +139,7 @@ def _remove_hook(dest_dir: Path, name: str) -> None:
 
     for f in hook_dir.iterdir():
         shutil.move(str(f), trash_item_dir / f.name)
-    hook_dir.rmdir()
+    shutil.rmtree(hook_dir, ignore_errors=True)
 
     _write_trash_meta(trash_item_dir, "hook", name)
     _remove_from_settings(dest_dir / "settings.json", name)

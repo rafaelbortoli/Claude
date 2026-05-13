@@ -1,12 +1,25 @@
 ---
+# about
 id: cmd-008
 name: restore-resource
 type: command
+project: ""
 description: Restaura um recurso da lixeira do projeto para sua localização original.
 tags: [restore, resource, trash]
-version: 1.1.0
+
+# history
+author: ""
+created: 2026-05-13
 status: stable
+version: 1.1.0
+updated: 2026-05-13
+
+# system
 scope: global
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # /restore-resource

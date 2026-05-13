@@ -63,10 +63,15 @@ def run(args):
     today = str(date.today())
     resource_id = None
     if is_new:
-        resource_id = registry.next_id(hub, resource_type)
-        print(f"  -> ID atribuído: {resource_id}")
+        existing = registry.find(hub, resource_type, name)
+        if existing and existing.get("id"):
+            resource_id = existing["id"]
+        else:
+            resource_id = registry.next_id(hub, resource_type)
+            print(f"  -> ID atribuído: {resource_id}")
 
-    tmp = Path(tempfile.mktemp(suffix=".md"))
+    with tempfile.NamedTemporaryFile(suffix=".md", delete=False) as tf:
+        tmp = Path(tf.name)
     try:
         shutil.copy2(src, tmp)
         frontmatter.write(tmp, {"version": version, "updated": today})
@@ -97,9 +102,6 @@ def run(args):
     }
     if resource_id:
         entry["id"] = resource_id
-    existing = registry.find(hub, resource_type, name)
-    if existing and existing.get("id"):
-        entry["id"] = existing["id"]
     registry.upsert(hub, resource_type, name, entry)
 
     _append_changelog(hub, resource_type, name, version)
@@ -140,8 +142,12 @@ def _publish_hook(hub: Path, src_dir: Path, name: str) -> None:
     today = str(date.today())
     resource_id = None
     if is_new:
-        resource_id = registry.next_id(hub, "hook")
-        print(f"  -> ID atribuído: {resource_id}")
+        existing = registry.find(hub, "hook", name)
+        if existing and existing.get("id"):
+            resource_id = existing["id"]
+        else:
+            resource_id = registry.next_id(hub, "hook")
+            print(f"  -> ID atribuído: {resource_id}")
 
     pub_data = {k: v for k, v in data.items() if k not in ("project", "source")}
     pub_data["version"] = version
@@ -150,7 +156,8 @@ def _publish_hook(hub: Path, src_dir: Path, name: str) -> None:
     if resource_id:
         pub_data["id"] = resource_id
 
-    tmp_json = Path(tempfile.mktemp(suffix=".json"))
+    with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tf:
+        tmp_json = Path(tf.name)
     try:
         tmp_json.write_text(json.dumps(pub_data, indent=2, ensure_ascii=False) + "\n")
 
@@ -177,9 +184,6 @@ def _publish_hook(hub: Path, src_dir: Path, name: str) -> None:
     }
     if resource_id:
         entry["id"] = resource_id
-    existing = registry.find(hub, "hook", name)
-    if existing and existing.get("id"):
-        entry["id"] = existing["id"]
     registry.upsert(hub, "hook", name, entry)
 
     _append_changelog(hub, "hook", name, version)
