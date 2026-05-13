@@ -1,23 +1,24 @@
 ---
+# about
 name: claude-start
 type: command
-version: 1.2.0
-status: stable
-
+project: Claude
 description: Setup global do Claude Code na máquina — copia CLAUDE.md e settings.json para ~/.claude/.
 tags: [setup, global, machine]
 
-scope: global
-auto_load: false
-
-source: hub/commands/claude-start@1.2.0
-project: Claude
-dependencies: []
-checksum: ""
-
+# history
 author: ""
 created: 2026-05-10
+status: stable
+version: 1.2.0
 updated: 2026-05-12
+
+# system
+scope: global
+source: hub/commands/claude-start@1.2.0
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # /claude-start

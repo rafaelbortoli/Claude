@@ -12,7 +12,6 @@ created: ""
 status: stable
 version: 1.0.0
 updated: ""
-stack: ""
 
 # system
 scope: project

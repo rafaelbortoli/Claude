@@ -1,23 +1,24 @@
 ---
+# about
 name: build-resource
 type: command
-version: 1.2.0
-status: stable
-
+project: ""
 description: Cria um novo recurso no projeto atual a partir do template correspondente.
 tags: [build, resource, template]
 
-scope: global
-auto_load: false
-
-source: ""
-project: ""
-dependencies: []
-checksum: ""
-
+# history
 author: ""
 created: 2026-05-10
+status: stable
+version: 1.2.0
 updated: 2026-05-12
+
+# system
+scope: global
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # /build-resource

@@ -1,23 +1,24 @@
 ---
+# about
 name: new-project
 type: command
-version: 1.0.0
-status: stable
-
+project: ""
 description: Inicializa a estrutura .claude/ e as pastas de um novo projeto.
 tags: [setup, project, init]
 
-scope: global
-auto_load: false
-
-source: ""
-project: ""
-dependencies: []
-checksum: ""
-
+# history
 author: ""
 created: 2026-05-13
+status: stable
+version: 1.0.0
 updated: 2026-05-13
+
+# system
+scope: global
+source: ""
+auto_load: false
+checksum: ""
+dependencies: []
 ---
 
 # /new-project

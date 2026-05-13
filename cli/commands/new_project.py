@@ -76,7 +76,6 @@ def register(sub):
     p.add_argument("--name", required=True, help="Nome do projeto")
     p.add_argument("--description", default="", help="Descrição do projeto em uma frase")
     p.add_argument("--tags", default="", help="Tags do projeto separadas por vírgula (ex: saas, fintech)")
-    p.add_argument("--stack", default=_DEFAULT_STACK, help="Stack do projeto")
     p.set_defaults(func=run)
 
 
@@ -87,9 +86,9 @@ def run(args):
     today = str(date.today())
 
     _create_claude_dirs(claude_dir)
-    _setup_claude_md(hub, claude_dir, args.name, args.description, args.tags, args.stack, today)
+    _setup_claude_md(hub, claude_dir, args.name, args.description, args.tags, today)
     _copy_settings(hub, claude_dir)
-    _create_project_folders(dest, today)
+    _create_project_folders(dest, args.name, today)
 
     print(f"  [ok] Projeto '{args.name}' configurado em {dest}")
 
@@ -106,7 +105,7 @@ def _create_claude_dirs(claude_dir: Path) -> None:
         files.ensure_dir(claude_dir / subdir)
 
 
-def _setup_claude_md(hub: Path, claude_dir: Path, name: str, description: str, tags: str, stack: str, today: str) -> None:
+def _setup_claude_md(hub: Path, claude_dir: Path, name: str, description: str, tags: str, today: str) -> None:
     claude_md = claude_dir / "CLAUDE.md"
 
     if claude_md.exists():
@@ -128,7 +127,6 @@ def _setup_claude_md(hub: Path, claude_dir: Path, name: str, description: str, t
         "created": today,
         "updated": today,
         "tags":    _parse_tags(tags),
-        "stack":   stack,
     }
     if description:
         fm_fields["description"] = description
@@ -162,33 +160,33 @@ def _copy_settings(hub: Path, claude_dir: Path) -> None:
         print(f"  -> settings.json já existe — mantido")
 
 
-def _create_project_folders(dest: Path, today: str) -> None:
+def _create_project_folders(dest: Path, project_name: str, today: str) -> None:
     for subpath, title, description in _DESIGN_PARENT_READMES:
         path = dest / subpath
         files.ensure_dir(path)
-        _write_readme(path, title, description, today)
+        _write_readme(path, title, description, project_name, today)
 
     for subpath, title, description in _DESIGN_DIRS:
         path = dest / subpath
         files.ensure_dir(path)
-        _write_readme(path, title, description, today)
+        _write_readme(path, title, description, project_name, today)
 
     print(f"  [ok] design/ criado")
 
     for subpath, title, description in _DEV_PARENT_READMES:
         path = dest / subpath
         files.ensure_dir(path)
-        _write_readme(path, title, description, today)
+        _write_readme(path, title, description, project_name, today)
 
     for subpath, title, description in _DEV_DIRS:
         path = dest / subpath
         files.ensure_dir(path)
-        _write_readme(path, title, description, today)
+        _write_readme(path, title, description, project_name, today)
 
     print(f"  [ok] dev/ criado (nextjs-supabase)")
 
 
-def _write_readme(dir_path: Path, title: str, description: str, today: str) -> None:
+def _write_readme(dir_path: Path, title: str, description: str, project_name: str, today: str) -> None:
     readme = dir_path / "README.md"
     if readme.exists():
         return
@@ -198,7 +196,7 @@ def _write_readme(dir_path: Path, title: str, description: str, today: str) -> N
         f"# about\n"
         f"name: {name}\n"
         f"type: readme\n"
-        f"project: \"\"\n"
+        f"project: {project_name}\n"
         f"description: {description}\n"
         f"tags: []\n"
         f"\n"

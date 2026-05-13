@@ -1,28 +1,25 @@
 ---
-# identity
+# about
 name: test-publish
 type: command
-version: 1.0.1
-status: draft
-
-# context
-# description: o que o comando faz — usado pelo Claude e pelo usuário para descoberta
+project: Claude
 description: Comando de teste para validar o fluxo de publicação
 tags: []
 
-# loading
-scope: project
-auto_load: false
-
-# traceability — preenchidos pelo install.sh
-source: local
-project: Claude
-dependencies: []
-checksum: ""
-
-# metadata
+# history
 author: ""
 created: 2026-05-11
+status: draft
+version: 1.0.1
+updated: 2026-05-11
+
+# system
+scope: project
+source: local
+auto_load: false
+checksum: ""
+dependencies: []
+---
 updated: ""
 ---
 

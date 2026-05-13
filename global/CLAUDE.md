@@ -1,22 +1,24 @@
 ---
-# identity
+# about
 name: claude-global
 type: instruction
-version: 1.0.0
-status: stable
-
-# context
+project: ""
 description: Instruções globais do Claude — aplicadas em todo ambiente via ~/.claude/CLAUDE.md.
 tags: [global, instructions]
 
-# loading
-scope: global
-auto_load: true
-
-# metadata
+# history
 author: ""
 created: 2026-05-10
+status: stable
+version: 1.0.0
 updated: 2026-05-11
+
+# system
+scope: global
+source: ""
+auto_load: true
+checksum: ""
+dependencies: []
 ---
 
 # Claude — Instruções Globais
