@@ -71,10 +71,11 @@ _DEV_PARENT_READMES = [
 
 
 def register(sub):
-    p = sub.add_parser("setup-claude", help="Inicializa estrutura .claude/ em um novo projeto")
+    p = sub.add_parser("new-project", help="Inicializa estrutura .claude/ e pastas em um novo projeto")
     p.add_argument("--path", required=True, help="Caminho da pasta do projeto")
     p.add_argument("--name", required=True, help="Nome do projeto")
-    p.add_argument("--vision", default="", help="Visão geral do projeto (uma frase)")
+    p.add_argument("--description", default="", help="Descrição do projeto em uma frase")
+    p.add_argument("--tags", default="", help="Tags do projeto separadas por vírgula (ex: saas, fintech)")
     p.add_argument("--stack", default=_DEFAULT_STACK, help="Stack do projeto")
     p.set_defaults(func=run)
 
@@ -86,11 +87,18 @@ def run(args):
     today = str(date.today())
 
     _create_claude_dirs(claude_dir)
-    _setup_claude_md(hub, claude_dir, args.name, args.vision, args.stack, today)
+    _setup_claude_md(hub, claude_dir, args.name, args.description, args.tags, args.stack, today)
     _copy_settings(hub, claude_dir)
     _create_project_folders(dest, today)
 
     print(f"  [ok] Projeto '{args.name}' configurado em {dest}")
+
+
+def _parse_tags(raw: str) -> str:
+    if not raw.strip():
+        return "[]"
+    items = [t.strip() for t in raw.split(",") if t.strip()]
+    return "[" + ", ".join(items) + "]"
 
 
 def _create_claude_dirs(claude_dir: Path) -> None:
@@ -98,7 +106,7 @@ def _create_claude_dirs(claude_dir: Path) -> None:
         files.ensure_dir(claude_dir / subdir)
 
 
-def _setup_claude_md(hub: Path, claude_dir: Path, name: str, vision: str, stack: str, today: str) -> None:
+def _setup_claude_md(hub: Path, claude_dir: Path, name: str, description: str, tags: str, stack: str, today: str) -> None:
     claude_md = claude_dir / "CLAUDE.md"
 
     if claude_md.exists():
@@ -109,8 +117,8 @@ def _setup_claude_md(hub: Path, claude_dir: Path, name: str, vision: str, stack:
 
     content = claude_md.read_text()
     content = content.replace("[NOME DO PROJETO]", name)
-    content = content.replace("(descricao)", vision if vision else '""')
-    content = content.replace("(visao-geral)", vision)
+    content = content.replace("(descricao)", description if description else '""')
+    content = content.replace("(visao-geral)", description)
     claude_md.write_text(content)
 
     fm_fields = {
@@ -119,11 +127,11 @@ def _setup_claude_md(hub: Path, claude_dir: Path, name: str, vision: str, stack:
         "project": name,
         "created": today,
         "updated": today,
-        "tags":    f"[{stack}]",
+        "tags":    _parse_tags(tags),
         "stack":   stack,
     }
-    if vision:
-        fm_fields["description"] = vision
+    if description:
+        fm_fields["description"] = description
     frontmatter.write(claude_md, fm_fields)
 
     _append_fragments(hub, claude_md)

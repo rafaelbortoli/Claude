@@ -9,10 +9,10 @@
       "file": "hub/commands/claude-start/command.md"
     },
     {
-      "name": "setup-claude",
-      "version": "1.4.0",
-      "description": "Configura a estrutura .claude/ em um novo projeto",
-      "file": "hub/commands/setup-claude/command.md"
+      "name": "new-project",
+      "version": "1.0.0",
+      "description": "Inicializa a estrutura .claude/ e as pastas de um novo projeto",
+      "file": "hub/commands/new-project/command.md"
     },
     {
       "name": "install-resource",

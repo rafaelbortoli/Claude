@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from cli.commands import claude_start, setup_claude, build_resource, install_resource, publish_resource
+from cli.commands import claude_start, new_project, build_resource, install_resource, publish_resource
 
 
 def main():
@@ -9,7 +9,7 @@ def main():
     sub = parser.add_subparsers(dest="command", required=True)
 
     claude_start.register(sub)
-    setup_claude.register(sub)
+    new_project.register(sub)
     build_resource.register(sub)
     install_resource.register(sub)
     publish_resource.register(sub)

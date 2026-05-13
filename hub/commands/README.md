@@ -27,7 +27,7 @@ Slash commands disponíveis para instalação. Estes comandos são a interface d
 | Comando | Descrição |
 |---|---|
 | `/claude-start` | Setup global — uma vez por máquina |
-| `/setup-claude` | Inicializa `.claude/` em um novo projeto |
+| `/new-project` | Inicializa `.claude/` e as pastas de um novo projeto |
 | `/install-resource` | Instala recurso do hub no projeto |
 | `/build-resource` | Cria novo recurso a partir de template |
 | `/publish-resource` | Publica recurso local no hub |
