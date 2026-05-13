@@ -154,7 +154,7 @@ tags: []                      # lista de tags em kebab-case
 scope: project                # onde o recurso é instalado (ver valores aceitos abaixo)
 auto_load: false              # carregar automaticamente na sessão ou apenas sob demanda
 
-# traceability — preenchidos pelo install.sh, não manualmente
+# traceability — preenchidos pelo cli, não manualmente
 source: ""                    # hub/<type>/<name>@<version> ou local
 project: ""                   # nome do projeto onde está instalado
 dependencies: []              # recursos que precisam estar instalados antes deste
@@ -163,7 +163,7 @@ checksum: ""                  # hash SHA-256 do conteúdo — gerado automaticam
 # metadata
 author: ""
 created: ""                   # YYYY-MM-DD
-updated: ""                   # YYYY-MM-DD — atualizado automaticamente pelo install.sh
+updated: ""                   # YYYY-MM-DD — atualizado automaticamente pelo cli
 ```
 
 ### Valores aceitos
@@ -174,7 +174,7 @@ updated: ""                   # YYYY-MM-DD — atualizado automaticamente pelo i
 
 **`scope`**: `global` (em `~/.claude/`) | `project` (em `.claude/`)
 
-### Campos gerados automaticamente pelo install.sh
+### Campos gerados automaticamente pelo cli
 
 Nunca preencher manualmente: `source`, `project`, `checksum`, `updated`.
 

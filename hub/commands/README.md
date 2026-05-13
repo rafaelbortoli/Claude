@@ -22,7 +22,7 @@ updated: ""
 
 # Hub — Commands
 
-Slash commands disponíveis para instalação. Estes comandos são a interface do usuário para o `install.sh`.
+Slash commands disponíveis para instalação. Estes comandos são a interface do usuário para o `python -m cli`.
 
 | Comando | Descrição |
 |---|---|

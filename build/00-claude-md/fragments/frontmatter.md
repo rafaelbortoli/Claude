@@ -40,7 +40,7 @@ author: ""
 created: ""                   # YYYY-MM-DD
 status: draft                 # ciclo de vida (ver valores aceitos abaixo)
 version: 1.0.0                # semântico: major.minor.patch
-updated: ""                   # YYYY-MM-DD — atualizado automaticamente pelo install.sh
+updated: ""                   # YYYY-MM-DD — atualizado automaticamente pelo cli
 
 # system
 scope: project                # onde o recurso é instalado (ver valores aceitos abaixo)
@@ -62,7 +62,7 @@ dependencies: []              # recursos que precisam estar instalados antes des
 `global` — instalado em `~/.claude/`, disponível em todos os projetos
 `project` — instalado em `.claude/`, disponível apenas neste repositório
 
-### Campos gerados automaticamente pelo install.sh
+### Campos gerados automaticamente pelo cli
 
 Nunca preencher manualmente:
 
