@@ -1,47 +1,78 @@
 {
   "version": "1.0.0",
-  "updated": "2026-05-12",
+  "updated": "2026-05-13",
+  "id_counters": {
+    "skill": 1,
+    "agent": 0,
+    "command": 8,
+    "hook": 0,
+    "plugin": 0,
+    "instruction": 0
+  },
   "commands": [
     {
+      "id": "cmd-001",
       "name": "claude-start",
       "version": "1.2.0",
       "description": "Setup global do Claude Code na máquina",
       "file": "hub/commands/claude-start/command.md"
     },
     {
+      "id": "cmd-002",
       "name": "new-project",
       "version": "1.0.0",
       "description": "Inicializa a estrutura .claude/ e as pastas de um novo projeto",
       "file": "hub/commands/new-project/command.md"
     },
     {
+      "id": "cmd-003",
       "name": "install-resource",
       "version": "1.2.0",
       "description": "Instala um recurso do hub no projeto atual",
       "file": "hub/commands/install-resource/command.md"
     },
     {
+      "id": "cmd-004",
       "name": "build-resource",
       "version": "1.2.0",
       "description": "Cria um novo recurso no projeto atual a partir do template",
       "file": "hub/commands/build-resource/command.md"
     },
     {
+      "id": "cmd-005",
       "name": "publish-resource",
       "version": "1.2.0",
       "description": "Normaliza e publica um recurso do projeto no hub",
       "file": "hub/commands/publish-resource/command.md"
     },
     {
+      "id": "cmd-006",
       "name": "test-publish",
       "version": "1.0.1",
       "description": "Comando de teste para validar o fluxo de publicação",
       "tags": [],
       "updated": "2026-05-11"
+    },
+    {
+      "id": "cmd-007",
+      "name": "remove-resource",
+      "version": "1.0.0",
+      "description": "Move um recurso instalado no projeto para a lixeira, com remoção permanente após 30 dias.",
+      "tags": ["remove", "resource", "trash"],
+      "updated": "2026-05-13"
+    },
+    {
+      "id": "cmd-008",
+      "name": "restore-resource",
+      "version": "1.0.0",
+      "description": "Restaura um recurso da lixeira do projeto para sua localização original.",
+      "tags": ["restore", "resource", "trash"],
+      "updated": "2026-05-13"
     }
   ],
   "skills": [
     {
+      "id": "sk-001",
       "name": "ux-writing-review",
       "version": "1.0.0",
       "description": "Revisa, melhora ou reescreve textos de interface aplicando princípios de UX Writing.",

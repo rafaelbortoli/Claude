@@ -1,5 +1,6 @@
 ---
 # about
+id: cmd-004
 name: build-resource
 type: command
 project: ""

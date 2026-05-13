@@ -1,5 +1,6 @@
 ---
 # about
+id: cmd-005
 name: publish-resource
 type: command
 project: ""

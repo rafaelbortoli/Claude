@@ -25,6 +25,12 @@ def run(args):
     resource_type = args.resource_type
     name = args.name
 
+    if not (dest_dir / "CLAUDE.md").exists():
+        raise FileNotFoundError(
+            f"Projeto não encontrado em: {dest_dir}\n"
+            f"  Execute este comando de dentro do diretório do projeto, ou use --dest <caminho>"
+        )
+
     project_name = _get_project_name(dest_dir)
 
     dispatch = {
@@ -90,6 +96,7 @@ def _install_md_resource(hub: Path, dest_dir: Path, resource_type: str, name: st
 
     if resource_type in ("skill", "agent"):
         _create_proxy(dest_dir, resource_type, name)
+        print(f"  [!] Reinicie a sessão do Claude Code para /{name} ficar disponível como slash command")
 
 
 def _install_hook(hub: Path, dest_dir: Path, name: str, project_name: str) -> None:
@@ -221,17 +228,9 @@ def _create_proxy(dest_dir: Path, resource_type: str, name: str) -> None:
     proxy = commands_dir / f"{name}.md"
     files.ensure_dir(commands_dir)
 
-    # Lê o body da skill/agent (sem frontmatter) para embedar no proxy
-    source_file = dest_dir / f"{resource_type}s" / f"{name}.md"
-    body = ""
-    if source_file.exists():
-        content = source_file.read_text()
-        m = re.match(r'^---\n.*?\n---\n', content, re.DOTALL)
-        body = content[m.end():].strip() if m else content.strip()
-
     action = "Atualizado" if proxy.exists() else "Criado"
     proxy.write_text(
         f"<!-- proxy:{resource_type}:{name} -->\n\n"
-        f"{body}\n"
+        f"Leia o arquivo `.claude/{resource_type}s/{name}.md` e execute as instruções contidas nele.\n"
     )
     print(f"  [ok] Proxy {action.lower()}: /{name} → .claude/{resource_type}s/{name}.md")

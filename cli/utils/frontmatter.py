@@ -17,7 +17,7 @@ def read(file: Path) -> dict:
     return result
 
 
-def write(file: Path, fields: dict) -> None:
+def write(file: Path, fields: dict, section: str = "") -> None:
     content = file.read_text()
     m = _FENCE.match(content)
     if not m:
@@ -28,6 +28,8 @@ def write(file: Path, fields: dict) -> None:
         repl = f'{key}: {value}'
         if re.search(pattern, fm, re.MULTILINE):
             fm = re.sub(pattern, repl, fm, flags=re.MULTILINE)
+        elif section and f'# {section}' in fm:
+            fm = re.sub(rf'(# {re.escape(section)}\n)', rf'\1{repl}\n', fm, count=1)
         else:
             fm += f'\n{key}: {value}'
     file.write_text(m.group(1) + fm + m.group(3) + content[m.end():])
@@ -59,7 +61,7 @@ def inject(file: Path, project: str, source: str) -> None:
         if re.search(pattern, text, re.MULTILINE):
             return re.sub(pattern, repl, text, flags=re.MULTILINE)
         if '# system' in text:
-            return re.sub(r'(# system)', rf'{repl}\n\1', text, count=1)
+            return re.sub(r'(# system\n)', rf'\1{repl}\n', text, count=1)
         return text + f'\n{repl}'
 
     fm = set_field(fm, 'project', project)

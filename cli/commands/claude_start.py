@@ -76,7 +76,8 @@ def _install_commands(hub: Path, dest: Path) -> None:
         if cmd_dest.exists():
             v_hub = frontmatter.read(cmd_src).get("version", "?")
             v_local = frontmatter.read(cmd_dest).get("version", "?")
-            if v_hub != v_local:
+            content_changed = cmd_src.read_text() != cmd_dest.read_text()
+            if v_hub != v_local or content_changed:
                 shutil.copy2(cmd_src, cmd_dest)
                 print(f"  [ok] Comando atualizado: {cmd_name} ({v_local} -> {v_hub})")
             else:

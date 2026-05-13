@@ -1,4 +1,14 @@
+import subprocess
 from pathlib import Path
+
+
+def git_author() -> str:
+    try:
+        return subprocess.check_output(
+            ["git", "config", "user.name"], text=True, stderr=subprocess.DEVNULL
+        ).strip()
+    except Exception:
+        return ""
 
 
 def ensure_dir(path: Path) -> None:

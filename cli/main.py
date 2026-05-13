@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from cli.commands import claude_start, new_project, build_resource, install_resource, publish_resource
+from cli.commands import claude_start, new_project, build_resource, install_resource, publish_resource, list_resources, remove_resource, restore_resource
 
 
 def main():
@@ -13,6 +13,9 @@ def main():
     build_resource.register(sub)
     install_resource.register(sub)
     publish_resource.register(sub)
+    list_resources.register(sub)
+    remove_resource.register(sub)
+    restore_resource.register(sub)
 
     args = parser.parse_args()
     try:

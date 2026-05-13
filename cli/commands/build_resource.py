@@ -5,6 +5,7 @@ from pathlib import Path
 
 from cli import config
 from cli.utils import files, frontmatter
+from cli.utils.files import git_author
 
 
 _TEMPLATE_MAP = {
@@ -38,13 +39,14 @@ def run(args):
 
     project_name = _get_project_name(dest_dir)
     today = str(date.today())
+    author = git_author()
 
     if resource_type == "hook":
-        _build_hook(hub, dest_dir, name, project_name, today)
+        _build_hook(hub, dest_dir, name, project_name, today, author)
     elif resource_type == "plugin":
-        _build_plugin(hub, dest_dir, name, project_name, today)
+        _build_plugin(hub, dest_dir, name, project_name, today, author)
     else:
-        _build_md_resource(hub, dest_dir, resource_type, name, project_name, today)
+        _build_md_resource(hub, dest_dir, resource_type, name, project_name, today, author)
 
 
 def _get_project_name(dest_dir: Path) -> str:
@@ -54,7 +56,7 @@ def _get_project_name(dest_dir: Path) -> str:
     return ""
 
 
-def _build_md_resource(hub: Path, dest_dir: Path, resource_type: str, name: str, project_name: str, today: str) -> None:
+def _build_md_resource(hub: Path, dest_dir: Path, resource_type: str, name: str, project_name: str, today: str, author: str = "") -> None:
     tmpl_subdir, tmpl_filename = _TEMPLATE_MAP[resource_type]
     tmpl_file = hub / tmpl_subdir / tmpl_filename
 
@@ -75,13 +77,16 @@ def _build_md_resource(hub: Path, dest_dir: Path, resource_type: str, name: str,
         content = content.replace(placeholder, name)
     dest.write_text(content)
 
-    frontmatter.write(dest, {"name": name, "created": today, "project": project_name, "source": "local"})
+    fields = {"name": name, "created": today, "project": project_name, "source": "local"}
+    if author:
+        fields["author"] = author
+    frontmatter.write(dest, fields)
 
     print(f"  [ok] Criado: {dest}")
     print(f"  -> Preencha os placeholders e use /publish-resource quando estiver pronto")
 
 
-def _build_plugin(hub: Path, dest_dir: Path, name: str, project_name: str, today: str) -> None:
+def _build_plugin(hub: Path, dest_dir: Path, name: str, project_name: str, today: str, author: str = "") -> None:
     tmpl_file = hub / "build/04-plugins/_template/plugin.json"
     if not tmpl_file.exists():
         raise FileNotFoundError(f"Template não encontrado: {tmpl_file}")
@@ -99,12 +104,14 @@ def _build_plugin(hub: Path, dest_dir: Path, name: str, project_name: str, today
     data["project"] = project_name
     data["created"] = today
     data["source"] = "local"
+    if author:
+        data["author"] = author
 
     dest.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
     print(f"  [ok] Criado: {dest}")
 
 
-def _build_hook(hub: Path, dest_dir: Path, name: str, project_name: str, today: str) -> None:
+def _build_hook(hub: Path, dest_dir: Path, name: str, project_name: str, today: str, author: str = "") -> None:
     tmpl_dir = hub / "build/02-hooks/_template"
     hook_dest_dir = dest_dir / "hooks" / name
 
@@ -120,6 +127,8 @@ def _build_hook(hub: Path, dest_dir: Path, name: str, project_name: str, today: 
     data["project"] = project_name
     data["created"] = today
     data["source"] = "local"
+    if author:
+        data["author"] = author
     (hook_dest_dir / "hook.json").write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
 
     shutil.copy2(tmpl_dir / "events" / "pre-tool-use.sh", hook_dest_dir / "hook.sh")

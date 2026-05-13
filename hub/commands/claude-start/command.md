@@ -1,5 +1,6 @@
 ---
 # about
+id: cmd-001
 name: claude-start
 type: command
 project: ""

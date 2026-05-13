@@ -1,5 +1,6 @@
 ---
 # about
+id: cmd-006
 name: test-publish
 type: command
 project: ""

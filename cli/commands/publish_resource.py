@@ -54,18 +54,26 @@ def run(args):
     hub_resource_dir = hub / "hub" / f"{resource_type}s" / name
     hub_file = hub_resource_dir / f"{resource_type}.md"
 
-    if hub_file.exists():
+    is_new = not hub_file.exists()
+    if not is_new:
         bumped = files.bump_version(version)
         print(f"  -> Recurso já existe no hub — bump de versão: {version} -> {bumped}")
         version = bumped
 
     today = str(date.today())
+    resource_id = None
+    if is_new:
+        resource_id = registry.next_id(hub, resource_type)
+        print(f"  -> ID atribuído: {resource_id}")
+
     tmp = Path(tempfile.mktemp(suffix=".md"))
     try:
         shutil.copy2(src, tmp)
         frontmatter.write(tmp, {"version": version, "updated": today})
         frontmatter.strip(tmp, ["project", "source"])
-        frontmatter.write(tmp, {"scope": "global"})
+        frontmatter.write(tmp, {"scope": "global"}, section="system")
+        if resource_id:
+            frontmatter.write(tmp, {"id": resource_id}, section="about")
         tmp.write_text(templates.normalize_body(tmp.read_text(), project_name))
 
         _show_diff(hub_file, tmp)
@@ -77,14 +85,22 @@ def run(args):
         tmp.unlink(missing_ok=True)
 
     frontmatter.write(src, {"version": version})
+    if resource_id:
+        frontmatter.write(src, {"id": resource_id}, section="about")
 
     tags = _parse_tags(tags_raw)
-    registry.upsert(hub, resource_type, name, {
+    entry = {
         "version": version,
         "description": description,
         "tags": tags,
         "updated": today,
-    })
+    }
+    if resource_id:
+        entry["id"] = resource_id
+    existing = registry.find(hub, resource_type, name)
+    if existing and existing.get("id"):
+        entry["id"] = existing["id"]
+    registry.upsert(hub, resource_type, name, entry)
 
     _append_changelog(hub, resource_type, name, version)
     print(f"  [ok] {name}@{version} disponível no hub")
@@ -115,16 +131,24 @@ def _publish_hook(hub: Path, src_dir: Path, name: str) -> None:
     hub_hook_dir = hub / "hub" / "hooks" / name
     hub_json = hub_hook_dir / "hook.json"
 
-    if hub_hook_dir.exists():
+    is_new = not hub_hook_dir.exists()
+    if not is_new:
         bumped = files.bump_version(version)
         print(f"  -> Hook já existe no hub — bump de versão: {version} -> {bumped}")
         version = bumped
 
     today = str(date.today())
+    resource_id = None
+    if is_new:
+        resource_id = registry.next_id(hub, "hook")
+        print(f"  -> ID atribuído: {resource_id}")
+
     pub_data = {k: v for k, v in data.items() if k not in ("project", "source")}
     pub_data["version"] = version
     pub_data["updated"] = today
     pub_data["scope"] = "global"
+    if resource_id:
+        pub_data["id"] = resource_id
 
     tmp_json = Path(tempfile.mktemp(suffix=".json"))
     try:
@@ -140,15 +164,23 @@ def _publish_hook(hub: Path, src_dir: Path, name: str) -> None:
         tmp_json.unlink(missing_ok=True)
 
     data["version"] = version
+    if resource_id:
+        data["id"] = resource_id
     hook_json_src.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
 
     tags = tags_raw if isinstance(tags_raw, list) else _parse_tags(str(tags_raw))
-    registry.upsert(hub, "hook", name, {
+    entry = {
         "version": version,
         "description": description,
         "tags": tags,
         "updated": today,
-    })
+    }
+    if resource_id:
+        entry["id"] = resource_id
+    existing = registry.find(hub, "hook", name)
+    if existing and existing.get("id"):
+        entry["id"] = existing["id"]
+    registry.upsert(hub, "hook", name, entry)
 
     _append_changelog(hub, "hook", name, version)
     print(f"  [ok] {name}@{version} disponível no hub")

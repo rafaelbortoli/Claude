@@ -1,5 +1,6 @@
 ---
 # about
+id: cmd-002
 name: new-project
 type: command
 project: ""
