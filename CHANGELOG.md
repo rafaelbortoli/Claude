@@ -30,6 +30,7 @@ Formato: `[tipo] nome — descrição da mudança`.
 ## [Não lançado]
 
 <!-- Recursos em desenvolvimento ou aguardando publicação no hub. -->
+
 - [2026-05-11] [skill] ux-writing-review v1.0.0 — publicado no hub
 
 - [2026-05-11] [command] test-publish v1.0.1 — publicado no hub
