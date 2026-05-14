@@ -134,11 +134,11 @@ Se o usuário não confirmar, encerre.
 **Passo B2** — Leia os dois arquivos:
 
 1. O arquivo local (ignorando `project`, `source`, `version`, `updated`, `checksum` e paths absolutos)
-2. A versão atual do hub:
+2. A versão atual do hub — execute para obter o caminho:
    ```bash
-   HUB_DIR="$(cat ~/.claude/hub-path)"
-   # Arquivo: $HUB_DIR/hub/<tipo>s/<nome>/<tipo>.md
+   cat ~/.claude/hub-path
    ```
+   Leia o arquivo em: `<hub>/hub/<tipo>s/<nome>/<tipo>.md`
 
 **Passo B3** — Identifique as diferenças entre o arquivo local e a versão do hub, seção por seção:
 - No frontmatter: compare cada campo (exceto `project`, `source`, `version`, `updated`, `checksum`)

@@ -1,6 +1,6 @@
 ---
 feature: publish-resource
-status: pending
+status: done
 created: 2026-05-14
 ---
 

@@ -57,6 +57,13 @@ def run(args):
     if not src.exists():
         raise FileNotFoundError(f"Recurso não encontrado: {src}")
 
+    # L3: rejeitar arquivos proxy (commands instalados via skill/agent)
+    if src.read_text().startswith("<!-- proxy:"):
+        raise ValueError(
+            f"'{name}' é um proxy de skill/agent e não pode ser publicado diretamente.\n"
+            f"  Use --type skill ou --type agent para publicar o recurso original."
+        )
+
     _validate(src)
 
     # T2: modo validação apenas
@@ -109,10 +116,9 @@ def run(args):
         tmp.unlink(missing_ok=True)
 
     # T4: atualizar version e source no arquivo local após publicação
-    frontmatter.write(src, {
-        "version": version,
-        "source": f"hub/{resource_type}s/{name}@{version}",
-    })
+    # version é atualizada na seção history; source na seção system (evita append fora do bloco)
+    frontmatter.write(src, {"version": version}, section="history")
+    frontmatter.write(src, {"source": f"hub/{resource_type}s/{name}@{version}"}, section="system")
     if resource_id:
         frontmatter.write(src, {"id": resource_id}, section="about")
 
