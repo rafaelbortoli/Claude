@@ -40,13 +40,18 @@ Execute:
 pwd
 ```
 
-Mostre o caminho retornado e pergunte: _"Este é o diretório do projeto? Se não, informe o caminho correto."_
+Use `AskUserQuestion`:
+- **"Sim, usar `<caminho retornado>`"** — confirma o diretório atual como projeto
+- **"Não, informar outro caminho"** — solicita o caminho correto em texto livre
 
-Guarde o caminho como `<projeto>`.
+Se o usuário escolher "Não", peça o caminho e guarde como `<projeto>`. Caso contrário, use o caminho retornado pelo `pwd`.
 
 ### Passo 2 — Tipo do recurso
 
-Pergunte: _"Qual o tipo de recurso a publicar? Opções: `skill`, `agent`, `command`"_
+Use `AskUserQuestion`:
+- **"skill"** — recursos em `.claude/skills/`
+- **"agent"** — recursos em `.claude/agents/`
+- **"command"** — recursos em `.claude/commands/` (excluindo proxies)
 
 ### Passo 3 — Listar recursos disponíveis
 
@@ -57,18 +62,15 @@ HUB_DIR="$(cat ~/.claude/hub-path)"
 "$HUB_DIR/.venv/bin/python" -m cli list-resources --installed --type "<tipo>" --dest "<projeto>/.claude"
 ```
 
-Mostre a lista ao usuário.
-
-- Para `skill` e `agent`: exibe os recursos em `.claude/skills/` e `.claude/agents/`
-- Para `command`: exibe somente arquivos reais (proxies são excluídos automaticamente)
-
 Se a lista estiver vazia, informe e encerre.
 
 ### Passo 4 — Selecionar o recurso
 
-Pergunte: _"Qual recurso deseja publicar? Informe o ID ou nome."_
+Se a lista retornada tiver **até 4 itens**: use `AskUserQuestion` com cada recurso como opção (exibir nome e descrição).
 
-Resolva o nome do recurso a partir da tabela retornada. Guarde como `<nome>`.
+Se tiver **mais de 4 itens**: exiba a tabela retornada pelo CLI e peça ao usuário que informe o ID ou nome do recurso.
+
+Resolva o nome do recurso a partir da lista. Guarde como `<nome>`.
 
 ---
 
@@ -106,9 +108,9 @@ O recurso foi criado neste projeto e ainda não foi publicado no hub.
 - Campo `source` do frontmatter
 - Paths absolutos e referências específicas ao projeto encontradas no corpo
 
-**Passo A3** — Pergunte: _"Este é o conteúdo que será publicado no hub. Confirma?"_
-
-Se o usuário não confirmar, encerre sem publicar.
+**Passo A3** — Use `AskUserQuestion`:
+- **"Confirmar e publicar"** — prossegue para escrita e publicação
+- **"Cancelar"** — encerra sem publicar
 
 **Passo A4** — Escreva o arquivo local com o conteúdo limpo:
 - Remova `project` e `source` do frontmatter
@@ -162,19 +164,25 @@ Exemplo de formato:
 
 Se não houver mudanças relevantes após excluir informações de projeto, informe e encerre.
 
-**Passo B5** — Pergunte ao usuário quais mudanças deseja incluir na atualização. O usuário pode selecionar todas, algumas ou nenhuma. Se nenhuma for selecionada, encerre.
+**Passo B5** — Apresente as seções alteradas para seleção:
 
-**Passo B6** — Apresente o pacote final para revisão e peça a **única confirmação** do fluxo:
+Se houver **até 4 seções alteradas**: use `AskUserQuestion` com `multiSelect: true`, listando cada seção como opção.
 
-**As informações do projeto não serão enviadas para o hub.** Liste abaixo os campos e conteúdos que serão removidos antes da publicação:
+Se houver **mais de 4 seções alteradas**: exiba a lista numerada das seções e peça ao usuário que informe quais deseja incluir.
+
+Se nenhuma for selecionada, encerre.
+
+**Passo B6** — Apresente o pacote final para revisão:
+
+**As informações do projeto não serão enviadas para o hub.** Liste os campos e conteúdos que serão removidos antes da publicação:
 - Campos do frontmatter: `project`, `source` (e quaisquer outros específicos do projeto)
 - Paths absolutos ou referências ao projeto encontrados no corpo (listar cada ocorrência)
 
 Em seguida exiba o **conteúdo final** que será publicado: versão do hub com as mudanças selecionadas aplicadas.
 
-Pergunte: _"Este é o pacote que será publicado no hub. Confirma?"_
-
-Se o usuário não confirmar, encerre.
+Use `AskUserQuestion`:
+- **"Confirmar e publicar"** — prossegue para escrita e publicação
+- **"Cancelar"** — encerra sem publicar
 
 **Passo B7** — Escreva o arquivo local com o conteúdo mesclado:
 - Base: versão atual do hub

@@ -38,17 +38,25 @@ Execute:
 pwd
 ```
 
-Mostre o caminho retornado e pergunte: _"Este é o diretório do projeto? Se não, informe o caminho correto."_
+Use `AskUserQuestion`:
+- **"Sim, usar `<caminho retornado>`"** — confirma o diretório atual como projeto
+- **"Não, informar outro caminho"** — solicita o caminho correto em texto livre
 
-Guarde o caminho como `<projeto>`.
+Se o usuário escolher "Não", peça o caminho e guarde como `<projeto>`. Caso contrário, use o caminho retornado pelo `pwd`.
 
 ## Passo 2 — Tipo do recurso
 
-Pergunte: _"Qual o tipo de recurso? Opções: `skill`, `agent`, `hook`, `command`, `plugin`"_
+São 5 opções — exiba como lista e peça ao usuário que informe o tipo:
+
+- `skill` — skill instalada em `.claude/skills/`
+- `agent` — agente instalado em `.claude/agents/`
+- `hook` — hook de evento instalado em `.claude/hooks/`
+- `command` — comando instalado em `.claude/commands/`
+- `plugin` — plugin com múltiplos recursos
 
 ## Passo 3 — Nome do recurso
 
-Pergunte: _"Qual o nome do recurso? (ex: ux-writing-review)"_
+Pergunte em texto livre: _"Qual o nome do recurso? (ex: ux-writing-review)"_
 
 ## Execução
 
