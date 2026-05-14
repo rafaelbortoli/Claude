@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "diagram",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "7722", "--directory", "/tmp/diagram"],
+      "port": 7722
+    }
+  ]
+}
