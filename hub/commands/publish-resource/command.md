@@ -121,11 +121,12 @@ Se o usuário não confirmar, encerre sem publicar.
 
 ### Cenário B — Recurso instalado do hub (`source: hub/...`)
 
-O recurso foi instalado do hub e modificado localmente. Publicar criará uma nova versão disponível para todos os projetos que usam este recurso.
+O recurso foi instalado do hub e modificado localmente.
 
-**Passo B1** — Informe (sem pedir confirmação ainda):
+**Passo B1** — Exiba exatamente esta mensagem, substituindo `<nome>` e `<tipo>` pelos valores reais:
 
-> _"Este recurso foi instalado do hub. Publicar irá criar uma nova versão disponível para todos os projetos. Vou comparar as versões e mostrar as mudanças antes de qualquer confirmação."_
+> **`<nome>`** já existe no hub e será atualizado.
+> A seguir você verá as mudanças em relação à versão atual do hub e o conteúdo original, para escolher o que deve ser incluído na atualização.
 
 Prossiga imediatamente para o Passo B2.
 
@@ -142,18 +143,34 @@ Prossiga imediatamente para o Passo B2.
 - No frontmatter: compare cada campo (exceto `project`, `source`, `version`, `updated`, `checksum`)
 - No corpo: compare cada seção separadamente
 
-**Passo B4** — Apresente a lista de mudanças encontradas. Para cada mudança mostre:
-- Qual seção foi alterada
-- Resumo claro do que foi adicionado, removido ou modificado
+**Passo B4** — Para cada seção com diferenças, exiba uma comparação lado a lado no estilo diff de código:
+- Coluna esquerda: conteúdo atual do hub (prefixo `−`)
+- Coluna direita: conteúdo local modificado (prefixo `+`)
+- Linhas iguais: exibir sem prefixo como contexto
+
+Exemplo de formato:
+
+```diff
+## Instruções
+
+− 1. Ler os arquivos indicados
+− 2. Verificar critério A
++ 1. Ler os arquivos indicados
++ 2. Verificar critério A
++ 3. Verificar critério B (novo)
+```
 
 Se não houver mudanças relevantes após excluir informações de projeto, informe e encerre.
 
-**Passo B5** — Pergunte ao usuário quais mudanças deseja publicar. O usuário pode selecionar todas, algumas ou nenhuma. Se nenhuma for selecionada, encerre.
+**Passo B5** — Pergunte ao usuário quais mudanças deseja incluir na atualização. O usuário pode selecionar todas, algumas ou nenhuma. Se nenhuma for selecionada, encerre.
 
 **Passo B6** — Apresente o pacote final para revisão e peça a **única confirmação** do fluxo:
 
-1. **Informações descartadas**: campos e referências de projeto que serão removidos
-2. **Conteúdo final**: versão do hub com as mudanças selecionadas aplicadas
+**As informações do projeto não serão enviadas para o hub.** Liste abaixo os campos e conteúdos que serão removidos antes da publicação:
+- Campos do frontmatter: `project`, `source` (e quaisquer outros específicos do projeto)
+- Paths absolutos ou referências ao projeto encontrados no corpo (listar cada ocorrência)
+
+Em seguida exiba o **conteúdo final** que será publicado: versão do hub com as mudanças selecionadas aplicadas.
 
 Pergunte: _"Este é o pacote que será publicado no hub. Confirma?"_
 
