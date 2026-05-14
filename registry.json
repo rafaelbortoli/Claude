@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated": "2026-05-13",
+  "updated": "2026-05-14",
   "id_counters": {
     "skill": 1,
     "agent": 0,
@@ -37,18 +37,18 @@
     {
       "id": "cmd-004",
       "name": "build-resource",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "description": "Cria um novo recurso no projeto atual a partir do template correspondente.",
       "tags": ["build", "resource", "template"],
-      "updated": "2026-05-13"
+      "updated": "2026-05-14"
     },
     {
       "id": "cmd-005",
       "name": "publish-resource",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "description": "Normaliza e publica um recurso do projeto no hub para reutilização em outros projetos.",
       "tags": ["publish", "resource", "hub"],
-      "updated": "2026-05-13"
+      "updated": "2026-05-14"
     },
     {
       "id": "cmd-006",
