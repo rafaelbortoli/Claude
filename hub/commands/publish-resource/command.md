@@ -123,13 +123,11 @@ Se o usuário não confirmar, encerre sem publicar.
 
 O recurso foi instalado do hub e modificado localmente. Publicar criará uma nova versão disponível para todos os projetos que usam este recurso.
 
-**Passo B1** — Avise:
+**Passo B1** — Informe (sem pedir confirmação ainda):
 
-> _"Este recurso foi instalado do hub. Publicar irá criar uma nova versão disponível para todos os projetos."_
+> _"Este recurso foi instalado do hub. Publicar irá criar uma nova versão disponível para todos os projetos. Vou comparar as versões e mostrar as mudanças antes de qualquer confirmação."_
 
-Pergunte: _"Confirma que deseja publicar esta atualização?"_
-
-Se o usuário não confirmar, encerre.
+Prossiga imediatamente para o Passo B2.
 
 **Passo B2** — Leia os dois arquivos:
 
@@ -152,7 +150,7 @@ Se não houver mudanças relevantes após excluir informações de projeto, info
 
 **Passo B5** — Pergunte ao usuário quais mudanças deseja publicar. O usuário pode selecionar todas, algumas ou nenhuma. Se nenhuma for selecionada, encerre.
 
-**Passo B6** — Apresente o pacote final para revisão:
+**Passo B6** — Apresente o pacote final para revisão e peça a **única confirmação** do fluxo:
 
 1. **Informações descartadas**: campos e referências de projeto que serão removidos
 2. **Conteúdo final**: versão do hub com as mudanças selecionadas aplicadas
