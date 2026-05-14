@@ -10,8 +10,8 @@ tags: [ux-writing, copy, review, interface]
 author: Rafael Bortoli
 created: 2026-05-11
 status: stable
-version: 1.0.0
-updated: 2026-05-11
+version: 1.0.2
+updated: 2026-05-14
 
 # system
 scope: global
@@ -24,7 +24,7 @@ dependencies: []
 
 ## O que faz
 
-Revisa, melhora ou reescreve textos de interface (micro-copy, mensagens, labels, botões, erros, tooltips, empty states) aplicando princípios de UX Writing.
+Revisa, melhora ou reescreve textos de interface (micro-copy, mensagens, labels, botões, erros, tooltips, empty states) aplicando princípios de UX Writing. Sempre traduz o texto revisado para o mandarim ao final.
 
 ## Quando usar
 
@@ -75,11 +75,11 @@ Faça as duas perguntas abaixo, uma de cada vez, antes de qualquer revisão:
 ## Output
 
 **Usuário final**
-Texto original → texto revisado → princípios aplicados (1 linha de justificativa cada).
-Se houver 2 reescritas igualmente válidas, apresente as duas com a diferença entre elas.
+Texto original → texto revisado → princípios aplicados (1 linha de justificativa cada) → tradução para mandarim.
+Se houver 2 reescritas igualmente válidas, apresente as duas com a diferença entre elas, seguidas da tradução de cada uma.
 
 **Equipe interna**
-Texto original → texto revisado. Sem explicação de princípios. Nota curta só se necessário.
+Texto original → texto revisado → tradução para mandarim. Sem explicação de princípios. Nota curta só se necessário.
 
 ## Referências
 

@@ -105,9 +105,8 @@
   ],
   "skills": [
     {
-      "id": "sk-001",
       "name": "ux-writing-review",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "description": "Revisa, melhora ou reescreve textos de interface aplicando princípios de UX Writing.",
       "tags": [
         "ux-writing",
@@ -115,7 +114,7 @@
         "review",
         "interface"
       ],
-      "updated": "2026-05-11"
+      "updated": "2026-05-14"
     }
   ],
   "agents": [],
