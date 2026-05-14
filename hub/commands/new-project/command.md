@@ -11,8 +11,8 @@ tags: [setup, project, init]
 author: ""
 created: 2026-05-13
 status: stable
-version: 1.0.0
-updated: 2026-05-13
+version: 1.1.0
+updated: 2026-05-14
 
 # system
 scope: global
@@ -36,25 +36,77 @@ Aguarde a resposta do usuário.
 Pergunte: "Qual o nome do projeto?"
 Aguarde a resposta do usuário.
 
-**Etapa 3 — Descrição**
-Pergunte: "Descreva o projeto em uma frase."
-Aguarde a resposta do usuário.
+**Etapa 3 — Tipo de projeto**
 
-**Etapa 4 — Tags**
-Pergunte: "Quais tags identificam este projeto? (ex: saas, fintech, b2b)"
-Aguarde a resposta do usuário.
+Use `AskUserQuestion`:
+- **"Branding"** — identidade visual e marca
+- **"UX and UI"** — research, interfaces e design system
+- **"Product Design"** — design estratégico de produto
 
-**Etapa 5 — Execução**
+Aguarde a resposta do usuário. Guarde como `<tipo>`.
+
+**Etapa 3A — Sub-tipo (condicional)**
+
+Se `<tipo>` for **Branding**: use `AskUserQuestion`:
+- **"Plus"** — pacote essencial de marca
+- **"Pro"** — pacote completo de marca
+- **"Ultra"** — pacote abrangente de marca
+
+Se `<tipo>` for **UX and UI**: use `AskUserQuestion` com `multiSelect: true`:
+- **"UX Research"** — discovery e pesquisa com usuários
+- **"Interface digital"** — app, web, site, loja, landing page
+- **"Design System"** — biblioteca de componentes e tokens
+- **"Outro (digitar)"** — escopo personalizado
+
+Se `<tipo>` for **Product Design**: use `AskUserQuestion`:
+- **"New product"** — produto sendo criado do zero
+- **"Feature"** — nova funcionalidade em produto existente
+- **"Redesign"** — revisão e melhoria de produto existente
+
+Aguarde a resposta do usuário. Guarde como `<subtipo>`.
+
+**Etapa 4 — Descrição**
+
+**[smart-suggestions: on]** Sugestões baseadas no Tipo e Sub-tipo informados.
+
+Gere 3 variações de descrição em uma frase usando `<tipo>` e `<subtipo>` como contexto. Use `AskUserQuestion` com as 3 variações e **"Outro (digitar)"** como quarta opção.
+
+Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
+
+Guarde como `<descricao>`.
+
+**Etapa 5 — Tags**
+
+**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo e Descrição.
+
+Monte até 3 conjuntos de tags relevantes usando `<tipo>`, `<subtipo>` e `<descricao>` como contexto. Use `AskUserQuestion` com `multiSelect: true`, exibindo cada conjunto como opção (ex: `branding, identidade, b2b`), e **"Outro (digitar)"** como quarta opção.
+
+Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
+
+Guarde como `<tags>`.
+
+**Etapa 6 — Execução**
 
 ```bash
 HUB_DIR="$(cat ~/.claude/hub-path)"
 "$HUB_DIR/.venv/bin/python" -m cli new-project \
   --path "<pasta>" \
   --name "<nome>" \
-  --description "<descrição>" \
+  --description "<descricao>" \
   --tags "<tags>"
 ```
 
 ## Pós-execução
 
 Mostre o output ao usuário.
+
+Edite `<pasta>/project/project-details.md` preenchendo a tabela de identidade com os valores coletados:
+
+| Campo | Valor |
+|---|---|
+| Tipo de projeto | `<tipo>` |
+| Sub-tipo | `<subtipo>` |
+| Domínio | *(a preencher via /setup-claude)* |
+| Público-alvo | *(a preencher via /setup-claude)* |
+| Estágio | *(a preencher via /setup-claude)* |
+| Palavras-chave | `<tags>` |
