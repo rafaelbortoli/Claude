@@ -82,18 +82,62 @@ Mostre o output ao usuário.
 
 ## Passo 5 — Completar project-details.md
 
-Leia `<projeto>/project/project-details.md`. Preencha os campos ainda em branco na tabela de identidade:
+Leia `<projeto>/project/project-details.md`. Para cada campo que ainda estiver com placeholder ou em branco, faça a pergunta correspondente abaixo. Pule os campos já preenchidos.
+
+**Tipo de projeto** — use `AskUserQuestion`:
+- **"Branding"** — identidade visual e marca
+- **"UX and UI"** — research, interfaces e design system
+- **"Product Design"** — design estratégico de produto
+
+**Sub-tipo (condicional ao Tipo):**
+
+Se **Branding**: use `AskUserQuestion`: Plus / Pro / Ultra
+Se **UX and UI**: use `AskUserQuestion` com `multiSelect: true`: UX Research / Interface digital / Design System / Outro (digitar)
+Se **Product Design**: use `AskUserQuestion`: New product / Feature / Redesign
+
+**Mercado** — use `AskUserQuestion`:
+- **"Financeiro"** — pagamentos, crédito, seguros, banking
+- **"Saúde & Bem-estar"** — healthtech, wellness, fitness
+- **"Educação & Conteúdo"** — edtech, e-learning, mídia
+- **"Tecnologia & SaaS"** — plataforma, API, marketplace
+
+**Segmento (condicional ao Mercado):**
+
+Se **Financeiro**: Pagamentos & Crédito / Seguros & Banking / Investimentos & Wealth / Outro
+Se **Saúde & Bem-estar**: Saúde digital & Telemedicina / Bem-estar & Fitness / Farmácia & Medicamentos / Outro
+Se **Educação & Conteúdo**: Edtech & E-learning / Mídia & Entretenimento / Conteúdo & Comunicação / Outro
+Se **Tecnologia & SaaS**: Plataforma & SaaS / Marketplace & E-commerce / API & Infraestrutura / Outro
+
+Use `AskUserQuestion` em cada caso (3 fixas + "Outro (digitar)").
+
+**Público-alvo** — use `AskUserQuestion`:
+- **"Pessoa física"** — indivíduo em contexto pessoal
+- **"Profissional / Empresa"** — contexto de trabalho
+- **"Especialista"** — expertise técnica ou de domínio
+- **"Interno"** — colaboradores da organização
+
+**Perfil do público (condicional ao Público-alvo):**
+
+Se **Pessoa física**: Público geral / Público jovem / Público sênior / Outro
+Se **Profissional / Empresa**: Autônomo / Pequeno negócio / Empresa de médio porte / Enterprise / Outro
+Se **Especialista**: Desenvolvedor / Técnico / Profissional de saúde / Educador / Pesquisador / Outro
+Se **Interno**: Operações / Suporte / Comercial / Marketing / Vendas / Gestão / Liderança / Outro
+
+Use `AskUserQuestion` em cada caso (3 fixas + "Outro (digitar)").
 
 **Palavras-chave** — pergunte em texto livre:
 _"Quais palavras-chave descrevem este produto? (ex: pagamentos, recorrência, split)"_
+
+Após coletar, edite `project-details.md` preenchendo todos os campos coletados.
 
 ---
 
 ## Passo 6 — Visão Geral do CLAUDE.md
 
-Leia `<projeto>/.claude/CLAUDE.md`. Se a seção `## Visão Geral` estiver vazia ou com placeholder:
+Leia `<projeto>/.claude/CLAUDE.md`. Se a seção `## Visão Geral` **já estiver preenchida**, pule este passo.
 
-Pergunte em texto livre: _"Visão Geral: descreva em uma frase o que este projeto faz e seu objetivo principal."_
+Se estiver vazia ou com placeholder, pergunte em texto livre:
+_"Visão Geral: descreva em uma frase o que este projeto faz e seu objetivo principal."_
 
 Edite o CLAUDE.md substituindo o placeholder pela resposta. Atualize também o campo `description` no frontmatter.
 

@@ -157,7 +157,7 @@ Guarde como `<descricao>`.
 
 **Etapa 5 — Tags**
 
-**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Mercado, Segmento e Descrição.
+**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Mercado, Segmento, Público-alvo, Perfil e Descrição.
 
 Monte até 3 conjuntos de tags relevantes usando `<tipo>`, `<subtipo>`, `<mercado>`, `<segmento>`, `<publico>`, `<perfil>` e `<descricao>` como contexto. Use `AskUserQuestion` com `multiSelect: true`, exibindo cada conjunto como opção (ex: `branding, identidade, b2b`), e **"Outro (digitar)"** como quarta opção.
 
@@ -190,5 +190,4 @@ Edite `<pasta>/project/project-details.md` preenchendo a tabela de identidade co
 | Segmento | `<segmento>` |
 | Público-alvo | `<publico>` |
 | Perfil do público | `<perfil>` |
-| Estágio | *(a preencher via /setup-claude)* |
 | Palavras-chave | `<tags>` |
