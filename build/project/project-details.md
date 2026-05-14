@@ -33,7 +33,8 @@ dependencies: []
 |---|---|
 | Tipo de projeto | (project_type) |
 | Sub-tipo | (project_subtype) |
-| Domínio | (domain) |
+| Mercado | (market) |
+| Segmento | (segment) |
 | Público-alvo | (audience) |
-| Estágio | (stage) |
+| Perfil do público | (profile) |
 | Palavras-chave | (keywords) |

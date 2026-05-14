@@ -84,34 +84,6 @@ Mostre o output ao usuário.
 
 Leia `<projeto>/project/project-details.md`. Preencha os campos ainda em branco na tabela de identidade:
 
-**Domínio** — mercado de negócio do projeto.
-
-Exiba como lista numerada e aguarde o usuário informar o número:
-
-1. fintech — serviços financeiros, pagamentos, crédito
-2. edtech — educação, cursos, aprendizado
-3. healthtech — saúde, bem-estar, telemedicina
-4. e-commerce — varejo e marketplace de produtos
-5. saas-horizontal — ferramenta sem vertical específica
-6. Outro (digitar)
-
----
-
-**Público-alvo** — use `AskUserQuestion`:
-- **"b2b"** — empresas e times
-- **"b2c"** — consumidores finais
-- **"developers"** — times técnicos
-- **"equipe-interna"** — uso interno da empresa
-
----
-
-**Estágio** — use `AskUserQuestion`:
-- **"mvp"** — primeira versão, validando hipóteses
-- **"beta"** — produto funcional em teste com usuários reais
-- **"producao"** — produto lançado e em operação
-
----
-
 **Palavras-chave** — pergunte em texto livre:
 _"Quais palavras-chave descrevem este produto? (ex: pagamentos, recorrência, split)"_
 
@@ -127,10 +99,6 @@ Edite o CLAUDE.md substituindo o placeholder pela resposta. Atualize também o c
 
 ---
 
-## Passo 7 — Escrever project-details.md
-
-Edite `<projeto>/project/project-details.md` preenchendo a tabela de identidade com todos os valores coletados.
-
-## Passo 8 — Confirmar
+## Passo 7 — Confirmar
 
 Mostre ao usuário o `project-details.md` final e confirme que o projeto está configurado.
