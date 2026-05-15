@@ -148,7 +148,7 @@ Guarde a nova escolha como `<segmento>` e reexecute as Etapas 3C e 3D com o novo
 
 Guarde a escolha como `<categoria>`.
 
-**Etapa 4A — Dimensão do público**
+**Etapa 4 — Público**
 
 Execute:
 
@@ -157,46 +157,41 @@ HUB_DIR="$(cat ~/.claude/hub-path)"
 cat "$HUB_DIR/hub/commands/new-project/audience_segments.json"
 ```
 
-A partir do resultado, extraia as dimensões do segmento `<segmento>`. Exiba em texto:
+A partir do resultado, extraia as dimensões do segmento `<segmento>`. Percorra cada dimensão em sequência, fazendo uma pergunta por dimensão.
+
+**Primeira dimensão** — exiba em texto (sem opção Voltar) e aguarde resposta:
 
 ```
-Dimensões de público — <segmento>:
+[nome da dimensão] — [descrição]:
 
-1. [nome] — [descrição]
-2. [nome] — [descrição]
-...
+1. [nome] — [referência]
+2. [nome] — [referência]
+3. [nome] — [referência]
+4. [nome] — [referência]
 ```
 
-Pergunte: "Escolha pelo número ou nome." Aguarde a resposta.
-
-Guarde a escolha como `<dimensao>`.
-
-**Etapa 4B — Segmento de público**
-
-A partir do JSON já lido na Etapa 4A, extraia os segmentos da dimensão `<dimensao>`. Exiba em texto:
+**Demais dimensões** — exiba em texto e aguarde resposta:
 
 ```
-Segmentos — <dimensao>:
+[nome da dimensão] — [descrição]:
 
 1. [nome] — [referência]
 2. [nome] — [referência]
 3. [nome] — [referência]
 4. [nome] — [referência]
 
-0. Voltar (escolher outra dimensão)
+0. Voltar (recomeçar bloco público)
 ```
 
-Pergunte: "Escolha pelo número ou nome." Aguarde a resposta.
+Se o usuário escolher **0** ou **"Voltar"** em qualquer dimensão: descarte todas as respostas do bloco público e reexiba a primeira dimensão.
 
-Se o usuário escolher **0** ou **"Voltar"**: reexiba a lista de dimensões da Etapa 4A e aguarde nova escolha. Guarde como `<dimensao>` e reexecute a Etapa 4B.
-
-Guarde a escolha como `<perfil_publico>`.
+Guarde cada resposta associada ao nome da dimensão. Ao concluir todas as dimensões, guarde o conjunto como `<publico>` no formato: `[dimensão]: [resposta], [dimensão]: [resposta], ...`
 
 **Etapa 5 — Descrição**
 
-**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Macro categoria, Categoria de mercado, Dimensão e Perfil do público.
+**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Macro categoria, Categoria de mercado e Público.
 
-Gere 3 variações de descrição em uma frase usando `<tipo>`, `<subtipo>`, `<segmento>`, `<macro>`, `<categoria>`, `<dimensao>` e `<perfil_publico>` como contexto. Use `AskUserQuestion` com as 3 variações e **"Outro (digitar)"** como quarta opção.
+Gere 3 variações de descrição em uma frase usando `<tipo>`, `<subtipo>`, `<segmento>`, `<macro>`, `<categoria>` e `<publico>` como contexto. Use `AskUserQuestion` com as 3 variações e **"Outro (digitar)"** como quarta opção.
 
 Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
 
@@ -204,9 +199,9 @@ Guarde como `<descricao>`.
 
 **Etapa 6 — Tags**
 
-**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Macro categoria, Categoria de mercado, Dimensão, Perfil do público e Descrição.
+**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Macro categoria, Categoria de mercado, Público e Descrição.
 
-Monte até 3 conjuntos de tags relevantes usando `<tipo>`, `<subtipo>`, `<segmento>`, `<macro>`, `<categoria>`, `<dimensao>`, `<perfil_publico>` e `<descricao>` como contexto. Use `AskUserQuestion` com `multiSelect: true`, exibindo cada conjunto como opção (ex: `branding, identidade, b2b`), e **"Outro (digitar)"** como quarta opção.
+Monte até 3 conjuntos de tags relevantes usando `<tipo>`, `<subtipo>`, `<segmento>`, `<macro>`, `<categoria>`, `<publico>` e `<descricao>` como contexto. Use `AskUserQuestion` com `multiSelect: true`, exibindo cada conjunto como opção (ex: `branding, identidade, b2b`), e **"Outro (digitar)"** como quarta opção.
 
 Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
 
@@ -236,6 +231,5 @@ Edite `<pasta>/project/project-details.md` preenchendo a tabela de identidade co
 | Segmento de mercado | `<segmento>` |
 | Macro categoria | `<macro>` |
 | Categoria de mercado | `<categoria>` |
-| Dimensão do público | `<dimensao>` |
-| Perfil do público | `<perfil_publico>` |
+| Público | `<publico>` |
 | Palavras-chave | `<tags>` |
