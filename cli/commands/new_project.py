@@ -253,10 +253,8 @@ def _create_project_folders(dest: Path, project_name: str, today: str, author: s
         files.ensure_dir(path)
         _write_readme(path, title, description, project_name, today, author)
 
-    for subpath, title, description in _DESIGN_DIRS:
-        path = dest / subpath
-        files.ensure_dir(path)
-        _write_readme(path, title, description, project_name, today, author)
+    for subpath, _, __ in _DESIGN_DIRS:
+        files.ensure_dir(dest / subpath)
 
     print(f"  [ok] design/ criado")
 
@@ -265,10 +263,8 @@ def _create_project_folders(dest: Path, project_name: str, today: str, author: s
         files.ensure_dir(path)
         _write_readme(path, title, description, project_name, today, author)
 
-    for subpath, title, description in _DEV_DIRS:
-        path = dest / subpath
-        files.ensure_dir(path)
-        _write_readme(path, title, description, project_name, today, author)
+    for subpath, _, __ in _DEV_DIRS:
+        files.ensure_dir(dest / subpath)
 
     print(f"  [ok] dev/ criado (nextjs-supabase)")
 
