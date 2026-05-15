@@ -41,7 +41,7 @@ Repositório de recursos para Claude Code — hub de recursos reutilizáveis, te
 ├── CHANGELOG.md        ← histórico de publicações
 │
 ├── hub/                ← recursos prontos para instalação
-│   ├── commands/       ← slash commands (/claude-start, /setup-claude, ...)
+│   ├── commands/       ← slash commands (/claude-start, /new-project, ...)
 │   ├── skills/         ← skills reutilizáveis
 │   ├── agents/         ← agentes especializados
 │   ├── hooks/          ← hooks de ciclo de vida

@@ -13,7 +13,7 @@ tags: []
 scope: project
 auto_load: true
 
-# traceability — preenchidos pelo /setup-claude
+# traceability — preenchidos pelo /new-project
 source: build/00-claude-md/project.md
 project: Claude System
 dependencies: []

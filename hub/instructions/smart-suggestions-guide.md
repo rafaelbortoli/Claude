@@ -77,7 +77,7 @@ Quando o usuário seleciona "Outro (digitar)", Claude faz a pergunta original em
 
 ## Campos do CLAUDE.md que alimentam sugestões
 
-Preenchidos via `/setup-claude`. Sem esses campos, as sugestões degradam graciosamente para o conteúdo do arquivo.
+Preenchidos via `/new-project`. Sem esses campos, as sugestões degradam graciosamente para o conteúdo do arquivo.
 
 | Campo | Tipo | Exemplo | Usado para |
 |---|---|---|---|
