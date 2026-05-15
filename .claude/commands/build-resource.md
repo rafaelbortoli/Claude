@@ -2,7 +2,7 @@
 # about
 name: build-resource
 type: command
-project: Claude
+project: Claude System
 description: Cria um novo recurso no projeto atual a partir do template correspondente.
 tags: [build, resource, template]
 

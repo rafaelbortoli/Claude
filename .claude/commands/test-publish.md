@@ -2,7 +2,7 @@
 # about
 name: test-publish
 type: command
-project: Claude
+project: Claude System
 description: Comando de teste para validar o fluxo de publicação
 tags: []
 

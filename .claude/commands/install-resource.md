@@ -2,7 +2,7 @@
 # about
 name: install-resource
 type: command
-project: Claude
+project: Claude System
 description: Instala um recurso do hub no projeto atual — skill, agent, hook, command ou plugin.
 tags: [install, resource, hub]
 

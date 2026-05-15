@@ -1,6 +1,6 @@
 ---
 # identity
-name: Claude
+name: Claude System
 type: doc
 version: 1.0.0
 status: stable
@@ -15,7 +15,7 @@ auto_load: true
 
 # traceability — preenchidos pelo /setup-claude
 source: build/00-claude-md/project.md
-project: Claude
+project: Claude System
 dependencies: []
 checksum: ""
 

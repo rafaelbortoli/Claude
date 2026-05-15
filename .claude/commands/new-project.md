@@ -2,7 +2,7 @@
 # about
 name: new-project
 type: command
-project: Claude
+project: Claude System
 description: Inicializa a estrutura .claude/ e as pastas de um novo projeto.
 tags: [setup, project, init]
 
