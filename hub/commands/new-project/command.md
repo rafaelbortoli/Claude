@@ -112,7 +112,13 @@ Macro categorias — <segmento>:
 
 Pergunte: "Escolha pelo número ou nome." Aguarde a resposta.
 
-Se o usuário escolher **0** ou **"Voltar"**: limpe `<segmento>` e retorne à Etapa 3B.
+Se o usuário escolher **0** ou **"Voltar"**: use `AskUserQuestion`:
+- **"B2C"** — Business to Consumer
+- **"B2B"** — Business to Business
+- **"B2G"** — Business to Government
+- **"C2C"** — Consumer to Consumer
+
+Guarde a nova escolha como `<segmento>` e reexecute a Etapa 3C com o novo segmento.
 
 Guarde a escolha como `<macro>`.
 
@@ -132,7 +138,13 @@ Categorias — <macro>:
 
 Pergunte: "Escolha pelo número ou nome." Aguarde a resposta.
 
-Se o usuário escolher **0** ou **"Voltar"**: limpe `<segmento>`, `<macro>` e retorne à Etapa 3B.
+Se o usuário escolher **0** ou **"Voltar"**: use `AskUserQuestion`:
+- **"B2C"** — Business to Consumer
+- **"B2B"** — Business to Business
+- **"B2G"** — Business to Government
+- **"C2C"** — Consumer to Consumer
+
+Guarde a nova escolha como `<segmento>` e reexecute as Etapas 3C e 3D com o novo segmento.
 
 Guarde a escolha como `<categoria>`.
 
