@@ -48,7 +48,7 @@ Guarde o caminho escolhido como `<pasta>`.
 
 **Etapa 2 — Nome do projeto**
 Pergunte: "Qual o nome do projeto?"
-Aguarde a resposta do usuário.
+Aguarde a resposta do usuário. Guarde como `<nome>`.
 
 **Etapa 3 — Tipo de projeto**
 
