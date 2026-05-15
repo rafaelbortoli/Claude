@@ -11,7 +11,7 @@ tags: [setup, project, init]
 author: ""
 created: 2026-05-13
 status: stable
-version: 1.3.0
+version: 1.4.0
 updated: 2026-05-15
 
 # system
@@ -118,7 +118,26 @@ Se o usuário escolher **0** ou **"Voltar"**: use `AskUserQuestion`:
 - **"B2G"** — Business to Government
 - **"C2C"** — Consumer to Consumer
 
-Guarde a nova escolha como `<segmento>` e reexecute a Etapa 3C com o novo segmento.
+Guarde a nova escolha como `<segmento>`. Execute:
+
+```bash
+HUB_DIR="$(cat ~/.claude/hub-path)"
+cat "$HUB_DIR/hub/commands/new-project/market_segments.json"
+```
+
+Extraia as macro categorias do novo `<segmento>` e exiba a lista novamente:
+
+```
+Macro categorias — <segmento>:
+
+1. [nome] — [critério de agrupamento]
+2. [nome] — [critério de agrupamento]
+...
+
+0. Voltar (escolher outro segmento)
+```
+
+Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Repita o tratamento de "Voltar" acima se necessário.
 
 Guarde a escolha como `<macro>`.
 
@@ -144,7 +163,40 @@ Se o usuário escolher **0** ou **"Voltar"**: use `AskUserQuestion`:
 - **"B2G"** — Business to Government
 - **"C2C"** — Consumer to Consumer
 
-Guarde a nova escolha como `<segmento>` e reexecute as Etapas 3C e 3D com o novo segmento.
+Guarde a nova escolha como `<segmento>`. Execute:
+
+```bash
+HUB_DIR="$(cat ~/.claude/hub-path)"
+cat "$HUB_DIR/hub/commands/new-project/market_segments.json"
+```
+
+Extraia as macro categorias do novo `<segmento>` e exiba:
+
+```
+Macro categorias — <segmento>:
+
+1. [nome] — [critério de agrupamento]
+2. [nome] — [critério de agrupamento]
+...
+
+0. Voltar (escolher outro segmento)
+```
+
+Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Repita o tratamento de "Voltar" acima se necessário. Guarde como `<macro>`.
+
+Extraia as categorias da nova `<macro>` e exiba:
+
+```
+Categorias — <macro>:
+
+1. [categoria]
+2. [categoria]
+...
+
+0. Voltar (escolher outro segmento)
+```
+
+Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Repita o tratamento de "Voltar" acima se necessário.
 
 Guarde a escolha como `<categoria>`.
 
@@ -183,7 +235,7 @@ A partir do resultado, extraia as dimensões do segmento `<segmento>`. Percorra 
 0. Voltar (recomeçar bloco público)
 ```
 
-Se o usuário escolher **0** ou **"Voltar"** em qualquer dimensão: descarte todas as respostas do bloco público e reexiba a primeira dimensão.
+Se o usuário escolher **0** ou **"Voltar"** em qualquer dimensão: descarte todas as respostas do bloco público. A partir do JSON já lido, exiba novamente a primeira dimensão do segmento `<segmento>` (sem opção Voltar) e aguarde resposta. Continue a sequência de dimensões a partir daí.
 
 Guarde cada resposta associada ao nome da dimensão. Ao concluir todas as dimensões, guarde o conjunto como `<publico>` no formato: `[dimensão]: [resposta], [dimensão]: [resposta], ...`
 
