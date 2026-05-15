@@ -143,6 +143,8 @@ Guarde a escolha como `<categoria>`.
 
 **Etapa 4 — Público**
 
+**[smart-suggestions: off]**
+
 Execute:
 
 ```bash
@@ -150,7 +152,7 @@ HUB_DIR="$(cat ~/.claude/hub-path)"
 cat "$HUB_DIR/hub/commands/new-project/audience_segments.json"
 ```
 
-A partir do resultado, extraia as dimensões do segmento `<segmento>`. Percorra cada dimensão em sequência, fazendo uma pergunta por dimensão.
+A partir do resultado, extraia as dimensões do segmento `<segmento>`. Percorra cada dimensão em sequência, fazendo uma pergunta por dimensão. Não use `AskUserQuestion` — exiba todas as perguntas como lista numerada em texto puro.
 
 **Primeira dimensão** — exiba em texto (sem opção Voltar) e aguarde resposta:
 
@@ -163,7 +165,7 @@ A partir do resultado, extraia as dimensões do segmento `<segmento>`. Percorra 
 4. [nome] — [referência]
 ```
 
-**Demais dimensões** — exiba em texto e aguarde resposta:
+**Demais dimensões** — exiba em texto e aguarde resposta. O Voltar é sempre o número seguinte ao da última opção:
 
 ```
 [nome da dimensão] — [descrição]:
@@ -172,11 +174,10 @@ A partir do resultado, extraia as dimensões do segmento `<segmento>`. Percorra 
 2. [nome] — [referência]
 3. [nome] — [referência]
 4. [nome] — [referência]
-
-0. Voltar (recomeçar bloco público)
+5. Voltar (recomeçar bloco público)
 ```
 
-Se o usuário escolher **0** ou **"Voltar"** em qualquer dimensão: descarte todas as respostas do bloco público. A partir do JSON já lido, exiba a primeira dimensão do segmento `<segmento>` (sem opção Voltar) e aguarde resposta. Em seguida, exiba a segunda dimensão com opção Voltar e aguarde. Prossiga assim até concluir todas as dimensões do segmento.
+Se o usuário escolher **5** ou **"Voltar"** em qualquer dimensão: descarte todas as respostas do bloco público. A partir do JSON já lido, exiba a primeira dimensão do segmento `<segmento>` (sem opção Voltar) e aguarde resposta. Em seguida, exiba a segunda dimensão com opção Voltar e aguarde. Prossiga assim até concluir todas as dimensões do segmento.
 
 Guarde cada resposta associada ao nome da dimensão. Ao concluir todas as dimensões, guarde o conjunto como `<publico>` no formato: `[dimensão]: [resposta], [dimensão]: [resposta], ...`
 
