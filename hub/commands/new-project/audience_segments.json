@@ -1,0 +1,319 @@
+{
+  "audience_segments": [
+    {
+      "segment": "B2B",
+      "audience_type": "Empresas",
+      "dimensions": [
+        {
+          "name": "Porte",
+          "description": "Define o budget, complexidade e ciclo de decisão",
+          "segments": [
+            {
+              "name": "MEI / Microempresa",
+              "reference": "Até 10 funcionários"
+            },
+            {
+              "name": "PME",
+              "reference": "10 a 300 funcionários"
+            },
+            {
+              "name": "Mid-Market",
+              "reference": "300 a 1.000 funcionários"
+            },
+            {
+              "name": "Enterprise",
+              "reference": "Acima de 1.000 funcionários"
+            }
+          ]
+        },
+        {
+          "name": "Estágio",
+          "description": "Define o momento estratégico e o que a empresa precisa resolver",
+          "segments": [
+            {
+              "name": "Startup",
+              "reference": "Validando modelo de negócio"
+            },
+            {
+              "name": "Crescimento",
+              "reference": "Escalando operação e receita"
+            },
+            {
+              "name": "Maturidade",
+              "reference": "Consolidando posição e eficiência"
+            },
+            {
+              "name": "Transformação",
+              "reference": "Reinventando modelo ou estrutura"
+            }
+          ]
+        },
+        {
+          "name": "Maturidade no Domínio",
+          "description": "Define o nível de sofisticação da empresa no tema do projeto",
+          "segments": [
+            {
+              "name": "Iniciante",
+              "reference": "Nunca investiu no tema"
+            },
+            {
+              "name": "Em Desenvolvimento",
+              "reference": "Tem iniciativas mas sem estrutura"
+            },
+            {
+              "name": "Avançado",
+              "reference": "Estruturado e buscando otimização"
+            },
+            {
+              "name": "Referência",
+              "reference": "Lidera o tema no setor"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "segment": "B2C",
+      "audience_type": "Consumidores Finais",
+      "dimensions": [
+        {
+          "name": "Faixa Etária",
+          "description": "Define o perfil geracional e comportamento de consumo",
+          "segments": [
+            {
+              "name": "Gen Z",
+              "reference": "Nascidos entre 1997 e 2012 (13 a 28 anos)"
+            },
+            {
+              "name": "Millennials",
+              "reference": "Nascidos entre 1981 e 1996 (29 a 44 anos)"
+            },
+            {
+              "name": "Gen X",
+              "reference": "Nascidos entre 1965 e 1980 (45 a 60 anos)"
+            },
+            {
+              "name": "Baby Boomers",
+              "reference": "Nascidos entre 1946 e 1964 (61 a 79 anos)"
+            }
+          ]
+        },
+        {
+          "name": "Renda",
+          "description": "Define o poder aquisitivo e sensibilidade a preço",
+          "segments": [
+            {
+              "name": "Baixa",
+              "reference": "Até R$ 2.500/mês"
+            },
+            {
+              "name": "Média",
+              "reference": "R$ 2.500 a R$ 8.000/mês"
+            },
+            {
+              "name": "Alta",
+              "reference": "R$ 8.000 a R$ 20.000/mês"
+            },
+            {
+              "name": "Premium",
+              "reference": "Acima de R$ 20.000/mês"
+            }
+          ]
+        },
+        {
+          "name": "Canal",
+          "description": "Define onde e como o consumidor prefere comprar",
+          "segments": [
+            {
+              "name": "Físico",
+              "reference": "Compra exclusivamente em lojas presenciais"
+            },
+            {
+              "name": "Loja Online",
+              "reference": "Compra exclusivamente em e-commerce"
+            },
+            {
+              "name": "Social Selling",
+              "reference": "Compra via redes sociais e influenciadores"
+            },
+            {
+              "name": "Híbrido",
+              "reference": "Transita entre canais conforme conveniência"
+            }
+          ]
+        },
+        {
+          "name": "Frequência de Compra",
+          "description": "Define o estágio de relacionamento com o produto ou serviço",
+          "segments": [
+            {
+              "name": "Primeira Compra",
+              "reference": "Nunca adquiriu o produto ou serviço"
+            },
+            {
+              "name": "Ocasional",
+              "reference": "Compra de forma esporádica e não planejada"
+            },
+            {
+              "name": "Recorrente",
+              "reference": "Compra com regularidade e previsibilidade"
+            },
+            {
+              "name": "Fiel",
+              "reference": "Compra consistentemente e rejeita concorrentes"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "segment": "B2G",
+      "audience_type": "Governo / Setor Público",
+      "dimensions": [
+        {
+          "name": "Esfera de Governo",
+          "description": "Define o alcance do projeto e o nível de complexidade burocrática",
+          "segments": [
+            {
+              "name": "Federal",
+              "reference": "Ministérios, autarquias e órgãos federais"
+            },
+            {
+              "name": "Estadual",
+              "reference": "Secretarias e órgãos estaduais"
+            },
+            {
+              "name": "Municipal",
+              "reference": "Prefeituras e câmaras municipais"
+            },
+            {
+              "name": "Multigovernamental",
+              "reference": "Consórcios e parcerias entre esferas"
+            }
+          ]
+        },
+        {
+          "name": "Poder",
+          "description": "Define o decisor e o processo de aprovação",
+          "segments": [
+            {
+              "name": "Executivo",
+              "reference": "Ministérios, secretarias, autarquias"
+            },
+            {
+              "name": "Legislativo",
+              "reference": "Câmaras, assembleias, senado"
+            },
+            {
+              "name": "Judiciário",
+              "reference": "Tribunais, varas, corregedorias"
+            },
+            {
+              "name": "Órgãos Autônomos",
+              "reference": "MP, TCU, TCE, Defensorias"
+            }
+          ]
+        },
+        {
+          "name": "Modalidade de Contratação",
+          "description": "Define como a contratação acontece e o ciclo de venda",
+          "segments": [
+            {
+              "name": "Licitação",
+              "reference": "Processo competitivo regulado pela Lei 14.133"
+            },
+            {
+              "name": "Dispensa",
+              "reference": "Contratação direta por valor ou emergência"
+            },
+            {
+              "name": "Inexigibilidade",
+              "reference": "Fornecedor exclusivo ou notória especialização"
+            },
+            {
+              "name": "Parceria Público-Privada",
+              "reference": "PPP, concessões e contratos de longo prazo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "segment": "C2C",
+      "audience_type": "Consumidores de Plataformas P2P",
+      "dimensions": [
+        {
+          "name": "Maturidade Digital",
+          "description": "Define o quanto o consumidor está confortável com plataformas P2P",
+          "segments": [
+            {
+              "name": "Iniciante",
+              "reference": "Primeira experiência com plataformas C2C"
+            },
+            {
+              "name": "Explorador",
+              "reference": "Já usou mas ainda prefere canais tradicionais"
+            },
+            {
+              "name": "Habituado",
+              "reference": "Usa regularmente e confia no modelo"
+            },
+            {
+              "name": "Nativo",
+              "reference": "C2C é seu canal preferencial de consumo"
+            }
+          ]
+        },
+        {
+          "name": "Motivação de Consumo",
+          "description": "Define por que o consumidor escolhe o C2C em vez do mercado tradicional",
+          "segments": [
+            {
+              "name": "Economia",
+              "reference": "Busca preço menor que o mercado tradicional"
+            },
+            {
+              "name": "Exclusividade",
+              "reference": "Busca itens únicos, raros ou personalizados"
+            },
+            {
+              "name": "Sustentabilidade",
+              "reference": "Prefere consumo consciente e reutilização"
+            },
+            {
+              "name": "Conveniência",
+              "reference": "Valoriza rapidez e facilidade da transação"
+            }
+          ]
+        },
+        {
+          "name": "Nível de Confiança",
+          "description": "Define o quanto o consumidor confia em transacionar com desconhecidos",
+          "segments": [
+            {
+              "name": "Desconfiante",
+              "reference": "Exige garantias e evita riscos"
+            },
+            {
+              "name": "Cauteloso",
+              "reference": "Pesquisa muito antes de transacionar"
+            },
+            {
+              "name": "Confiante",
+              "reference": "Transaciona com naturalidade"
+            },
+            {
+              "name": "Embaixador",
+              "reference": "Indica a plataforma para outros"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_segments": 4,
+    "total_dimensions": 10,
+    "total_audience_segments": 40
+  }
+}

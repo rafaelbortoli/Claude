@@ -36,6 +36,6 @@ dependencies: []
 | Segmento de mercado | (segment) |
 | Macro categoria | (macro) |
 | Categoria de mercado | (category) |
-| Público-alvo | (audience) |
+| Dimensão do público | (dimension) |
 | Perfil do público | (profile) |
 | Palavras-chave | (keywords) |

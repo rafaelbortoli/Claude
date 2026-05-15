@@ -148,67 +148,71 @@ Guarde a nova escolha como `<segmento>` e reexecute as Etapas 3C e 3D com o novo
 
 Guarde a escolha como `<categoria>`.
 
-**Etapa 3E — Público-alvo**
+**Etapa 4A — Dimensão do público**
 
-Use `AskUserQuestion`:
-- **"Pessoa física"** — indivíduo usando em contexto pessoal
-- **"Profissional / Empresa"** — pessoa ou time usando no contexto de trabalho
-- **"Especialista"** — perfil com expertise técnica ou de domínio específico
-- **"Interno"** — colaboradores da organização que criou o produto
+Execute:
 
-Aguarde a resposta do usuário. Guarde como `<publico>`.
+```bash
+HUB_DIR="$(cat ~/.claude/hub-path)"
+cat "$HUB_DIR/hub/commands/new-project/audience_segments.json"
+```
 
-**Etapa 3F — Perfil do público (condicional)**
+A partir do resultado, extraia as dimensões do segmento `<segmento>`. Exiba em texto:
 
-Se `<publico>` for **Pessoa física**: use `AskUserQuestion`:
-- **"Público geral"** — sem nicho definido
-- **"Público jovem"** — nativos digitais, até ~30 anos
-- **"Público sênior"** — 50+, foco em simplicidade e acessibilidade
-- **"Outro (digitar)"** — perfil personalizado
+```
+Dimensões de público — <segmento>:
 
-Se `<publico>` for **Profissional / Empresa**: use `AskUserQuestion`:
-- **"Autônomo / Pequeno negócio"** — MEI, freelancer, microempresa
-- **"Empresa de médio porte"** — times estruturados
-- **"Enterprise"** — grandes corporações
-- **"Outro (digitar)"** — perfil personalizado
+1. [nome] — [descrição]
+2. [nome] — [descrição]
+...
+```
 
-Se `<publico>` for **Especialista**: use `AskUserQuestion`:
-- **"Desenvolvedor / Técnico"** — engenharia, dados, infra
-- **"Profissional de saúde"** — médicos, enfermeiros, cuidadores
-- **"Educador / Pesquisador"** — professores, tutores, cientistas
-- **"Outro (digitar)"** — perfil personalizado
+Pergunte: "Escolha pelo número ou nome." Aguarde a resposta.
 
-Se `<publico>` for **Interno**: use `AskUserQuestion`:
-- **"Operações / Suporte"**
-- **"Comercial / Marketing / Vendas"**
-- **"Gestão / Liderança"**
-- **"Outro (digitar)"** — perfil personalizado
+Guarde a escolha como `<dimensao>`.
 
-Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
+**Etapa 4B — Segmento de público**
 
-Aguarde a resposta do usuário. Guarde como `<perfil>`.
+A partir do JSON já lido na Etapa 4A, extraia os segmentos da dimensão `<dimensao>`. Exiba em texto:
 
-**Etapa 4 — Descrição**
+```
+Segmentos — <dimensao>:
 
-**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Macro categoria, Categoria de mercado, Público-alvo e Perfil.
+1. [nome] — [referência]
+2. [nome] — [referência]
+3. [nome] — [referência]
+4. [nome] — [referência]
 
-Gere 3 variações de descrição em uma frase usando `<tipo>`, `<subtipo>`, `<segmento>`, `<macro>`, `<categoria>`, `<publico>` e `<perfil>` como contexto. Use `AskUserQuestion` com as 3 variações e **"Outro (digitar)"** como quarta opção.
+0. Voltar (escolher outra dimensão)
+```
+
+Pergunte: "Escolha pelo número ou nome." Aguarde a resposta.
+
+Se o usuário escolher **0** ou **"Voltar"**: reexiba a lista de dimensões da Etapa 4A e aguarde nova escolha. Guarde como `<dimensao>` e reexecute a Etapa 4B.
+
+Guarde a escolha como `<perfil_publico>`.
+
+**Etapa 5 — Descrição**
+
+**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Macro categoria, Categoria de mercado, Dimensão e Perfil do público.
+
+Gere 3 variações de descrição em uma frase usando `<tipo>`, `<subtipo>`, `<segmento>`, `<macro>`, `<categoria>`, `<dimensao>` e `<perfil_publico>` como contexto. Use `AskUserQuestion` com as 3 variações e **"Outro (digitar)"** como quarta opção.
 
 Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
 
 Guarde como `<descricao>`.
 
-**Etapa 5 — Tags**
+**Etapa 6 — Tags**
 
-**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Macro categoria, Categoria de mercado, Público-alvo, Perfil e Descrição.
+**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Macro categoria, Categoria de mercado, Dimensão, Perfil do público e Descrição.
 
-Monte até 3 conjuntos de tags relevantes usando `<tipo>`, `<subtipo>`, `<segmento>`, `<macro>`, `<categoria>`, `<publico>`, `<perfil>` e `<descricao>` como contexto. Use `AskUserQuestion` com `multiSelect: true`, exibindo cada conjunto como opção (ex: `branding, identidade, b2b`), e **"Outro (digitar)"** como quarta opção.
+Monte até 3 conjuntos de tags relevantes usando `<tipo>`, `<subtipo>`, `<segmento>`, `<macro>`, `<categoria>`, `<dimensao>`, `<perfil_publico>` e `<descricao>` como contexto. Use `AskUserQuestion` com `multiSelect: true`, exibindo cada conjunto como opção (ex: `branding, identidade, b2b`), e **"Outro (digitar)"** como quarta opção.
 
 Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
 
 Guarde como `<tags>`.
 
-**Etapa 6 — Execução**
+**Etapa 7 — Execução**
 
 ```bash
 HUB_DIR="$(cat ~/.claude/hub-path)"
@@ -232,6 +236,6 @@ Edite `<pasta>/project/project-details.md` preenchendo a tabela de identidade co
 | Segmento de mercado | `<segmento>` |
 | Macro categoria | `<macro>` |
 | Categoria de mercado | `<categoria>` |
-| Público-alvo | `<publico>` |
-| Perfil do público | `<perfil>` |
+| Dimensão do público | `<dimensao>` |
+| Perfil do público | `<perfil_publico>` |
 | Palavras-chave | `<tags>` |
