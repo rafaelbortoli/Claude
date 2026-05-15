@@ -20,25 +20,41 @@ _FRAGMENT_ORDER = [
 ]
 
 _DESIGN_DIRS = [
-    ("design/01-branding/research", "Pesquisa de marca",
+    ("design/01-branding/01-research", "Pesquisa de marca",
      "Resultados de pesquisa e discovery de marca: benchmarking, moodboard e insights."),
-    ("design/01-branding/plan", "Estratégia de marca",
+    ("design/01-branding/02-plan", "Estratégia de marca",
      "Estratégia da marca: posicionamento, voz, tom e diretrizes."),
-    ("design/01-branding/create", "Assets de marca",
+    ("design/01-branding/03-create", "Assets de marca",
      "Todos os assets produzidos: tokens de design, expressão visual, expressão verbal e direção criativa."),
-    ("design/02-product/discovery", "Discovery de produto",
-     "Pesquisa com usuários, personas, jornadas e definição de requisitos."),
-    ("design/02-product/ux-ui", "UX/UI",
+    ("design/02-interface/01-research", "Pesquisa de interface",
+     "Pesquisa com usuários, benchmarking de interfaces e insights de usabilidade."),
+    ("design/02-interface/02-uxui", "UX/UI",
      "Wireframes, protótipos e interfaces finais do produto."),
+    ("design/02-interface/03-resources", "Recursos de interface",
+     "Design system, componentes, tokens e assets de interface."),
+    ("design/03-product-design/01-discovery", "Discovery",
+     "Pesquisa exploratória, oportunidades e definição do problema."),
+    ("design/03-product-design/02-ux-research", "UX Research",
+     "Pesquisa com usuários, personas, jornadas e testes de usabilidade."),
+    ("design/03-product-design/03-ideation", "Ideação",
+     "Exploração de soluções, conceitos e alternativas de design."),
+    ("design/03-product-design/04-prototype", "Prototipação",
+     "Protótipos de baixa e alta fidelidade para validação."),
+    ("design/03-product-design/05-development", "Desenvolvimento",
+     "Especificações, handoff e acompanhamento da implementação."),
+    ("design/03-product-design/06-release", "Release",
+     "Entrega final, documentação e métricas pós-lançamento."),
 ]
 
 _DESIGN_PARENT_READMES = [
-    ("design",             "Design",
-     "Assets de marca e design do produto."),
-    ("design/01-branding", "Identidade visual da marca",
+    ("design",                  "Design",
+     "Assets de marca, interface e design do produto."),
+    ("design/01-branding",      "Identidade visual da marca",
      "Pesquisa, planejamento e produção dos assets de marca."),
-    ("design/02-product",  "Design do produto digital",
-     "Discovery com usuários e design de interface do produto."),
+    ("design/02-interface",     "Design de interface",
+     "Pesquisa, UX/UI e recursos de interface do produto."),
+    ("design/03-product-design", "Design de produto",
+     "Processo completo de design estratégico do produto digital."),
 ]
 
 _DEV_DIRS = [
