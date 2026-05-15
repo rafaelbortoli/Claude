@@ -13,7 +13,7 @@ tags: [hub, catalog]
 scope: global
 auto_load: false
 
-# traceability — preenchidos pelo install.sh
+# traceability
 source: ""
 project: ""
 dependencies: []
@@ -56,14 +56,11 @@ Nenhum recurso entra no hub sem ter sido desenvolvido a partir de um template em
 
 ## Como instalar um recurso em um projeto
 
-```bash
-# Instalar um plugin completo
-./install.sh --plugin <nome>
-
-# Instalar um recurso individual
-./install.sh --skill <nome>
-./install.sh --agent <nome>
-./install.sh --hook <nome>
+```
+/install-resource plugin <nome>
+/install-resource skill <nome>
+/install-resource agent <nome>
+/install-resource hook <nome>
 ```
 
 ## Convenções

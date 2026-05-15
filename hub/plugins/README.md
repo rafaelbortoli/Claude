@@ -13,7 +13,7 @@ tags: [hub, plugins]
 scope: global
 auto_load: false
 
-# traceability — preenchidos pelo install.sh
+# traceability
 source: ""
 project: ""
 dependencies: []
@@ -42,12 +42,8 @@ Bundles instaláveis que agrupam skills, agents, hooks e commands em uma capacid
 
 ## Como instalar
 
-```bash
-# Em um projeto específico
-./install.sh --plugin <nome>
-
-# Global (todos os projetos)
-./install.sh --plugin <nome> --global
+```
+/install-resource plugin <nome>
 ```
 
 ## Compatibilidade de stack

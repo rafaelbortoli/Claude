@@ -101,18 +101,6 @@
         "trash"
       ],
       "updated": "2026-05-13"
-    },
-    {
-      "id": "cmd-009",
-      "name": "setup-claude",
-      "version": "1.1.0",
-      "description": "Configura o CLAUDE.md do projeto com identidade, stack e campos de contexto para smart-suggestions.",
-      "tags": [
-        "setup",
-        "claude",
-        "project"
-      ],
-      "updated": "2026-05-14"
     }
   ],
   "skills": [

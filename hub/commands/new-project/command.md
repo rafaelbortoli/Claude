@@ -79,47 +79,64 @@ Se `<tipo>` for **Product Design**: use `AskUserQuestion`:
 
 Aguarde a resposta do usuário. Guarde como `<subtipo>`.
 
-**Etapa 3B — Mercado**
+**Etapa 3B — Segmento de mercado**
 
 Use `AskUserQuestion`:
-- **"Financeiro"** — pagamentos, crédito, seguros, banking, investimentos
-- **"Saúde & Bem-estar"** — healthtech, wellness, fitness, farmácia
-- **"Educação & Conteúdo"** — edtech, e-learning, mídia, conteúdo digital
-- **"Tecnologia & SaaS"** — plataforma, API, marketplace, e-commerce
-
-Aguarde a resposta do usuário. Guarde como `<mercado>`.
-
-**Etapa 3C — Segmento (condicional)**
-
-Se `<mercado>` for **Financeiro**: use `AskUserQuestion`:
-- **"Pagamentos & Crédito"** — meios de pagamento, crédito, antecipação
-- **"Seguros & Banking"** — seguradoras, bancos digitais, conta corrente
-- **"Investimentos & Wealth"** — corretoras, fundos, gestão de patrimônio
-- **"Outro (digitar)"** — segmento personalizado
-
-Se `<mercado>` for **Saúde & Bem-estar**: use `AskUserQuestion`:
-- **"Saúde digital & Telemedicina"** — consultas, prontuários, diagnóstico
-- **"Bem-estar & Fitness"** — exercício, nutrição, saúde mental
-- **"Farmácia & Medicamentos"** — dispensação, prescrição, delivery
-- **"Outro (digitar)"** — segmento personalizado
-
-Se `<mercado>` for **Educação & Conteúdo**: use `AskUserQuestion`:
-- **"Edtech & E-learning"** — cursos, LMS, treinamento corporativo
-- **"Mídia & Entretenimento"** — streaming, podcasts, games, notícias
-- **"Conteúdo & Comunicação"** — blogs, newsletters, redes sociais
-- **"Outro (digitar)"** — segmento personalizado
-
-Se `<mercado>` for **Tecnologia & SaaS**: use `AskUserQuestion`:
-- **"Plataforma & SaaS"** — ferramentas digitais, produtividade, B2B software
-- **"Marketplace & E-commerce"** — compra e venda, vitrine, logística
-- **"API & Infraestrutura"** — serviços técnicos, integrações, developer tools
-- **"Outro (digitar)"** — segmento personalizado
-
-Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
+- **"B2C"** — Business to Consumer
+- **"B2B"** — Business to Business
+- **"B2G"** — Business to Government
+- **"C2C"** — Consumer to Consumer
 
 Aguarde a resposta do usuário. Guarde como `<segmento>`.
 
-**Etapa 3D — Público-alvo**
+**Etapa 3C — Macro categoria**
+
+Execute:
+
+```bash
+HUB_DIR="$(cat ~/.claude/hub-path)"
+cat "$HUB_DIR/hub/commands/new-project/market_segments.json"
+```
+
+A partir do resultado, extraia as macro categorias do segmento `<segmento>`. Exiba em texto:
+
+```
+Macro categorias — <segmento>:
+
+1. [nome] — [critério de agrupamento]
+2. [nome] — [critério de agrupamento]
+...
+
+0. Voltar (escolher outro segmento)
+```
+
+Pergunte: "Escolha pelo número ou nome." Aguarde a resposta.
+
+Se o usuário escolher **0** ou **"Voltar"**: limpe `<segmento>` e retorne à Etapa 3B.
+
+Guarde a escolha como `<macro>`.
+
+**Etapa 3D — Categoria de mercado**
+
+A partir do JSON já lido na Etapa 3C, extraia as categorias da macro `<macro>`. Exiba em texto:
+
+```
+Categorias — <macro>:
+
+1. [categoria]
+2. [categoria]
+...
+
+0. Voltar (escolher outro segmento)
+```
+
+Pergunte: "Escolha pelo número ou nome." Aguarde a resposta.
+
+Se o usuário escolher **0** ou **"Voltar"**: limpe `<segmento>`, `<macro>` e retorne à Etapa 3B.
+
+Guarde a escolha como `<categoria>`.
+
+**Etapa 3E — Público-alvo**
 
 Use `AskUserQuestion`:
 - **"Pessoa física"** — indivíduo usando em contexto pessoal
@@ -129,7 +146,7 @@ Use `AskUserQuestion`:
 
 Aguarde a resposta do usuário. Guarde como `<publico>`.
 
-**Etapa 3E — Perfil do público (condicional)**
+**Etapa 3F — Perfil do público (condicional)**
 
 Se `<publico>` for **Pessoa física**: use `AskUserQuestion`:
 - **"Público geral"** — sem nicho definido
@@ -161,9 +178,9 @@ Aguarde a resposta do usuário. Guarde como `<perfil>`.
 
 **Etapa 4 — Descrição**
 
-**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Mercado, Segmento, Público-alvo e Perfil.
+**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Macro categoria, Categoria de mercado, Público-alvo e Perfil.
 
-Gere 3 variações de descrição em uma frase usando `<tipo>`, `<subtipo>`, `<mercado>`, `<segmento>`, `<publico>` e `<perfil>` como contexto. Use `AskUserQuestion` com as 3 variações e **"Outro (digitar)"** como quarta opção.
+Gere 3 variações de descrição em uma frase usando `<tipo>`, `<subtipo>`, `<segmento>`, `<macro>`, `<categoria>`, `<publico>` e `<perfil>` como contexto. Use `AskUserQuestion` com as 3 variações e **"Outro (digitar)"** como quarta opção.
 
 Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
 
@@ -171,9 +188,9 @@ Guarde como `<descricao>`.
 
 **Etapa 5 — Tags**
 
-**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Mercado, Segmento, Público-alvo, Perfil e Descrição.
+**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Macro categoria, Categoria de mercado, Público-alvo, Perfil e Descrição.
 
-Monte até 3 conjuntos de tags relevantes usando `<tipo>`, `<subtipo>`, `<mercado>`, `<segmento>`, `<publico>`, `<perfil>` e `<descricao>` como contexto. Use `AskUserQuestion` com `multiSelect: true`, exibindo cada conjunto como opção (ex: `branding, identidade, b2b`), e **"Outro (digitar)"** como quarta opção.
+Monte até 3 conjuntos de tags relevantes usando `<tipo>`, `<subtipo>`, `<segmento>`, `<macro>`, `<categoria>`, `<publico>`, `<perfil>` e `<descricao>` como contexto. Use `AskUserQuestion` com `multiSelect: true`, exibindo cada conjunto como opção (ex: `branding, identidade, b2b`), e **"Outro (digitar)"** como quarta opção.
 
 Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
 
@@ -200,8 +217,9 @@ Edite `<pasta>/project/project-details.md` preenchendo a tabela de identidade co
 |---|---|
 | Tipo de projeto | `<tipo>` |
 | Sub-tipo | `<subtipo>` |
-| Mercado | `<mercado>` |
-| Segmento | `<segmento>` |
+| Segmento de mercado | `<segmento>` |
+| Macro categoria | `<macro>` |
+| Categoria de mercado | `<categoria>` |
 | Público-alvo | `<publico>` |
 | Perfil do público | `<perfil>` |
 | Palavras-chave | `<tags>` |
