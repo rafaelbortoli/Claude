@@ -137,7 +137,7 @@ Macro categorias — <segmento>:
 0. Voltar (escolher outro segmento)
 ```
 
-Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Repita o tratamento de "Voltar" acima se necessário.
+Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Se o usuário escolher **0** ou **"Voltar"** novamente: use `AskUserQuestion` com as 4 opções de segmento, guarde como `<segmento>`, execute o bash, exiba a lista de macro categorias e aguarde. Repita esse ciclo até o usuário escolher uma macro válida.
 
 Guarde a escolha como `<macro>`.
 
@@ -182,7 +182,7 @@ Macro categorias — <segmento>:
 0. Voltar (escolher outro segmento)
 ```
 
-Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Repita o tratamento de "Voltar" acima se necessário. Guarde como `<macro>`.
+Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Se o usuário escolher **0** ou **"Voltar"** novamente: use `AskUserQuestion` com as 4 opções de segmento, guarde como `<segmento>`, execute o bash, exiba a lista de macro categorias e aguarde. Repita esse ciclo até o usuário escolher uma macro válida. Guarde como `<macro>`.
 
 Extraia as categorias da nova `<macro>` e exiba:
 
@@ -196,7 +196,7 @@ Categorias — <macro>:
 0. Voltar (escolher outro segmento)
 ```
 
-Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Repita o tratamento de "Voltar" acima se necessário.
+Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Se o usuário escolher **0** ou **"Voltar"** novamente: use `AskUserQuestion` com as 4 opções de segmento, guarde como `<segmento>`, execute o bash, exiba macros, aguarde escolha válida de `<macro>`, exiba categorias e aguarde. Repita esse ciclo até o usuário escolher uma categoria válida.
 
 Guarde a escolha como `<categoria>`.
 
@@ -235,7 +235,7 @@ A partir do resultado, extraia as dimensões do segmento `<segmento>`. Percorra 
 0. Voltar (recomeçar bloco público)
 ```
 
-Se o usuário escolher **0** ou **"Voltar"** em qualquer dimensão: descarte todas as respostas do bloco público. A partir do JSON já lido, exiba novamente a primeira dimensão do segmento `<segmento>` (sem opção Voltar) e aguarde resposta. Continue a sequência de dimensões a partir daí.
+Se o usuário escolher **0** ou **"Voltar"** em qualquer dimensão: descarte todas as respostas do bloco público. A partir do JSON já lido, exiba a primeira dimensão do segmento `<segmento>` (sem opção Voltar) e aguarde resposta. Em seguida, exiba a segunda dimensão com opção Voltar e aguarde. Prossiga assim até concluir todas as dimensões do segmento.
 
 Guarde cada resposta associada ao nome da dimensão. Ao concluir todas as dimensões, guarde o conjunto como `<publico>` no formato: `[dimensão]: [resposta], [dimensão]: [resposta], ...`
 
