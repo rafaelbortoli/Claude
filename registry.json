@@ -4,7 +4,7 @@
   "id_counters": {
     "skill": 1,
     "agent": 0,
-    "command": 8,
+    "command": 9,
     "hook": 0,
     "plugin": 0,
     "instruction": 0
@@ -49,7 +49,7 @@
     {
       "id": "cmd-004",
       "name": "build-resource",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "description": "Cria um novo recurso no projeto atual a partir do template correspondente.",
       "tags": [
         "build",
@@ -61,7 +61,7 @@
     {
       "id": "cmd-005",
       "name": "publish-resource",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "description": "Normaliza e publica um recurso do projeto no hub para reutilização em outros projetos.",
       "tags": [
         "publish",
@@ -101,6 +101,18 @@
         "trash"
       ],
       "updated": "2026-05-13"
+    },
+    {
+      "id": "cmd-009",
+      "name": "setup-claude",
+      "version": "1.0.0",
+      "description": "Configura o CLAUDE.md do projeto com identidade, stack e campos de contexto para smart-suggestions.",
+      "tags": [
+        "setup",
+        "claude",
+        "project"
+      ],
+      "updated": "2026-05-14"
     }
   ],
   "skills": [

@@ -10,11 +10,14 @@ A feature `smart-suggestions` introduz um padrão de perguntas inteligentes: Cla
 
 ## Conceito — o toggle
 
-Cada pergunta em um `command.md` pode declarar se usa smart-suggestions:
+Cada pergunta em um `command.md` pode declarar se usa smart-suggestions com uma anotação inline:
 
+```markdown
+**[smart-suggestions: on]** Pergunte o nome do recurso.
 ```
-[smart-suggestions: on]
-Pergunte o nome do recurso.
+
+```markdown
+**[smart-suggestions: off]** Pergunte o tipo do recurso.
 ```
 
 Quando `on`: Claude lê o contexto, gera até 3 opções e apresenta via `AskUserQuestion`, com uma quarta opção "Outro (digitar)".
@@ -22,6 +25,25 @@ Quando `on`: Claude lê o contexto, gera até 3 opções e apresenta via `AskUse
 Quando `off` (ou ausente): pergunta direta em texto livre, sem geração de sugestões.
 
 O toggle é por pergunta — não é global. Uma pergunta complexa pode ter `on` enquanto uma pergunta simples mantém `off`.
+
+### Exemplo em command.md
+
+```markdown
+## Passo 3 — Nome do recurso
+
+**[smart-suggestions: on]** Pergunte o nome do recurso.
+
+Antes de perguntar:
+1. Leia os recursos existentes em `.claude/skills/`, `.claude/agents/`, `.claude/commands/`
+2. Identifique o padrão de nomenclatura (ex: `ux-writing-review` → padrão `<domínio>-<ação>`)
+3. Gere até 3 sugestões que seguem o mesmo padrão, baseadas no tipo sendo criado
+
+Use `AskUserQuestion` com as sugestões como opções e "Outro (digitar)" como quarta opção.
+```
+
+### Fluxo após "Outro (digitar)"
+
+Quando o usuário seleciona "Outro (digitar)", Claude faz a pergunta original em texto livre no chat e aguarda a resposta antes de prosseguir. Não há nova pergunta via `AskUserQuestion`.
 
 ---
 
@@ -36,6 +58,21 @@ Claude usa as seguintes fontes para gerar sugestões, em ordem de prioridade:
 | Arquivo sendo processado (frontmatter + corpo) | Descrição e tags do recurso específico |
 | Recursos já instalados no projeto (`.claude/skills/`, `.claude/agents/`) | Convenções de nomenclatura |
 | Estrutura de pastas do projeto (`ls`, `pwd`) | Sugestão de caminhos |
+
+### Fallback quando novos campos não estão preenchidos
+
+As sugestões degradam graciosamente quando os campos da Fase 1 estão ausentes:
+
+| Campo ausente | Comportamento |
+|---|---|
+| `domain` | Tags de domínio omitidas; demais sugestões mantidas |
+| `project_type` | Categoria omitida das sugestões |
+| `audience` | Tags de audiência omitidas |
+| `stage` | Sem impacto nas sugestões de nome/descrição |
+| `keywords` | Seeds de tags reduzidos ao conteúdo do arquivo |
+| Todos ausentes | Sugestões baseadas apenas no arquivo e recursos instalados |
+
+Nunca exibir `AskUserQuestion` com opções vazias. Se não houver sugestões suficientes (mínimo 1), fazer a pergunta em texto livre sem `AskUserQuestion`.
 
 ---
 
@@ -86,20 +123,25 @@ keywords: [pagamentos, recorrência, split, marketplace]
 ### Descrição do recurso
 **Contexto usado:** frontmatter + corpo do arquivo sendo processado; `CLAUDE.md` (domain, project_type, keywords)
 
-**Sugestões geradas:** 3 variações de descrição geradas a partir do conteúdo do arquivo (seções "O que faz", "Quando usar", "Instruções"), calibradas pelo domínio e tipo do projeto. Quarta opção: texto livre.
+**Sugestões geradas:** 3 variações de descrição geradas a partir do conteúdo do arquivo (seções "O que faz", "Quando usar", "Instruções"), calibradas pelo domínio e tipo do projeto. Quarta opção: "Outro (digitar)".
 
 ---
 
 ### Tags do recurso
 **Contexto usado:** `CLAUDE.md` (domain, project_type, audience, keywords); tags já usadas em outros recursos do projeto
 
-**Sugestões geradas:** conjunto de tags relevantes agrupadas por categoria:
-- **Domínio:** derivado de `domain` (ex: `fintech`)
-- **Função:** derivado do conteúdo do recurso (ex: `review`, `validation`)
-- **Stack:** derivado de `stack` no CLAUDE.md (ex: `nextjs`, `supabase`)
-- **Audiência:** derivado de `audience` (ex: `b2b`)
+**Sugestões geradas:** conjuntos de tags relevantes agrupados por categoria. Claude apresenta até 3 conjuntos como opções no `AskUserQuestion` (multiSelect: true).
 
-Claude sugere os 3 conjuntos mais relevantes via `AskUserQuestion` (multiSelect), com opção livre.
+Exemplo de como as opções aparecem:
+
+```
+Opção 1: fintech, review, nextjs, b2b
+Opção 2: fintech, validation, supabase, b2b
+Opção 3: pagamentos, review, typescript
+Outro (digitar)
+```
+
+O usuário pode selecionar um ou mais conjuntos. Claude combina as tags selecionadas (sem duplicatas) como valor final do campo.
 
 ---
 
@@ -111,7 +153,7 @@ Sempre usam `AskUserQuestion` com opções fixas. Smart-suggestions não se apli
 ## Escopo de implementação
 
 ### Fase 1 — Fundação (setup-claude)
-- Adicionar os 5 novos campos ao fluxo de `/setup-claude`
+- Adicionar os 5 novos campos ao fluxo de `/setup-claude` como perguntas interativas
 - Atualizar o template de `CLAUDE.md` com os novos campos na seção `# system`
 - Documentar os valores aceitos para cada campo
 
@@ -121,11 +163,10 @@ Sempre usam `AskUserQuestion` com opções fixas. Smart-suggestions não se apli
 
 ### Fase 3 — publish-resource
 - Habilitar smart-suggestions para: description e tags (quando ausentes ou vazios, antes de `--validate-only`)
-- Enriquecer seleção de recurso (Passo 4) com descrição gerada quando a lista vem sem descrição
 
 ### Fase 4 — Padrão para novos comandos
-- Documentar a convenção `[smart-suggestions: on/off]` como padrão do hub
-- Criar checklist para novos command.md: quais perguntas devem ter `on` por padrão
+- Criar `hub/instructions/smart-suggestions-guide.md` documentando a convenção `[smart-suggestions: on/off]`
+- Checklist para novos `command.md`: quais perguntas devem ter `on` por padrão
 
 ---
 
@@ -138,6 +179,8 @@ Sempre usam `AskUserQuestion` com opções fixas. Smart-suggestions não se apli
 | Claude gera as sugestões (não CLI) | Operação semântica — requer leitura e interpretação de contexto. CLI é determinístico. |
 | Novos campos em `# system` do CLAUDE.md | Campos de identidade do projeto pertencem ao frontmatter. Leitura automática por qualquer comando. |
 | Sugestões são opções, não respostas | O usuário sempre pode recusar todas e digitar livremente. Smart-suggestions orienta, não limita. |
+| Fallback para texto livre sem erro | Projetos sem CLAUDE.md preenchido não devem falhar — degradam para comportamento padrão. |
+| Tags apresentadas como conjuntos | Tags individuais no AskUserQuestion exigiriam múltiplas rodadas. Conjuntos permitem seleção rápida e combinação via multiSelect. |
 
 ---
 
@@ -148,3 +191,4 @@ Sempre usam `AskUserQuestion` com opções fixas. Smart-suggestions não se apli
 3. `/build-resource` skill → confirmar sugestões de description e tags após criação
 4. `/publish-resource` com description vazia → confirmar sugestões geradas antes de validate-only
 5. Projeto sem CLAUDE.md preenchido → confirmar fallback para texto livre sem erro
+6. Selecionar "Outro (digitar)" → confirmar que Claude pergunta em texto livre no chat

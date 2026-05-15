@@ -11,7 +11,7 @@ tags: [publish, resource, hub]
 author: ""
 created: 2026-05-10
 status: stable
-version: 1.3.0
+version: 1.4.0
 updated: 2026-05-14
 
 # system
@@ -74,7 +74,37 @@ Resolva o nome do recurso a partir da lista. Guarde como `<nome>`.
 
 ---
 
-## Fase 2 — Validação
+## Fase 2 — Enriquecimento (smart-suggestions)
+
+Leia o frontmatter do arquivo do recurso selecionado antes de validar. Se `description` estiver vazio ou `tags` estiver vazia, ofereça preenchimento assistido.
+
+### Description
+
+**[smart-suggestions: on]** Se `description` estiver vazio:
+
+1. Leia o corpo do arquivo (seções "O que faz", "Quando usar", "Instruções" ou equivalentes)
+2. Gere 3 variações de descrição em uma frase, objetivas
+3. Use `AskUserQuestion` com as 3 variações e **"Outro (digitar)"** como quarta opção
+
+Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
+Escreva o valor escolhido no frontmatter do arquivo antes de prosseguir.
+
+### Tags
+
+**[smart-suggestions: on]** Se `tags` estiver vazio:
+
+1. Leia `<projeto>/.claude/CLAUDE.md` — extraia `domain`, `project_type`, `audience`, `keywords`
+2. Leia as tags já usadas em outros recursos do projeto
+3. Monte até 3 conjuntos de tags relevantes por categoria (domínio, função, audiência)
+4. Use `AskUserQuestion` com `multiSelect: true`, exibindo cada conjunto como opção (ex: `fintech, review, b2b`), e **"Outro (digitar)"** como quarta opção
+
+Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
+Se não houver campos preenchidos no CLAUDE.md: pergunte em texto livre.
+Escreva as tags escolhidas no frontmatter do arquivo antes de prosseguir.
+
+---
+
+## Fase 3 — Validação
 
 Execute:
 
@@ -87,7 +117,7 @@ Se houver erros, exiba-os e encerre. Oriente o usuário a corrigir os campos obr
 
 ---
 
-## Fase 3 — Seleção por cenário
+## Fase 4 — Seleção por cenário
 
 Leia o campo `source` do frontmatter do arquivo do recurso selecionado:
 
@@ -117,7 +147,7 @@ O recurso foi criado neste projeto e ainda não foi publicado no hub.
 - Remova paths absolutos e referências ao projeto do corpo
 - **Não altere `version`** — o bump é responsabilidade do CLI
 
-→ Avance para a Fase 4.
+→ Avance para a Fase 5.
 
 ---
 
@@ -190,11 +220,11 @@ Use `AskUserQuestion`:
 - Excluir: campos `project`, `source` e paths absolutos do projeto
 - **Não altere `version`** — o bump é responsabilidade do CLI
 
-→ Avance para a Fase 4.
+→ Avance para a Fase 5.
 
 ---
 
-## Fase 4 — Publicação
+## Fase 5 — Publicação
 
 ```bash
 HUB_DIR="$(cat ~/.claude/hub-path)"

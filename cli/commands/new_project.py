@@ -94,6 +94,7 @@ def run(args):
     _setup_claude_md(hub, claude_dir, args.name, args.description, args.tags, today, author)
     _copy_settings(hub, claude_dir)
     _create_project_folders(dest, args.name, today, author)
+    _create_project_details(hub, dest, args.name, args.description, today, author)
     _apply_stack(hub, claude_dir, args.stack, args.name)
 
     log(claude_dir, "project.created", {
@@ -105,6 +106,36 @@ def run(args):
     })
 
     print(f"  [ok] Projeto '{args.name}' configurado em {dest}")
+
+
+def _create_project_details(hub: Path, dest: Path, name: str, description: str, today: str, author: str = "") -> None:
+    project_dir = dest / "project"
+    files.ensure_dir(project_dir)
+
+    details = project_dir / "project-details.md"
+    if details.exists():
+        print(f"  -> project-details.md já existe — mantido")
+        return
+
+    template = hub / "build/project/project-details.md"
+    content = template.read_text()
+    content = content.replace("(nome-do-projeto)", name)
+    content = content.replace("(Nome do Projeto)", name)
+    content = content.replace("(visao-geral)", description if description else "")
+    details.write_text(content)
+
+    fm_fields = {
+        "project": name,
+        "created": today,
+        "updated": today,
+    }
+    if description:
+        fm_fields["description"] = description
+    if author:
+        fm_fields["author"] = author
+    frontmatter.write(details, fm_fields)
+
+    print(f"  [ok] project/project-details.md criado")
 
 
 def _apply_stack(hub: Path, claude_dir: Path, stack_name: str, project_name: str) -> None:
