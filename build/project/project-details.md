@@ -34,7 +34,6 @@ dependencies: []
 | Tipo de projeto | (project_type) |
 | Sub-tipo | (project_subtype) |
 | Segmento de mercado | (segment) |
-| Macro categoria | (macro) |
 | Categoria de mercado | (category) |
 | Público | (audience) |
 | Palavras-chave | (keywords) |

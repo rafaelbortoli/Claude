@@ -3,168 +3,76 @@
     {
       "segment": "B2B",
       "description": "Business to Business — empresas que vendem para outras empresas",
-      "macro_categories": [
-        {
-          "name": "Economia Real & Ativos Físicos",
-          "emoji": "🔵",
-          "grouping_criteria": "Natureza física do valor entregue — transformação de matéria, espaço e movimento",
-          "categories": [
-            "Indústria / Manufatura",
-            "Agronegócio B2B",
-            "Distribuição / Atacado",
-            "Logística e Supply Chain",
-            "Construção Civil / Engenharia",
-            "Imobiliário Comercial"
-          ]
-        },
-        {
-          "name": "Tecnologia, Dados & Finanças",
-          "emoji": "🟣",
-          "grouping_criteria": "Natureza digital do valor entregue — automação, escala e monetização de informação e capital",
-          "categories": [
-            "Tecnologia Corporativa",
-            "Financeiro / Fintechs B2B",
-            "Mídia e Publicidade"
-          ]
-        },
-        {
-          "name": "Serviços Especializados & Capital Humano",
-          "emoji": "🟢",
-          "grouping_criteria": "Natureza intangível do valor entregue — conversão de conhecimento em capacidade organizacional",
-          "categories": [
-            "Serviços Profissionais",
-            "Educação Corporativa",
-            "Saúde Corporativa"
-          ]
-        }
+      "categories": [
+        "Indústria / Manufatura",
+        "Agronegócio B2B",
+        "Distribuição / Atacado",
+        "Logística e Supply Chain",
+        "Construção Civil / Engenharia",
+        "Imobiliário Comercial",
+        "Tecnologia Corporativa",
+        "Financeiro / Fintechs B2B",
+        "Mídia e Publicidade",
+        "Serviços Profissionais",
+        "Educação Corporativa",
+        "Saúde Corporativa"
       ]
     },
     {
       "segment": "B2C",
       "description": "Business to Consumer — empresas que vendem diretamente ao consumidor final",
-      "macro_categories": [
-        {
-          "name": "Rotina & Necessidade",
-          "emoji": "🔵",
-          "grouping_criteria": "Motivação funcional — compras recorrentes e previsíveis movidas por necessidade do cotidiano",
-          "categories": [
-            "Varejo",
-            "Alimentação e Bebidas",
-            "Casa e Decoração",
-            "Pet"
-          ]
-        },
-        {
-          "name": "Identidade & Bem-estar",
-          "emoji": "🟠",
-          "grouping_criteria": "Motivação emocional — compras movidas pela expressão de quem o consumidor é e como deseja se sentir",
-          "categories": [
-            "Moda e Beleza",
-            "Saúde e Bem-estar",
-            "Esporte e Outdoor"
-          ]
-        },
-        {
-          "name": "Experiências & Crescimento",
-          "emoji": "🟣",
-          "grouping_criteria": "Motivação aspiracional — compras movidas pelo desejo de enriquecer a vida e evoluir como pessoa",
-          "categories": [
-            "Entretenimento e Mídia",
-            "Turismo e Viagens",
-            "Educação"
-          ]
-        },
-        {
-          "name": "Patrimônio & Grandes Decisões",
-          "emoji": "🟢",
-          "grouping_criteria": "Motivação racional — compras de alto envolvimento, planejadas e com impacto financeiro relevante",
-          "categories": [
-            "Tecnologia de Consumo",
-            "Finanças Pessoais",
-            "Imobiliário Residencial",
-            "Automotivo"
-          ]
-        }
+      "categories": [
+        "Varejo",
+        "Alimentação e Bebidas",
+        "Casa e Decoração",
+        "Pet",
+        "Moda e Beleza",
+        "Saúde e Bem-estar",
+        "Esporte e Outdoor",
+        "Entretenimento e Mídia",
+        "Turismo e Viagens",
+        "Educação",
+        "Tecnologia de Consumo",
+        "Finanças Pessoais",
+        "Imobiliário Residencial",
+        "Automotivo"
       ]
     },
     {
       "segment": "B2G",
       "description": "Business to Government — empresas que vendem para órgãos públicos",
-      "macro_categories": [
-        {
-          "name": "Infraestrutura & Soberania",
-          "emoji": "🔵",
-          "grouping_criteria": "Função de garantia — fornecedores que sustentam a base física, energética e de segurança do Estado",
-          "categories": [
-            "Defesa e Segurança Pública",
-            "Infraestrutura e Obras Públicas",
-            "Energia e Utilities",
-            "Transporte Público",
-            "Meio Ambiente e Sustentabilidade"
-          ]
-        },
-        {
-          "name": "Tecnologia & Gestão Pública",
-          "emoji": "🟣",
-          "grouping_criteria": "Função de modernização — fornecedores que ampliam a capacidade de gestão e eficiência do aparato público",
-          "categories": [
-            "Tecnologia e Sistemas de Informação",
-            "Consultoria e Assessoria Pública"
-          ]
-        },
-        {
-          "name": "Serviços Sociais Essenciais",
-          "emoji": "🟢",
-          "grouping_criteria": "Função de direito — fornecedores que viabilizam o acesso da população a serviços básicos garantidos pelo Estado",
-          "categories": [
-            "Saúde Pública",
-            "Educação Pública",
-            "Alimentação Escolar"
-          ]
-        }
+      "categories": [
+        "Defesa e Segurança Pública",
+        "Infraestrutura e Obras Públicas",
+        "Energia e Utilities",
+        "Transporte Público",
+        "Meio Ambiente e Sustentabilidade",
+        "Tecnologia e Sistemas de Informação",
+        "Consultoria e Assessoria Pública",
+        "Saúde Pública",
+        "Educação Pública",
+        "Alimentação Escolar"
       ]
     },
     {
       "segment": "C2C",
       "description": "Consumer to Consumer — consumidores que transacionam entre si via plataformas intermediadoras",
-      "macro_categories": [
-        {
-          "name": "Troca de Bens & Ativos",
-          "emoji": "🔵",
-          "grouping_criteria": "Circulação de ativos físicos — bens, propriedades e meios de transporte transferidos ou compartilhados entre pessoas",
-          "categories": [
-            "Marketplace de Produtos",
-            "Produtos de Segunda Mão",
-            "Aluguel de Bens",
-            "Imóveis P2P",
-            "Mobilidade P2P"
-          ]
-        },
-        {
-          "name": "Troca de Serviços & Conhecimento",
-          "emoji": "🟣",
-          "grouping_criteria": "Circulação de capacidade humana — habilidades, expertise e tempo oferecidos por pessoas a outras pessoas",
-          "categories": [
-            "Serviços entre Pessoas",
-            "Conhecimento e Educação P2P",
-            "Alimentação P2P"
-          ]
-        },
-        {
-          "name": "Troca de Capital & Conteúdo",
-          "emoji": "🟢",
-          "grouping_criteria": "Circulação de valor intangível — dinheiro e conteúdo digital transacionados diretamente entre pessoas",
-          "categories": [
-            "Finanças P2P",
-            "Entretenimento e Conteúdo"
-          ]
-        }
+      "categories": [
+        "Marketplace de Produtos",
+        "Produtos de Segunda Mão",
+        "Aluguel de Bens",
+        "Imóveis P2P",
+        "Mobilidade P2P",
+        "Serviços entre Pessoas",
+        "Conhecimento e Educação P2P",
+        "Alimentação P2P",
+        "Finanças P2P",
+        "Entretenimento e Conteúdo"
       ]
     }
   ],
   "summary": {
     "total_segments": 4,
-    "total_macro_categories": 13,
     "total_categories": 46
   }
 }

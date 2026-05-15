@@ -11,7 +11,7 @@ tags: [setup, project, init]
 author: ""
 created: 2026-05-13
 status: stable
-version: 1.4.0
+version: 1.5.0
 updated: 2026-05-15
 
 # system
@@ -89,7 +89,7 @@ Use `AskUserQuestion`:
 
 Aguarde a resposta do usuário. Guarde como `<segmento>`.
 
-**Etapa 3C — Macro categoria**
+**Etapa 3C — Categoria de mercado**
 
 Execute:
 
@@ -98,55 +98,10 @@ HUB_DIR="$(cat ~/.claude/hub-path)"
 cat "$HUB_DIR/hub/commands/new-project/market_segments.json"
 ```
 
-A partir do resultado, extraia as macro categorias do segmento `<segmento>`. Exiba em texto:
+A partir do resultado, extraia as categorias do segmento `<segmento>`. Exiba em texto:
 
 ```
-Macro categorias — <segmento>:
-
-1. [nome] — [critério de agrupamento]
-2. [nome] — [critério de agrupamento]
-...
-
-0. Voltar (escolher outro segmento)
-```
-
-Pergunte: "Escolha pelo número ou nome." Aguarde a resposta.
-
-Se o usuário escolher **0** ou **"Voltar"**: use `AskUserQuestion`:
-- **"B2C"** — Business to Consumer
-- **"B2B"** — Business to Business
-- **"B2G"** — Business to Government
-- **"C2C"** — Consumer to Consumer
-
-Guarde a nova escolha como `<segmento>`. Execute:
-
-```bash
-HUB_DIR="$(cat ~/.claude/hub-path)"
-cat "$HUB_DIR/hub/commands/new-project/market_segments.json"
-```
-
-Extraia as macro categorias do novo `<segmento>` e exiba a lista novamente:
-
-```
-Macro categorias — <segmento>:
-
-1. [nome] — [critério de agrupamento]
-2. [nome] — [critério de agrupamento]
-...
-
-0. Voltar (escolher outro segmento)
-```
-
-Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Se o usuário escolher **0** ou **"Voltar"** novamente: use `AskUserQuestion` com as 4 opções de segmento, guarde como `<segmento>`, execute o bash, exiba a lista de macro categorias e aguarde. Repita esse ciclo até o usuário escolher uma macro válida.
-
-Guarde a escolha como `<macro>`.
-
-**Etapa 3D — Categoria de mercado**
-
-A partir do JSON já lido na Etapa 3C, extraia as categorias da macro `<macro>`. Exiba em texto:
-
-```
-Categorias — <macro>:
+Categorias — <segmento>:
 
 1. [categoria]
 2. [categoria]
@@ -170,24 +125,10 @@ HUB_DIR="$(cat ~/.claude/hub-path)"
 cat "$HUB_DIR/hub/commands/new-project/market_segments.json"
 ```
 
-Extraia as macro categorias do novo `<segmento>` e exiba:
+Extraia as categorias do novo `<segmento>` e exiba a lista novamente:
 
 ```
-Macro categorias — <segmento>:
-
-1. [nome] — [critério de agrupamento]
-2. [nome] — [critério de agrupamento]
-...
-
-0. Voltar (escolher outro segmento)
-```
-
-Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Se o usuário escolher **0** ou **"Voltar"** novamente: use `AskUserQuestion` com as 4 opções de segmento, guarde como `<segmento>`, execute o bash, exiba a lista de macro categorias e aguarde. Repita esse ciclo até o usuário escolher uma macro válida. Guarde como `<macro>`.
-
-Extraia as categorias da nova `<macro>` e exiba:
-
-```
-Categorias — <macro>:
+Categorias — <segmento>:
 
 1. [categoria]
 2. [categoria]
@@ -196,7 +137,7 @@ Categorias — <macro>:
 0. Voltar (escolher outro segmento)
 ```
 
-Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Se o usuário escolher **0** ou **"Voltar"** novamente: use `AskUserQuestion` com as 4 opções de segmento, guarde como `<segmento>`, execute o bash, exiba macros, aguarde escolha válida de `<macro>`, exiba categorias e aguarde. Repita esse ciclo até o usuário escolher uma categoria válida.
+Pergunte: "Escolha pelo número ou nome." Aguarde a resposta. Se o usuário escolher **0** ou **"Voltar"** novamente: use `AskUserQuestion` com as 4 opções de segmento, guarde como `<segmento>`, execute o bash, exiba as categorias e aguarde. Repita esse ciclo até o usuário escolher uma categoria válida.
 
 Guarde a escolha como `<categoria>`.
 
@@ -241,9 +182,9 @@ Guarde cada resposta associada ao nome da dimensão. Ao concluir todas as dimens
 
 **Etapa 5 — Descrição**
 
-**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Macro categoria, Categoria de mercado e Público.
+**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Categoria de mercado e Público.
 
-Gere 3 variações de descrição em uma frase usando `<tipo>`, `<subtipo>`, `<segmento>`, `<macro>`, `<categoria>` e `<publico>` como contexto. Use `AskUserQuestion` com as 3 variações e **"Outro (digitar)"** como quarta opção.
+Gere 3 variações de descrição em uma frase usando `<tipo>`, `<subtipo>`, `<segmento>`, `<categoria>` e `<publico>` como contexto. Use `AskUserQuestion` com as 3 variações e **"Outro (digitar)"** como quarta opção.
 
 Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
 
@@ -251,9 +192,9 @@ Guarde como `<descricao>`.
 
 **Etapa 6 — Tags**
 
-**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Macro categoria, Categoria de mercado, Público e Descrição.
+**[smart-suggestions: on]** Sugestões baseadas no Tipo, Sub-tipo, Segmento, Categoria de mercado, Público e Descrição.
 
-Monte até 3 conjuntos de tags relevantes usando `<tipo>`, `<subtipo>`, `<segmento>`, `<macro>`, `<categoria>`, `<publico>` e `<descricao>` como contexto. Use `AskUserQuestion` com `multiSelect: true`, exibindo cada conjunto como opção (ex: `branding, identidade, b2b`), e **"Outro (digitar)"** como quarta opção.
+Monte até 3 conjuntos de tags relevantes usando `<tipo>`, `<subtipo>`, `<segmento>`, `<categoria>`, `<publico>` e `<descricao>` como contexto. Use `AskUserQuestion` com `multiSelect: true`, exibindo cada conjunto como opção (ex: `branding, identidade, b2b`), e **"Outro (digitar)"** como quarta opção.
 
 Se o usuário escolher "Outro (digitar)": pergunte em texto livre e aguarde a resposta.
 
@@ -281,7 +222,6 @@ Edite `<pasta>/project/project-details.md` preenchendo a tabela de identidade co
 | Tipo de projeto | `<tipo>` |
 | Sub-tipo | `<subtipo>` |
 | Segmento de mercado | `<segmento>` |
-| Macro categoria | `<macro>` |
 | Categoria de mercado | `<categoria>` |
 | Público | `<publico>` |
 | Palavras-chave | `<tags>` |
