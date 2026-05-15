@@ -11,8 +11,8 @@ tags: [setup, project, init]
 author: ""
 created: 2026-05-13
 status: stable
-version: 1.2.0
-updated: 2026-05-14
+version: 1.3.0
+updated: 2026-05-15
 
 # system
 scope: global
@@ -29,8 +29,22 @@ Inicializa a estrutura `.claude/` e cria as pastas do projeto.
 ## Fluxo obrigatório — execute cada etapa em ordem, aguarde a resposta antes de avançar
 
 **Etapa 1 — Pasta do projeto**
-Pergunte: "Qual é a pasta do projeto? (ex: ~/Code/MeuProjeto)"
-Aguarde a resposta do usuário.
+
+**[smart-suggestions: on]** Sugestão baseada no diretório atual da sessão.
+
+Execute:
+
+```bash
+pwd
+```
+
+Use `AskUserQuestion` com 2 opções:
+- **"Usar `<caminho retornado>`"** — confirma o diretório atual como pasta do projeto
+- **"Informar outro caminho"** — solicita o caminho em texto livre
+
+Se o usuário escolher "Informar outro caminho": pergunte em texto livre e aguarde a resposta.
+
+Guarde o caminho escolhido como `<pasta>`.
 
 **Etapa 2 — Nome do projeto**
 Pergunte: "Qual o nome do projeto?"
