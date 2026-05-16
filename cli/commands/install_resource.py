@@ -23,17 +23,19 @@ def register(sub):
 
 
 def run(args):
-    hub = config.hub_dir()
     dest_dir = Path(args.dest).expanduser().resolve() if args.dest else Path.cwd() / ".claude"
     resource_type = args.resource_type
 
     if args.prepare:
         try:
+            hub = config.hub_dir()
             result = _prepare(hub, dest_dir, resource_type)
             print(json.dumps(result, ensure_ascii=False))
         except Exception as e:
             print(json.dumps({"error": str(e)}, ensure_ascii=False))
         return
+
+    hub = config.hub_dir()
 
     if not args.name:
         raise ValueError("--name é obrigatório fora do modo --prepare")
