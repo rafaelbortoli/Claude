@@ -95,6 +95,11 @@ def register(sub):
     p.add_argument("--description", default="", help="Descrição do projeto em uma frase")
     p.add_argument("--tags", default="", help="Tags do projeto separadas por vírgula (ex: saas, fintech)")
     p.add_argument("--stack", default="nextjs-supabase", help="Stack a instalar (padrão: nextjs-supabase)")
+    p.add_argument("--type", default="", dest="project_type", help="Tipo do projeto (ex: Branding, UX and UI)")
+    p.add_argument("--subtype", default="", help="Sub-tipo do projeto (ex: Ultra, Interface digital)")
+    p.add_argument("--segment", default="", help="Segmento de mercado (ex: B2C, B2B)")
+    p.add_argument("--category", default="", help="Categoria de mercado (ex: Varejo, Pet)")
+    p.add_argument("--audience", default="", help="Público-alvo (ex: Faixa Etária: Gen Z, Renda: Média)")
     p.set_defaults(func=run)
 
 
@@ -106,11 +111,20 @@ def run(args):
 
     author = git_author()
 
+    identity = {
+        "project_type": args.project_type,
+        "subtype":      args.subtype,
+        "segment":      args.segment,
+        "category":     args.category,
+        "audience":     args.audience,
+        "keywords":     args.tags,
+    }
+
     _create_claude_dirs(claude_dir)
     _setup_claude_md(hub, claude_dir, args.name, args.description, args.tags, today, author)
     _copy_settings(hub, claude_dir)
     _create_project_folders(dest, args.name, today, author)
-    _create_project_details(hub, dest, args.name, args.description, today, author)
+    _create_project_details(hub, dest, args.name, args.description, today, author, identity)
     _apply_stack(hub, claude_dir, args.stack, args.name)
 
     log(claude_dir, "project.created", {
@@ -119,12 +133,13 @@ def run(args):
         "tags":        args.tags,
         "stack":       args.stack,
         "path":        str(dest),
+        **identity,
     })
 
     print(f"  [ok] Projeto '{args.name}' configurado em {dest}")
 
 
-def _create_project_details(hub: Path, dest: Path, name: str, description: str, today: str, author: str = "") -> None:
+def _create_project_details(hub: Path, dest: Path, name: str, description: str, today: str, author: str = "", identity: dict | None = None) -> None:
     project_dir = dest / "project"
     files.ensure_dir(project_dir)
 
@@ -133,11 +148,18 @@ def _create_project_details(hub: Path, dest: Path, name: str, description: str, 
         print(f"  -> project-details.md já existe — mantido")
         return
 
+    identity = identity or {}
     template = hub / "build/project/project-details.md"
     content = template.read_text()
     content = content.replace("(nome-do-projeto)", name)
     content = content.replace("(Nome do Projeto)", name)
     content = content.replace("(visao-geral)", description if description else "")
+    content = content.replace("(project_type)", identity.get("project_type", ""))
+    content = content.replace("(project_subtype)", identity.get("subtype", ""))
+    content = content.replace("(segment)", identity.get("segment", ""))
+    content = content.replace("(category)", identity.get("category", ""))
+    content = content.replace("(audience)", identity.get("audience", ""))
+    content = content.replace("(keywords)", identity.get("keywords", ""))
     details.write_text(content)
 
     fm_fields = {

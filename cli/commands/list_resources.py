@@ -82,7 +82,10 @@ def _collect_hub(hub: Path, resource_type: str) -> list[dict]:
             rows.append({"id": fm.get("id", ""), "name": f.stem, "description": fm.get("description", "")})
 
     elif resource_type == "hook":
-        for d in sorted((hub_dir / "hooks").iterdir()):
+        folder = hub_dir / "hooks"
+        if not folder.exists():
+            return rows
+        for d in sorted(folder.iterdir()):
             if not d.is_dir():
                 continue
             hook_json = d / "hook.json"
@@ -93,7 +96,10 @@ def _collect_hub(hub: Path, resource_type: str) -> list[dict]:
             rows.append({"id": data.get("id", ""), "name": d.name, "description": data.get("description", "")})
 
     elif resource_type == "plugin":
-        for d in sorted((hub_dir / "plugins").iterdir()):
+        folder = hub_dir / "plugins"
+        if not folder.exists():
+            return rows
+        for d in sorted(folder.iterdir()):
             if not d.is_dir():
                 continue
             plugin_json = d / "plugin.json"
@@ -104,14 +110,22 @@ def _collect_hub(hub: Path, resource_type: str) -> list[dict]:
             rows.append({"id": data.get("id", ""), "name": d.name, "description": data.get("description", "")})
 
     else:
-        for d in sorted((hub_dir / f"{resource_type}s").iterdir()):
+        folder = hub_dir / f"{resource_type}s"
+        if not folder.exists():
+            return rows
+        for d in sorted(folder.iterdir()):
             if not d.is_dir():
                 continue
             md = d / f"{resource_type}.md"
             if not md.exists():
                 continue
             fm = frontmatter.read(md)
-            rows.append({"id": fm.get("id", ""), "name": d.name, "description": fm.get("description", "")})
+            rows.append({
+                "id":          fm.get("id", ""),
+                "name":        d.name,
+                "version":     fm.get("version", ""),
+                "description": fm.get("description", ""),
+            })
 
     return rows
 
@@ -124,7 +138,7 @@ def _collect_installed(dest_dir: Path, resource_type: str) -> list[dict]:
         if not claude_md.exists():
             return rows
         for m in re.finditer(r'<!-- instruction: (.+?) -->', claude_md.read_text()):
-            rows.append({"name": m.group(1), "description": "instrução no CLAUDE.md"})
+            rows.append({"name": m.group(1), "version": "", "description": "instrução no CLAUDE.md"})
 
     elif resource_type == "hook":
         folder = dest_dir / "hooks"
@@ -138,7 +152,7 @@ def _collect_installed(dest_dir: Path, resource_type: str) -> list[dict]:
                 continue
             with open(hook_json) as f:
                 data = json.load(f)
-            rows.append({"name": d.name, "description": data.get("description", "")})
+            rows.append({"name": d.name, "version": data.get("version", ""), "description": data.get("description", "")})
 
     elif resource_type == "plugin":
         folder = dest_dir / "plugins"
@@ -147,7 +161,7 @@ def _collect_installed(dest_dir: Path, resource_type: str) -> list[dict]:
         for f in sorted(folder.glob("*.json")):
             with open(f) as fp:
                 data = json.load(fp)
-            rows.append({"name": data.get("name", f.stem), "description": f"v{data.get('version', '?')} — instalado em {data.get('installed', '?')}"})
+            rows.append({"name": data.get("name", f.stem), "version": data.get("version", ""), "description": f"v{data.get('version', '?')} — instalado em {data.get('installed', '?')}"})
 
     elif resource_type == "command":
         folder = dest_dir / "commands"
@@ -159,7 +173,7 @@ def _collect_installed(dest_dir: Path, resource_type: str) -> list[dict]:
             if content.startswith("<!-- proxy:"):
                 continue
             fm = frontmatter.read(f)
-            rows.append({"name": f.stem, "description": fm.get("description", "")})
+            rows.append({"name": f.stem, "version": fm.get("version", ""), "description": fm.get("description", "")})
 
     else:
         folder = dest_dir / f"{resource_type}s"
@@ -171,7 +185,11 @@ def _collect_installed(dest_dir: Path, resource_type: str) -> list[dict]:
             desc = fm.get("description", "")
             if locked:
                 desc = f"[personalizado] {desc}"
-            rows.append({"name": f.stem, "description": desc})
+            rows.append({
+                "name":        f.stem,
+                "version":     fm.get("version", ""),
+                "description": desc,
+            })
 
     return rows
 

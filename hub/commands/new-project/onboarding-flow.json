@@ -1,0 +1,142 @@
+{
+  "version": "1.0.0",
+  "steps": [
+    {
+      "id": "1",
+      "label": "Pasta do projeto",
+      "input_type": "radio",
+      "text_on_option": "Informar outro caminho",
+      "smart_suggestions": true,
+      "ui_claude": true,
+      "back": null,
+      "options": [
+        { "label": "Usar caminho atual", "description": "confirma o diretório atual como pasta do projeto" },
+        { "label": "Informar outro caminho", "description": "solicita o caminho em texto livre" }
+      ]
+    },
+    {
+      "id": "2",
+      "label": "Nome do projeto",
+      "input_type": "radio",
+      "text_on_option": "Informar outro nome",
+      "smart_suggestions": true,
+      "ui_claude": true,
+      "back": null,
+      "note": "Sugerir nome baseado no nome da pasta escolhida na Etapa 1"
+    },
+    {
+      "id": "3",
+      "label": "Tipo de projeto",
+      "input_type": "radio",
+      "smart_suggestions": false,
+      "ui_claude": true,
+      "back": null,
+      "options": [
+        { "label": "Branding", "description": "identidade visual e marca" },
+        { "label": "UX and UI", "description": "research, interfaces e design system" },
+        { "label": "Product Design", "description": "design estratégico de produto" }
+      ]
+    },
+    {
+      "id": "3.1",
+      "label": "Sub-tipo",
+      "input_type": "conditional",
+      "smart_suggestions": false,
+      "ui_claude": true,
+      "back": "3",
+      "variants": [
+        {
+          "condition": { "step": "3", "value": "Branding" },
+          "input_type": "radio",
+          "options": [
+            { "label": "Plus", "description": "pacote essencial de marca" },
+            { "label": "Pro", "description": "pacote completo de marca" },
+            { "label": "Ultra", "description": "pacote abrangente de marca" },
+            { "label": "Voltar", "description": "retorna à escolha de Tipo de projeto", "back": "3" }
+          ]
+        },
+        {
+          "condition": { "step": "3", "value": "UX and UI" },
+          "input_type": "checkbox",
+          "options": [
+            { "label": "UX Research", "description": "discovery e pesquisa com usuários" },
+            { "label": "Interface digital", "description": "app, web, site, loja, landing page" },
+            { "label": "Design System", "description": "biblioteca de componentes e tokens" },
+            { "label": "Voltar", "description": "retorna à escolha de Tipo de projeto", "back": "3" }
+          ]
+        },
+        {
+          "condition": { "step": "3", "value": "Product Design" },
+          "input_type": "radio",
+          "options": [
+            { "label": "New product", "description": "produto sendo criado do zero" },
+            { "label": "Feature", "description": "nova funcionalidade em produto existente" },
+            { "label": "Redesign", "description": "revisão e melhoria de produto existente" },
+            { "label": "Voltar", "description": "retorna à escolha de Tipo de projeto", "back": "3" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "label": "Segmento de mercado",
+      "input_type": "radio",
+      "smart_suggestions": false,
+      "ui_claude": true,
+      "back": null,
+      "options": [
+        { "label": "B2C", "description": "Business to Consumer" },
+        { "label": "B2B", "description": "Business to Business" },
+        { "label": "B2G", "description": "Business to Government" },
+        { "label": "C2C", "description": "Consumer to Consumer" }
+      ]
+    },
+    {
+      "id": "4.1",
+      "label": "Categoria de mercado",
+      "input_type": "number",
+      "smart_suggestions": false,
+      "ui_claude": false,
+      "back": "4",
+      "source": "market_segments.json",
+      "source_key_var": "segmento"
+    },
+    {
+      "id": "5",
+      "label": "Público",
+      "visible": false,
+      "smart_suggestions": false,
+      "source": "audience_segments.json",
+      "source_key_var": "segmento",
+      "dimensions": {
+        "input_type": "checkbox",
+        "ui_claude": false,
+        "first_back": null,
+        "back": "previous_dimension",
+        "note": "Exibir como lista numerada em texto puro. Aceitar múltiplos números separados por vírgula ou 'e' (ex: 1, 3 ou 1 e 2). 0 = Voltar."
+      }
+    },
+    {
+      "id": "6",
+      "label": "Descrição",
+      "input_type": "radio",
+      "text_on_option": "Outro (digitar)",
+      "smart_suggestions": true,
+      "ui_claude": true,
+      "back": null,
+      "generated": true,
+      "generated_count": 3
+    },
+    {
+      "id": "7",
+      "label": "Tags",
+      "input_type": "checkbox",
+      "text_on_option": "Outro (digitar)",
+      "smart_suggestions": true,
+      "ui_claude": true,
+      "back": null,
+      "generated": true,
+      "generated_count": 3
+    }
+  ]
+}

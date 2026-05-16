@@ -13,7 +13,13 @@ def read(file: Path) -> dict:
     for line in m.group(2).splitlines():
         if ':' in line and not line.startswith('#'):
             k, _, v = line.partition(':')
-            result[k.strip()] = v.strip()
+            raw = v.strip()
+            # parseia listas inline YAML: [a, b, c]
+            if raw.startswith('[') and raw.endswith(']'):
+                value = [x.strip() for x in raw[1:-1].split(',') if x.strip()]
+            else:
+                value = raw
+            result[k.strip()] = value
     return result
 
 
@@ -66,4 +72,5 @@ def inject(file: Path, project: str, source: str) -> None:
 
     fm = set_field(fm, 'project', project)
     fm = set_field(fm, 'source', source)
+    fm = set_field(fm, 'created', today)
     file.write_text(m.group(1) + fm + m.group(3) + content[m.end():])

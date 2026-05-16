@@ -11,8 +11,8 @@ tags: [build, resource, template]
 author: ""
 created: 2026-05-10
 status: stable
-version: 1.4.0
-updated: 2026-05-14
+version: 1.5.0
+updated: 2026-05-16
 
 # system
 scope: global
@@ -30,7 +30,7 @@ Compatível com: `skill`, `agent`, `hook`, `command`, `plugin`.
 
 ---
 
-## Passo 1 — Caminho do projeto
+## Passo 1 — Confirmar projeto de destino
 
 Execute:
 
@@ -38,18 +38,11 @@ Execute:
 pwd
 ```
 
-**[smart-suggestions: on]** Sugestões de caminho baseadas no diretório atual e pastas irmãs.
+Use `AskUserQuestion` com 2 opções:
+- **`<caminho retornado por pwd>`**
+- **"Informar outro caminho"**
 
-Antes de perguntar:
-1. Use o caminho retornado por `pwd` como primeira opção
-2. Liste as pastas no diretório pai com `ls <diretório-pai>` e identifique até 2 pastas irmãs relevantes (que pareçam projetos: contêm `.claude/`, `package.json`, `pyproject.toml` ou similar)
-
-Se houver pastas irmãs relevantes: use `AskUserQuestion` com até 3 caminhos e **"Outro caminho (digitar)"** como quarta opção.
-Se não houver: use `AskUserQuestion` com apenas 2 opções:
-- **"Sim, usar `<caminho retornado>`"**
-- **"Não, informar outro caminho"**
-
-Se o usuário escolher "Outro": pergunte em texto livre e aguarde a resposta.
+Se o usuário escolher "Informar outro caminho": pergunte em texto livre e aguarde a resposta.
 
 Guarde o caminho escolhido como `<projeto>`.
 

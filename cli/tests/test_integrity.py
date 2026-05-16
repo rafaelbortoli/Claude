@@ -96,6 +96,7 @@ def _make_build_args(resource_type, name, dest):
     a.resource_type = resource_type
     a.name = name
     a.dest = str(dest)
+    a.prepare = False
     return a
 
 
@@ -171,6 +172,7 @@ class TestSmokeCli:
         expected = (
             "build-resource", "install-resource", "publish-resource",
             "remove-resource", "restore-resource", "list-resources",
+            "setup-claude",
         )
         for cmd in expected:
             assert cmd in result.stdout, f"Subcomando '{cmd}' ausente no --help"

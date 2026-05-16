@@ -37,6 +37,30 @@ class TestRead:
         assert result['type'] == 'skill'
         assert result['version'] == '1.0.0'
 
+    def test_parses_inline_list(self, tmp_path):
+        f = tmp_path / "tagged.md"
+        f.write_text("---\nname: x\ntags: [review, ux, interface]\n---\n\nBody.\n")
+        result = frontmatter.read(f)
+        assert result['tags'] == ['review', 'ux', 'interface']
+
+    def test_parses_empty_list(self, tmp_path):
+        f = tmp_path / "empty.md"
+        f.write_text("---\nname: x\ntags: []\n---\n\nBody.\n")
+        result = frontmatter.read(f)
+        assert result['tags'] == []
+
+    def test_parses_single_item_list(self, tmp_path):
+        f = tmp_path / "single.md"
+        f.write_text("---\nname: x\ntags: [review]\n---\n\nBody.\n")
+        result = frontmatter.read(f)
+        assert result['tags'] == ['review']
+
+    def test_string_field_unchanged(self, tmp_path):
+        f = tmp_path / "str.md"
+        f.write_text("---\nname: x\ndescription: Faz algo útil\n---\n\nBody.\n")
+        result = frontmatter.read(f)
+        assert result['description'] == 'Faz algo útil'
+
     def test_ignores_comment_lines(self, tmp_file):
         result = frontmatter.read(tmp_file)
         assert '# system' not in result
@@ -126,15 +150,16 @@ class TestInject:
         result = frontmatter.read(tmp_file)
         assert result['created'] == str(date.today())
 
-    def test_inserts_before_system_comment(self, tmp_path):
+    def test_inserts_under_system_comment(self, tmp_path):
         f = tmp_path / "resource.md"
         f.write_text(
             "---\nname: teste\n\n# system\nscope: project\n---\n\nBody.\n"
         )
         frontmatter.inject(f, 'Proj', 'local')
         content = f.read_text()
-        # project deve aparecer antes de # system
-        assert content.index('project:') < content.index('# system')
+        # project e source devem aparecer após # system (dentro do bloco system)
+        assert content.index('# system') < content.index('project:')
+        assert content.index('# system') < content.index('source:')
 
     def test_preserves_body(self, tmp_file):
         frontmatter.inject(tmp_file, 'MeuProjeto', 'local')
