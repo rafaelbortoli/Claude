@@ -172,6 +172,7 @@ class TestSmokeCli:
         expected = (
             "build-resource", "install-resource", "publish-resource",
             "remove-resource", "restore-resource", "list-resources",
+            "setup-claude",
         )
         for cmd in expected:
             assert cmd in result.stdout, f"Subcomando '{cmd}' ausente no --help"

@@ -1,4 +1,5 @@
 import json
+import sys
 from pathlib import Path
 
 
@@ -11,6 +12,10 @@ def register(sub):
 
 
 def run(args):
+    if not args.prepare:
+        print("Uso: setup-claude --prepare [--path <diretório>]", file=sys.stderr)
+        sys.exit(1)
+
     if args.prepare:
         try:
             base = Path(args.path).expanduser().resolve() if args.path else Path.cwd()
