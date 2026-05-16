@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Fluxo /build-resource</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    body {
+      background: #f8f8f8;
+      font-family: sans-serif;
+      padding: 32px;
+    }
+    h1 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 24px;
+    }
+    .mermaid {
+      background: white;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Fluxo — /build-resource</h1>
+  <div class="mermaid">
+flowchart TD
+    start(["/build-resource"])
+    done(["Fim"])
+
+    subgraph p1 ["Passo 1 — Projeto"]
+        pwd["Executar pwd"]
+        sibCheck{"Pastas irmas encontradas?"}
+        askMulti["AskUserQuestion: ate 3 caminhos + Outro"]
+        askBin["AskUserQuestion: confirmar ou informar"]
+        freeP[/"Informar caminho"/]
+        pwd --> sibCheck
+        sibCheck -->|"Sim"| askMulti
+        sibCheck -->|"Nao"| askBin
+        askMulti -->|"Outro"| freeP
+        askBin -->|"Informar"| freeP
+    end
+
+    subgraph p2 ["Passo 2 — Tipo"]
+        listT["Lista em texto: skill / agent / hook / command / plugin"]
+    end
+
+    subgraph p3 ["Passo 3 — Nome"]
+        listR["Listar recursos instalados"]
+        sugCheck{"Sugestoes geradas?"}
+        askN["AskUserQuestion: sugestoes + Outro"]
+        freeN[/"Digitar nome"/]
+        listR --> sugCheck
+        sugCheck -->|"Sim"| askN
+        sugCheck -->|"Nao"| freeN
+        askN -->|"Outro"| freeN
+    end
+
+    exec["CLI build-resource"]
+    showF["Mostrar arquivo criado"]
+    descCheck{"Description vazia?"}
+    orient["Orientar para /publish-resource"]
+
+    subgraph fill ["Pos-execucao — Preenchimento assistido"]
+        genDesc["Gerar 3 variacoes de description"]
+        askD["AskUserQuestion: variacoes + Outro"]
+        freeD[/"Digitar description"/]
+        tagsRead["Ler CLAUDE.md + recursos existentes"]
+        claudeCheck{"CLAUDE.md preenchido?"}
+        askT["AskUserQuestion multiSelect + Outro"]
+        freeT[/"Digitar tags"/]
+        write["Escrever no frontmatter"]
+        result[\"Mostrar resultado final"\]
+
+        genDesc --> askD
+        askD -->|"Outro"| freeD
+        askD --> tagsRead
+        freeD --> tagsRead
+        tagsRead --> claudeCheck
+        claudeCheck -->|"Sim"| askT
+        claudeCheck -->|"Nao"| freeT
+        askT -->|"Outro"| freeT
+        askT --> write
+        freeT --> write
+        write --> result
+    end
+
+    start --> pwd
+    askMulti --> listT
+    askBin -->|"Confirmar"| listT
+    freeP --> listT
+    listT --> listR
+    askN --> exec
+    freeN --> exec
+    exec --> showF
+    showF --> descCheck
+    descCheck -->|"Nao"| orient
+    descCheck -->|"Sim"| genDesc
+    orient --> done
+    result --> done
+  </div>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+  </script>
+</body>
+</html>

@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "updated": "2026-05-14",
+  "updated": "2026-05-15",
   "id_counters": {
-    "skill": 1,
+    "skill": 2,
     "agent": 0,
     "command": 9,
     "hook": 0,
@@ -106,7 +106,7 @@
   "skills": [
     {
       "name": "ux-writing-review",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "description": "Revisa, melhora ou reescreve textos de interface aplicando princípios de UX Writing.",
       "tags": [
         "ux-writing",
@@ -114,7 +114,28 @@
         "review",
         "interface"
       ],
-      "updated": "2026-05-14"
+      "updated": "2026-05-15"
+    },
+    {
+      "name": "translate-pt-to-eng",
+      "version": "1.0.0",
+      "description": "Traduz textos do português para o inglês considerando convenções culturais e linguísticas americanas.",
+      "tags": [
+        "tradução",
+        "localização",
+        "inglês",
+        "pt-br",
+        "copy",
+        "brand-voice",
+        "adaptação-cultural",
+        "eua",
+        "branding",
+        "b2c",
+        "conteúdo",
+        "review"
+      ],
+      "updated": "2026-05-15",
+      "id": "sk-002"
     }
   ],
   "agents": [],
