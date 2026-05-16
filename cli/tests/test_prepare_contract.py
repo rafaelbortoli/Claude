@@ -385,3 +385,84 @@ class TestErrorContract:
         data = json.loads(result.stdout)
         assert "error" not in data
         assert "context" in data
+
+
+# ---------------------------------------------------------------------------
+# Comportamento sem --prepare
+# Documenta o contrato DIFERENTE do modo normal:
+#   - exit code 1 em erro (não 0)
+#   - erro em stderr (não stdout JSON)
+#   - stdout vazio
+# ---------------------------------------------------------------------------
+
+class TestWithoutPrepare:
+    """
+    Verifica o contrato do modo normal (sem --prepare).
+    O objetivo não é testar o fluxo completo de instalação/criação,
+    mas documentar explicitamente que o contrato de saída é diferente
+    do modo --prepare — importante para quem lê ou escreve command.md.
+    """
+
+    # --- build-resource ---
+
+    def test_build_resource_without_name_exits_1(self, tmp_path):
+        claude_dir = _project(tmp_path)
+        result = _run(["build-resource", "--type", "skill", "--dest", str(claude_dir)])
+        assert result.returncode == 1
+
+    def test_build_resource_without_name_error_in_stderr(self, tmp_path):
+        claude_dir = _project(tmp_path)
+        result = _run(["build-resource", "--type", "skill", "--dest", str(claude_dir)])
+        assert result.stderr != ""
+
+    def test_build_resource_without_name_stdout_empty(self, tmp_path):
+        claude_dir = _project(tmp_path)
+        result = _run(["build-resource", "--type", "skill", "--dest", str(claude_dir)])
+        assert result.stdout == ""
+
+    # --- install-resource ---
+    # hub_dir() é chamado antes da validação de --name no modo normal,
+    # por isso o teste usa CLI_HUB_PATH com hub mínimo.
+
+    def test_install_resource_without_name_exits_1(self, tmp_path):
+        claude_dir = _project(tmp_path / "project")
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "skill", "--dest", str(claude_dir)],
+            env_hub=hub,
+        )
+        assert result.returncode == 1
+
+    def test_install_resource_without_name_error_in_stderr(self, tmp_path):
+        claude_dir = _project(tmp_path / "project")
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "skill", "--dest", str(claude_dir)],
+            env_hub=hub,
+        )
+        assert result.stderr != ""
+
+    def test_install_resource_without_name_stdout_empty(self, tmp_path):
+        claude_dir = _project(tmp_path / "project")
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "skill", "--dest", str(claude_dir)],
+            env_hub=hub,
+        )
+        assert result.stdout == ""
+
+    # --- setup-claude (já coberto em TestSetupClaudePrepare, referência explícita) ---
+
+    def test_setup_claude_without_prepare_exits_1(self, tmp_path):
+        """Duplica TestSetupClaudePrepare.test_without_prepare_exits_1 intencionalmente
+        para manter a classe TestWithoutPrepare como referência completa do contrato."""
+        result = _run(["setup-claude"])
+        assert result.returncode == 1
+
+    def test_setup_claude_without_prepare_error_in_stderr(self, tmp_path):
+        result = _run(["setup-claude"])
+        assert result.stderr != ""
+
+    def test_setup_claude_without_prepare_stdout_empty(self, tmp_path):
+        result = _run(["setup-claude"])
+        assert result.stdout == ""
