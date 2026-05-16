@@ -2,7 +2,7 @@
 # about
 name: publish-resource
 type: command
-project: Claude
+project: Claude System
 description: Normaliza e publica um recurso do projeto no hub para reutilização em outros projetos.
 tags: [publish, resource, hub]
 

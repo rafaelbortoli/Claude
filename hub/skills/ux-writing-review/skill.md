@@ -10,8 +10,8 @@ tags: [ux-writing, copy, review, interface]
 author: Rafael Bortoli
 created: 2026-05-11
 status: stable
-version: 1.0.0
-updated: 2026-05-11
+version: 1.0.3
+updated: 2026-05-15
 
 # system
 scope: global

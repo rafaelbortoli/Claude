@@ -1,10 +1,10 @@
 {
   "version": "1.0.0",
-  "updated": "2026-05-13",
+  "updated": "2026-05-15",
   "id_counters": {
-    "skill": 1,
+    "skill": 2,
     "agent": 0,
-    "command": 8,
+    "command": 9,
     "hook": 0,
     "plugin": 0,
     "instruction": 0
@@ -15,15 +15,23 @@
       "name": "claude-start",
       "version": "1.2.0",
       "description": "Setup global do Claude Code na máquina",
-      "tags": ["setup", "global", "machine"],
+      "tags": [
+        "setup",
+        "global",
+        "machine"
+      ],
       "updated": "2026-05-13"
     },
     {
       "id": "cmd-002",
       "name": "new-project",
-      "version": "1.0.0",
+      "version": "1.3.0",
       "description": "Inicializa a estrutura .claude/ e as pastas de um novo projeto",
-      "tags": ["new", "project", "setup"],
+      "tags": [
+        "new",
+        "project",
+        "setup"
+      ],
       "updated": "2026-05-13"
     },
     {
@@ -31,24 +39,36 @@
       "name": "install-resource",
       "version": "1.4.0",
       "description": "Instala um recurso do hub no projeto atual — skill, agent, hook, command ou plugin.",
-      "tags": ["install", "resource", "hub"],
+      "tags": [
+        "install",
+        "resource",
+        "hub"
+      ],
       "updated": "2026-05-13"
     },
     {
       "id": "cmd-004",
       "name": "build-resource",
-      "version": "1.2.0",
+      "version": "1.4.0",
       "description": "Cria um novo recurso no projeto atual a partir do template correspondente.",
-      "tags": ["build", "resource", "template"],
-      "updated": "2026-05-13"
+      "tags": [
+        "build",
+        "resource",
+        "template"
+      ],
+      "updated": "2026-05-14"
     },
     {
       "id": "cmd-005",
       "name": "publish-resource",
-      "version": "1.2.0",
+      "version": "1.4.0",
       "description": "Normaliza e publica um recurso do projeto no hub para reutilização em outros projetos.",
-      "tags": ["publish", "resource", "hub"],
-      "updated": "2026-05-13"
+      "tags": [
+        "publish",
+        "resource",
+        "hub"
+      ],
+      "updated": "2026-05-14"
     },
     {
       "id": "cmd-006",
@@ -63,7 +83,11 @@
       "name": "remove-resource",
       "version": "1.1.0",
       "description": "Move um recurso instalado no projeto para a lixeira, com remoção permanente após 30 dias.",
-      "tags": ["remove", "resource", "trash"],
+      "tags": [
+        "remove",
+        "resource",
+        "trash"
+      ],
       "updated": "2026-05-13"
     },
     {
@@ -71,15 +95,18 @@
       "name": "restore-resource",
       "version": "1.1.0",
       "description": "Restaura um recurso da lixeira do projeto para sua localização original.",
-      "tags": ["restore", "resource", "trash"],
+      "tags": [
+        "restore",
+        "resource",
+        "trash"
+      ],
       "updated": "2026-05-13"
     }
   ],
   "skills": [
     {
-      "id": "sk-001",
       "name": "ux-writing-review",
-      "version": "1.0.0",
+      "version": "1.0.3",
       "description": "Revisa, melhora ou reescreve textos de interface aplicando princípios de UX Writing.",
       "tags": [
         "ux-writing",
@@ -87,7 +114,28 @@
         "review",
         "interface"
       ],
-      "updated": "2026-05-11"
+      "updated": "2026-05-15"
+    },
+    {
+      "name": "translate-pt-to-eng",
+      "version": "1.0.0",
+      "description": "Traduz textos do português para o inglês considerando convenções culturais e linguísticas americanas.",
+      "tags": [
+        "tradução",
+        "localização",
+        "inglês",
+        "pt-br",
+        "copy",
+        "brand-voice",
+        "adaptação-cultural",
+        "eua",
+        "branding",
+        "b2c",
+        "conteúdo",
+        "review"
+      ],
+      "updated": "2026-05-15",
+      "id": "sk-002"
     }
   ],
   "agents": [],

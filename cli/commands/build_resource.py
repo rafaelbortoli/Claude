@@ -34,6 +34,13 @@ def run(args):
     resource_type = args.resource_type
     name = args.name
 
+    # T5: validar presença de CLAUDE.md no diretório .claude/ do projeto
+    if not (dest_dir / "CLAUDE.md").exists():
+        raise FileNotFoundError(
+            f"Projeto não encontrado em: {dest_dir}\n"
+            f"  Use --dest <caminho/.claude> para especificar o diretório .claude/ do projeto"
+        )
+
     if resource_type not in _TEMPLATE_MAP:
         raise ValueError(f"Tipo inválido: {resource_type}. Tipos válidos para build-resource: {', '.join(_TEMPLATE_MAP)}")
 

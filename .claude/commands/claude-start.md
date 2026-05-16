@@ -2,7 +2,7 @@
 # about
 name: claude-start
 type: command
-project: Claude
+project: Claude System
 description: Setup global do Claude Code na máquina — copia CLAUDE.md e settings.json para ~/.claude/.
 tags: [setup, global, machine]
 

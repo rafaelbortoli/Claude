@@ -37,7 +37,7 @@ Skills são invocadas de duas formas:
 
 ```
 <skill-name>/
-├── skill.json       # Metadados para o registry e install.sh (fonte autoritativa)
+├── skill.json       # Metadados para o registry (fonte autoritativa)
 ├── skill.md         # Conteúdo que o Claude lê e executa
 ├── scripts/         # Scripts shell invocados pelas instruções da skill
 ├── templates/       # Arquivos boilerplate que a skill copia para o projeto
@@ -48,7 +48,7 @@ Skills são invocadas de duas formas:
 
 | Arquivo | Lido por | Contém |
 |---|---|---|
-| `skill.json` | `registry.json`, `install.sh` | Metadados completos: versão, tags, scope, author |
+| `skill.json` | `registry.json` | Metadados completos: versão, tags, scope, author |
 | `skill.md` | Claude | Instruções de execução: o que faz, quando usar, passos, output |
 
 `skill.json` é a fonte autoritativa de metadados. `skill.md` contém apenas `name` e `description` no frontmatter — o mínimo que o Claude precisa para correspondência.

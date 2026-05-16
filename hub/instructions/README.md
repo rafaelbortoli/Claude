@@ -13,7 +13,7 @@ tags: [hub, instructions]
 scope: global
 auto_load: false
 
-# traceability — preenchidos pelo install.sh
+# traceability
 source: ""
 project: ""
 dependencies: []

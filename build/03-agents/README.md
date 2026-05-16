@@ -59,7 +59,7 @@ Vê apenas o resultado
 
 | Arquivo | Lido por | Contém |
 |---|---|---|
-| `agent.json` | `registry.json`, `install.sh` | Metadados completos: ferramentas, escopo, tags |
+| `agent.json` | `registry.json` | Metadados completos: ferramentas, escopo, tags |
 | `agent.md` | Claude (sessão principal) | Instruções de invocação e formato de output |
 
 ## Campos de agent.json

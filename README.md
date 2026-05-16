@@ -37,12 +37,11 @@ Repositório de recursos para Claude Code — hub de recursos reutilizáveis, te
 │   ├── commands/       ← implementação de cada comando
 │   ├── utils/          ← frontmatter, registry, files, templates
 │   └── tests/          ← testes unitários (pytest)
-├── install.sh          ← DEPRECATED — substituído por python -m cli
 ├── registry.json       ← índice dos recursos publicados no hub
 ├── CHANGELOG.md        ← histórico de publicações
 │
 ├── hub/                ← recursos prontos para instalação
-│   ├── commands/       ← slash commands (/claude-start, /setup-claude, ...)
+│   ├── commands/       ← slash commands (/claude-start, /new-project, ...)
 │   ├── skills/         ← skills reutilizáveis
 │   ├── agents/         ← agentes especializados
 │   ├── hooks/          ← hooks de ciclo de vida
@@ -77,7 +76,7 @@ Instala `global/CLAUDE.md` e `global/settings.json` em `~/.claude/`.
 ### Novo projeto
 
 ```
-/setup-claude
+/new-project
 ```
 
 Inicializa `.claude/` no diretório atual com estrutura mínima e identidade do projeto.
@@ -115,7 +114,7 @@ Os comandos `/...` são slash commands do Claude Code instalados via `/install-r
 ```bash
 python -m cli --help
 python -m cli claude-start
-python -m cli setup-claude --path ~/Code/MeuProjeto --name "Meu Projeto"
+python -m cli new-project --path ~/Code/MeuProjeto --name "Meu Projeto"
 python -m cli build-resource --type skill --name code-review
 python -m cli install-resource --type skill --name code-review
 python -m cli publish-resource --type skill --name code-review

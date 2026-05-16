@@ -15,6 +15,8 @@ def register(sub):
                    help="Tipo do recurso (skill, agent, hook, command)")
     p.add_argument("--name", required=True, help="Nome do recurso")
     p.add_argument("--src", default="", help="Diretório .claude/ fonte (padrão: .claude/ do projeto atual)")
+    p.add_argument("--validate-only", action="store_true", dest="validate_only",
+                   help="Apenas valida o recurso sem publicar")
     p.set_defaults(func=run)
 
 
@@ -24,12 +26,24 @@ def run(args):
     resource_type = args.resource_type
     name = args.name
 
+    # T1: validar presença de CLAUDE.md no diretório .claude/ do projeto
+    if not (src_dir / "CLAUDE.md").exists():
+        raise FileNotFoundError(
+            f"CLAUDE.md não encontrado em: {src_dir}\n"
+            f"  Verifique se --src aponta para o diretório .claude/ correto"
+        )
+
     if resource_type == "plugin":
         raise ValueError(
             f"Publicação de plugin não suportada. Edite hub/plugins/{name}/plugin.json diretamente."
         )
 
     if resource_type == "hook":
+        # T2: modo validação apenas para hook
+        if args.validate_only:
+            _validate_hook(src_dir, name)
+            print("  [ok] Validação concluída sem erros")
+            return
         _publish_hook(hub, src_dir, name)
         return
 
@@ -43,7 +57,19 @@ def run(args):
     if not src.exists():
         raise FileNotFoundError(f"Recurso não encontrado: {src}")
 
+    # L3: rejeitar arquivos proxy (commands instalados via skill/agent)
+    if src.read_text().startswith("<!-- proxy:"):
+        raise ValueError(
+            f"'{name}' é um proxy de skill/agent e não pode ser publicado diretamente.\n"
+            f"  Use --type skill ou --type agent para publicar o recurso original."
+        )
+
     _validate(src)
+
+    # T2: modo validação apenas
+    if args.validate_only:
+        print("  [ok] Validação concluída sem erros")
+        return
 
     fields = frontmatter.read(src)
     version = fields.get("version", "1.0.0")
@@ -89,7 +115,10 @@ def run(args):
     finally:
         tmp.unlink(missing_ok=True)
 
-    frontmatter.write(src, {"version": version})
+    # T4: atualizar version e source no arquivo local após publicação
+    # version é atualizada na seção history; source na seção system (evita append fora do bloco)
+    frontmatter.write(src, {"version": version}, section="history")
+    frontmatter.write(src, {"source": f"hub/{resource_type}s/{name}@{version}"}, section="system")
     if resource_id:
         frontmatter.write(src, {"id": resource_id}, section="about")
 
@@ -170,7 +199,9 @@ def _publish_hook(hub: Path, src_dir: Path, name: str) -> None:
     finally:
         tmp_json.unlink(missing_ok=True)
 
+    # T4: atualizar version e source no arquivo local após publicação do hook
     data["version"] = version
+    data["source"] = f"hub/hooks/{name}@{version}"
     if resource_id:
         data["id"] = resource_id
     hook_json_src.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
@@ -188,6 +219,20 @@ def _publish_hook(hub: Path, src_dir: Path, name: str) -> None:
 
     _append_changelog(hub, "hook", name, version)
     print(f"  [ok] {name}@{version} disponível no hub")
+
+
+def _validate_hook(src_dir: Path, name: str) -> None:
+    """Valida campos obrigatórios de um hook antes de publicar."""
+    hook_json = src_dir / "hooks" / name / "hook.json"
+    if not (src_dir / "hooks" / name).is_dir():
+        raise FileNotFoundError(f"Hook não encontrado: {src_dir / 'hooks' / name}")
+    if not hook_json.exists():
+        raise FileNotFoundError(f"hook.json ausente: {hook_json}")
+
+    data = json.loads(hook_json.read_text())
+    description = data.get("description", "")
+    if not description or description in ('""', "(preencher)"):
+        raise ValueError("Campo obrigatório ausente: description — preencha hook.json antes de publicar")
 
 
 def _validate(file: Path) -> None:

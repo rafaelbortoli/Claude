@@ -66,20 +66,21 @@ dependencies: []
 - Migrations sempre revisadas antes de aplicar
 
 **Marca**
-- Todos os assets de marca originados de `design/01-branding/create/` (tokens de design, expressão visual, expressão verbal, direção criativa)
-- Estratégia e diretrizes consultadas a partir de `design/01-branding/plan/`
-- Tokens de design definidos em `design/01-branding/create/` antes de implementar no código
+- Todos os assets de marca originados de `design/01-branding/03-create/` (tokens de design, expressão visual, expressão verbal, direção criativa)
+- Estratégia e diretrizes consultadas a partir de `design/01-branding/02-plan/`
+- Tokens de design definidos em `design/01-branding/03-create/` antes de implementar no código
 
 **Design**
-- Wireframes e protótipos em `design/02-product/ux-ui/` antes de desenvolver interfaces
+- Wireframes e protótipos em `design/02-interface/02-uxui/` antes de desenvolver interfaces
 
 ---
 
 ## Mapa do Repositório
 
 - `.claude/` — configuração do Claude para este projeto
-- `design/01-branding/` — identidade de marca (research/, plan/, create/)
-- `design/02-product/` — design do produto (discovery/, ux-ui/)
+- `design/01-branding/` — identidade de marca (01-research/, 02-plan/, 03-create/)
+- `design/02-interface/` — design de interface (01-research/, 02-uxui/, 03-resources/)
+- `design/03-product-design/` — design de produto (01-discovery/ → 06-release/)
 - `dev/00-vision/` — briefing, escopo e requisitos
 - `dev/01-architecture/` — diagramas e decisões técnicas
 - `dev/02-supabase/` — migrations, schemas e Edge Functions
@@ -115,7 +116,7 @@ dependencies: []
 - Nunca executar ações em Supabase ou Vercel sem confirmação explícita do usuário
 
 **Marca**
-- Nunca usar assets fora de `design/01-branding/create/` como fonte
+- Nunca usar assets fora de `design/01-branding/03-create/` como fonte
 - Nunca alterar tokens de design diretamente no código — alterar na fonte e propagar
 
 **Autonomia do Claude**

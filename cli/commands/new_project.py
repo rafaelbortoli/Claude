@@ -20,25 +20,41 @@ _FRAGMENT_ORDER = [
 ]
 
 _DESIGN_DIRS = [
-    ("design/01-branding/research", "Pesquisa de marca",
+    ("design/01-branding/01-research", "Pesquisa de marca",
      "Resultados de pesquisa e discovery de marca: benchmarking, moodboard e insights."),
-    ("design/01-branding/plan", "Estratégia de marca",
+    ("design/01-branding/02-plan", "Estratégia de marca",
      "Estratégia da marca: posicionamento, voz, tom e diretrizes."),
-    ("design/01-branding/create", "Assets de marca",
+    ("design/01-branding/03-create", "Assets de marca",
      "Todos os assets produzidos: tokens de design, expressão visual, expressão verbal e direção criativa."),
-    ("design/02-product/discovery", "Discovery de produto",
-     "Pesquisa com usuários, personas, jornadas e definição de requisitos."),
-    ("design/02-product/ux-ui", "UX/UI",
+    ("design/02-interface/01-research", "Pesquisa de interface",
+     "Pesquisa com usuários, benchmarking de interfaces e insights de usabilidade."),
+    ("design/02-interface/02-uxui", "UX/UI",
      "Wireframes, protótipos e interfaces finais do produto."),
+    ("design/02-interface/03-resources", "Recursos de interface",
+     "Design system, componentes, tokens e assets de interface."),
+    ("design/03-product-design/01-discovery", "Discovery",
+     "Pesquisa exploratória, oportunidades e definição do problema."),
+    ("design/03-product-design/02-ux-research", "UX Research",
+     "Pesquisa com usuários, personas, jornadas e testes de usabilidade."),
+    ("design/03-product-design/03-ideation", "Ideação",
+     "Exploração de soluções, conceitos e alternativas de design."),
+    ("design/03-product-design/04-prototype", "Prototipação",
+     "Protótipos de baixa e alta fidelidade para validação."),
+    ("design/03-product-design/05-development", "Desenvolvimento",
+     "Especificações, handoff e acompanhamento da implementação."),
+    ("design/03-product-design/06-release", "Release",
+     "Entrega final, documentação e métricas pós-lançamento."),
 ]
 
 _DESIGN_PARENT_READMES = [
-    ("design",             "Design",
-     "Assets de marca e design do produto."),
-    ("design/01-branding", "Identidade visual da marca",
+    ("design",                  "Design",
+     "Assets de marca, interface e design do produto."),
+    ("design/01-branding",      "Identidade visual da marca",
      "Pesquisa, planejamento e produção dos assets de marca."),
-    ("design/02-product",  "Design do produto digital",
-     "Discovery com usuários e design de interface do produto."),
+    ("design/02-interface",     "Design de interface",
+     "Pesquisa, UX/UI e recursos de interface do produto."),
+    ("design/03-product-design", "Design de produto",
+     "Processo completo de design estratégico do produto digital."),
 ]
 
 _DEV_DIRS = [
@@ -94,6 +110,7 @@ def run(args):
     _setup_claude_md(hub, claude_dir, args.name, args.description, args.tags, today, author)
     _copy_settings(hub, claude_dir)
     _create_project_folders(dest, args.name, today, author)
+    _create_project_details(hub, dest, args.name, args.description, today, author)
     _apply_stack(hub, claude_dir, args.stack, args.name)
 
     log(claude_dir, "project.created", {
@@ -105,6 +122,36 @@ def run(args):
     })
 
     print(f"  [ok] Projeto '{args.name}' configurado em {dest}")
+
+
+def _create_project_details(hub: Path, dest: Path, name: str, description: str, today: str, author: str = "") -> None:
+    project_dir = dest / "project"
+    files.ensure_dir(project_dir)
+
+    details = project_dir / "project-details.md"
+    if details.exists():
+        print(f"  -> project-details.md já existe — mantido")
+        return
+
+    template = hub / "build/project/project-details.md"
+    content = template.read_text()
+    content = content.replace("(nome-do-projeto)", name)
+    content = content.replace("(Nome do Projeto)", name)
+    content = content.replace("(visao-geral)", description if description else "")
+    details.write_text(content)
+
+    fm_fields = {
+        "project": name,
+        "created": today,
+        "updated": today,
+    }
+    if description:
+        fm_fields["description"] = description
+    if author:
+        fm_fields["author"] = author
+    frontmatter.write(details, fm_fields)
+
+    print(f"  [ok] project/project-details.md criado")
 
 
 def _apply_stack(hub: Path, claude_dir: Path, stack_name: str, project_name: str) -> None:
@@ -206,10 +253,8 @@ def _create_project_folders(dest: Path, project_name: str, today: str, author: s
         files.ensure_dir(path)
         _write_readme(path, title, description, project_name, today, author)
 
-    for subpath, title, description in _DESIGN_DIRS:
-        path = dest / subpath
-        files.ensure_dir(path)
-        _write_readme(path, title, description, project_name, today, author)
+    for subpath, _, __ in _DESIGN_DIRS:
+        files.ensure_dir(dest / subpath)
 
     print(f"  [ok] design/ criado")
 
@@ -218,10 +263,8 @@ def _create_project_folders(dest: Path, project_name: str, today: str, author: s
         files.ensure_dir(path)
         _write_readme(path, title, description, project_name, today, author)
 
-    for subpath, title, description in _DEV_DIRS:
-        path = dest / subpath
-        files.ensure_dir(path)
-        _write_readme(path, title, description, project_name, today, author)
+    for subpath, _, __ in _DEV_DIRS:
+        files.ensure_dir(dest / subpath)
 
     print(f"  [ok] dev/ criado (nextjs-supabase)")
 

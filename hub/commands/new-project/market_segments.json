@@ -1,0 +1,78 @@
+{
+  "market_segments": [
+    {
+      "segment": "B2B",
+      "description": "Business to Business — empresas que vendem para outras empresas",
+      "categories": [
+        "Indústria / Manufatura",
+        "Agronegócio B2B",
+        "Distribuição / Atacado",
+        "Logística e Supply Chain",
+        "Construção Civil / Engenharia",
+        "Imobiliário Comercial",
+        "Tecnologia Corporativa",
+        "Financeiro / Fintechs B2B",
+        "Mídia e Publicidade",
+        "Serviços Profissionais",
+        "Educação Corporativa",
+        "Saúde Corporativa"
+      ]
+    },
+    {
+      "segment": "B2C",
+      "description": "Business to Consumer — empresas que vendem diretamente ao consumidor final",
+      "categories": [
+        "Varejo",
+        "Alimentação e Bebidas",
+        "Casa e Decoração",
+        "Pet",
+        "Moda e Beleza",
+        "Saúde e Bem-estar",
+        "Esporte e Outdoor",
+        "Entretenimento e Mídia",
+        "Turismo e Viagens",
+        "Educação",
+        "Tecnologia de Consumo",
+        "Finanças Pessoais",
+        "Imobiliário Residencial",
+        "Automotivo"
+      ]
+    },
+    {
+      "segment": "B2G",
+      "description": "Business to Government — empresas que vendem para órgãos públicos",
+      "categories": [
+        "Defesa e Segurança Pública",
+        "Infraestrutura e Obras Públicas",
+        "Energia e Utilities",
+        "Transporte Público",
+        "Meio Ambiente e Sustentabilidade",
+        "Tecnologia e Sistemas de Informação",
+        "Consultoria e Assessoria Pública",
+        "Saúde Pública",
+        "Educação Pública",
+        "Alimentação Escolar"
+      ]
+    },
+    {
+      "segment": "C2C",
+      "description": "Consumer to Consumer — consumidores que transacionam entre si via plataformas intermediadoras",
+      "categories": [
+        "Marketplace de Produtos",
+        "Produtos de Segunda Mão",
+        "Aluguel de Bens",
+        "Imóveis P2P",
+        "Mobilidade P2P",
+        "Serviços entre Pessoas",
+        "Conhecimento e Educação P2P",
+        "Alimentação P2P",
+        "Finanças P2P",
+        "Entretenimento e Conteúdo"
+      ]
+    }
+  ],
+  "summary": {
+    "total_segments": 4,
+    "total_categories": 46
+  }
+}
