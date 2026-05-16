@@ -466,3 +466,47 @@ class TestWithoutPrepare:
     def test_setup_claude_without_prepare_stdout_empty(self, tmp_path):
         result = _run(["setup-claude"])
         assert result.stdout == ""
+
+
+# ---------------------------------------------------------------------------
+# Encoding — caracteres UTF-8 preservados no JSON de saída
+# ---------------------------------------------------------------------------
+
+class TestJsonEncoding:
+    """
+    Verifica que json.dumps(..., ensure_ascii=False) produz JSON com
+    caracteres UTF-8 literais — não sequências unicode escapadas.
+    Relevante para nomes de projeto em pt-BR com acentuação.
+    """
+
+    def test_build_resource_project_name_with_accents_is_decodable(self, tmp_path):
+        claude_dir = _project(tmp_path, name="revisão-ux")
+        result = _run(["build-resource", "--type", "skill", "--prepare", "--dest", str(claude_dir)])
+        data = json.loads(result.stdout)
+        assert isinstance(data, dict)
+
+    def test_build_resource_project_name_with_accents_preserved(self, tmp_path):
+        claude_dir = _project(tmp_path, name="revisão-ux")
+        result = _run(["build-resource", "--type", "skill", "--prepare", "--dest", str(claude_dir)])
+        data = json.loads(result.stdout)
+        assert data["context"]["project_name"] == "revisão-ux"
+
+    def test_install_resource_project_name_with_accents_is_decodable(self, tmp_path):
+        claude_dir = _project(tmp_path / "project", name="gestão-conteúdo")
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "skill", "--prepare", "--dest", str(claude_dir)],
+            env_hub=hub,
+        )
+        data = json.loads(result.stdout)
+        assert isinstance(data, dict)
+
+    def test_install_resource_project_name_with_accents_preserved(self, tmp_path):
+        claude_dir = _project(tmp_path / "project", name="gestão-conteúdo")
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "skill", "--prepare", "--dest", str(claude_dir)],
+            env_hub=hub,
+        )
+        data = json.loads(result.stdout)
+        assert data["context"]["project_name"] == "gestão-conteúdo"
