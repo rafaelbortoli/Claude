@@ -385,6 +385,73 @@ Claude usa `available` para listar opções e indica versão instalada quando o 
 
 ---
 
+## O que está faltando
+
+Revisão pós-implementação identificou lacunas nos testes. Os 37 testes unitários existentes cobrem as funções internas (`_prepare`, heurísticas, helpers), mas nenhum testa a interface real do CLI.
+
+### Lacunas por categoria
+
+#### 1. Contrato de saída via CLI (integração via subprocess)
+
+Os testes unitários chamam funções Python diretamente. Nenhum teste chama o CLI com `--prepare` e verifica o que sai do stdout. Essa camada cobre `run()` + serialização JSON — exatamente o que o `command.md` vai consumir.
+
+```
+cli build-resource --type skill --prepare    → JSON válido no stdout, exit 0
+cli setup-claude --prepare                   → JSON válido no stdout, exit 0
+cli install-resource --type skill --prepare  → JSON válido no stdout, exit 0
+```
+
+**Arquivo sugerido:** `test_prepare_contract.py`
+
+#### 2. Contrato de erro: sempre exit 0 + JSON `{"error": "..."}`
+
+O plano define que `--prepare` nunca propaga exceção — erros retornam como JSON, exit code sempre 0. Nenhum teste valida isso via CLI:
+
+```
+# projeto inexistente → {"error": "..."}, exit 0, não traceback
+cli build-resource --type skill --prepare --dest /caminho/inexistente
+cli install-resource --type skill --prepare --dest /caminho/inexistente
+```
+
+Sem esse teste, uma exceção não tratada quebraria silenciosamente o `command.md` — o Claude receberia stderr em vez de JSON.
+
+#### 3. Comportamento sem `--prepare`
+
+Cada comando tem uma validação diferente quando chamado sem `--prepare`:
+
+- `build-resource` sem `--name` → `ValueError` claro
+- `setup-claude` sem `--prepare` → exit 1 com mensagem de uso (implementado, não testado)
+- `install-resource` sem `--name` → `ValueError` claro
+
+#### 4. JSON decodificável end-to-end
+
+Os testes unitários verificam chaves individualmente via dict Python. Nenhum teste faz `json.loads(stdout)` — garante que o stdout é JSON válido, não texto misto com prints de debug.
+
+#### 5. Tipo inválido com `--prepare`
+
+`build-resource --type invalido --prepare` e `install-resource --type invalido --prepare` devem retornar `{"error": "..."}`, não traceback. Hoje `_prepare()` não valida o tipo antes de chamar `_collect_installed()`.
+
+#### 6. Hub sem recursos do tipo pedido
+
+`install-resource --prepare --type agent` quando o hub não tem agents → `available: []`, `has_available: false`. Não coberto.
+
+### Prioridade
+
+| Lacuna | Risco se ausente | Prioridade |
+|---|---|---|
+| Contrato CLI via subprocess (exit + JSON) | Alto — interface real nunca testada | Alta |
+| Contrato de erro (`{"error": ...}`, exit 0) | Alto — quebra silencioso para o `command.md` | Alta |
+| `--prepare` ausente nos 3 comandos | Médio | Média |
+| JSON decodificável end-to-end | Médio | Média |
+| Tipo inválido com `--prepare` | Baixo | Baixa |
+| Hub sem recursos do tipo | Baixo | Baixa |
+
+### Próximo passo
+
+Criar `cli/tests/test_prepare_contract.py` com testes de integração via subprocess para as lacunas de prioridade Alta e Média.
+
+---
+
 ## Ordem de implementação
 
 1. **Fase 0** — pré-requisitos: `frontmatter.read()` + `version` em `list_resources`. Desbloqueia todas as fases.
