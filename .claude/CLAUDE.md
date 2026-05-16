@@ -28,25 +28,23 @@ updated: 2026-05-10
 # Claude — Instruções do Projeto
 
 > Estende `~/.claude/CLAUDE.md`.
-> Preencha as seções abaixo com o contexto específico deste repositório.
 
 ---
 
 ## Visão Geral
 
-<!-- Uma frase descrevendo o que este projeto faz e seu objetivo principal -->
+ClaudeSystem é o **engine** — infraestrutura que é instalada em projetos para habilitar resources, definir regras e estabelecer mecanismos para acelerar planejamento e execução. Não é um projeto em si.
 
 ---
 
 ## Arquitetura
 
-<!-- Descreva as camadas, módulos principais e como se relacionam.
-     Exemplo:
-     - `src/domain/` — entidades e regras de negócio, sem dependências externas
-     - `src/app/` — casos de uso
-     - `src/infra/` — gateways, banco de dados, serviços externos
-     - `src/ui/` — componentes e páginas
--->
+- `hub/` — fonte canônica de todos os resources (commands, skills, agents, hooks, plugins). Nunca copiado para projetos.
+- `build/` — templates usados pelo CLI para criar novos resources
+- `cli/` — CLI Python que executa operações do engine (install, build, publish, etc.)
+- `global/` — arquivos instalados globalmente em `~/.claude/` pelo `claude-start`
+- `plan/` — planos de arquitetura e feature em andamento
+- `.claude/` — configuração do engine (sem commands instalados — ver Regras abaixo)
 
 ---
 
@@ -54,52 +52,41 @@ updated: 2026-05-10
 
 | Camada | Stack |
 |---|---|
-| Back-end | <!-- ex: Supabase + Edge Functions --> |
-| Front-end | <!-- ex: Next.js + Tailwind --> |
-| AI | <!-- ex: Claude SDK --> |
-| Orquestração | <!-- ex: a definir --> |
-
----
-
-## Convenções
-
-<!-- Regras específicas deste projeto que sobrepõem o global.
-     Exemplo:
-     - Componentes React em PascalCase dentro de `src/ui/components/`
-     - Nunca importar de `infra` dentro de `domain`
-     - Migrations sempre revisadas antes de aplicar
--->
+| CLI | Python |
+| Resources | Markdown + JSON |
+| Orquestração | Claude Code |
 
 ---
 
 ## Mapa do Repositório
 
-<!-- Onde as coisas vivem e por quê.
-     Exemplo:
-     - `docs/` — documentação técnica e decisões de arquitetura
-     - `supabase/migrations/` — migrations versionadas
-     - `src/` — código da aplicação
-     - `.claude/` — configuração do Claude para este projeto
--->
+| Caminho | O que vive aqui |
+|---|---|
+| `hub/commands/` | Comandos canônicos — instalados globalmente via `claude-start` |
+| `hub/skills/` | Skills canônicas — instaladas em projetos via `install-resource` |
+| `hub/agents/` | Agentes canônicos |
+| `hub/hooks/` | Hooks canônicos |
+| `hub/plugins/` | Plugins canônicos |
+| `build/0X-*/` | Templates por tipo de resource |
+| `cli/commands/` | Implementação Python de cada comando do CLI |
 
 ---
 
-## Recursos Instalados
+## Regras
 
-<!-- Atualizado automaticamente pelo install-resource.
-     Exemplo:
-     | Recurso | Tipo | Versão | Instalado em |
-     |---|---|---|---|
-     | `/skill-name` | skill | 1.0.0 | 2026-05-10 |
--->
+- **ClaudeSystem não tem `.claude/commands/`** — commands são ferramentas de projeto, não do engine
+- **Fonte canônica é o hub** — nunca editar resources instalados em `~/.claude/commands/` diretamente
+- **Workflow de desenvolvimento:** editar em `hub/` → rodar `claude-start` → propaga para `~/.claude/commands/`
+- **Não usar commands de projeto aqui** — `/build-resource`, `/install-resource` e similares são para projetos externos
 
 ---
 
-## Restrições
+## Bootstrap
 
-<!-- Ações que exigem atenção especial neste projeto.
-     Exemplo:
-     - Nunca alterar schema do banco sem migration versionada
-     - Não commitar variáveis de ambiente
-     - PRs para `main` exigem revisão manual
--->
+Para configurar uma nova máquina:
+
+```bash
+<caminho-do-ClaudeSystem>/.venv/bin/python -m cli claude-start
+```
+
+Isso registra `hub-path` e instala todos os commands do hub em `~/.claude/commands/`.
