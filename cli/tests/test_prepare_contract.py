@@ -510,3 +510,57 @@ class TestJsonEncoding:
         )
         data = json.loads(result.stdout)
         assert data["context"]["project_name"] == "gestão-conteúdo"
+
+
+# ---------------------------------------------------------------------------
+# Hub sem recursos do tipo pedido
+# ---------------------------------------------------------------------------
+
+class TestHubWithoutResourceType:
+    """
+    Verifica que hub sem diretório do tipo pedido retorna available: []
+    e has_available: false — não {"error": ...}.
+
+    O _hub() helper cria apenas skills. Usar --type agent exercita o
+    caminho onde hub/agents/ não existe.
+    """
+
+    def test_available_empty_when_type_absent_from_hub(self, tmp_path):
+        claude_dir = _project(tmp_path / "project")
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "agent", "--prepare", "--dest", str(claude_dir)],
+            env_hub=hub,
+        )
+        data = json.loads(result.stdout)
+        assert data["available"] == []
+
+    def test_has_available_false_when_type_absent_from_hub(self, tmp_path):
+        claude_dir = _project(tmp_path / "project")
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "agent", "--prepare", "--dest", str(claude_dir)],
+            env_hub=hub,
+        )
+        data = json.loads(result.stdout)
+        assert data["meta"]["has_available"] is False
+
+    def test_no_error_key_when_type_absent_from_hub(self, tmp_path):
+        """Diretório ausente não é erro — é hub vazio para esse tipo."""
+        claude_dir = _project(tmp_path / "project")
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "agent", "--prepare", "--dest", str(claude_dir)],
+            env_hub=hub,
+        )
+        data = json.loads(result.stdout)
+        assert "error" not in data
+
+    def test_exit_0_when_type_absent_from_hub(self, tmp_path):
+        claude_dir = _project(tmp_path / "project")
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "agent", "--prepare", "--dest", str(claude_dir)],
+            env_hub=hub,
+        )
+        assert result.returncode == 0

@@ -82,7 +82,10 @@ def _collect_hub(hub: Path, resource_type: str) -> list[dict]:
             rows.append({"id": fm.get("id", ""), "name": f.stem, "description": fm.get("description", "")})
 
     elif resource_type == "hook":
-        for d in sorted((hub_dir / "hooks").iterdir()):
+        folder = hub_dir / "hooks"
+        if not folder.exists():
+            return rows
+        for d in sorted(folder.iterdir()):
             if not d.is_dir():
                 continue
             hook_json = d / "hook.json"
@@ -93,7 +96,10 @@ def _collect_hub(hub: Path, resource_type: str) -> list[dict]:
             rows.append({"id": data.get("id", ""), "name": d.name, "description": data.get("description", "")})
 
     elif resource_type == "plugin":
-        for d in sorted((hub_dir / "plugins").iterdir()):
+        folder = hub_dir / "plugins"
+        if not folder.exists():
+            return rows
+        for d in sorted(folder.iterdir()):
             if not d.is_dir():
                 continue
             plugin_json = d / "plugin.json"
@@ -104,7 +110,10 @@ def _collect_hub(hub: Path, resource_type: str) -> list[dict]:
             rows.append({"id": data.get("id", ""), "name": d.name, "description": data.get("description", "")})
 
     else:
-        for d in sorted((hub_dir / f"{resource_type}s").iterdir()):
+        folder = hub_dir / f"{resource_type}s"
+        if not folder.exists():
+            return rows
+        for d in sorted(folder.iterdir()):
             if not d.is_dir():
                 continue
             md = d / f"{resource_type}.md"
