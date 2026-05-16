@@ -110,15 +110,15 @@
   "skills": [
     {
       "name": "ux-writing-review",
-      "version": "1.0.3",
-      "description": "Revisa, melhora ou reescreve textos de interface aplicando princípios de UX Writing.",
+      "version": "1.1.1",
+      "description": "Revisa, melhora ou reescreve textos de interface aplicando princípios de UX Writing, e traduz o resultado para o alemão.",
       "tags": [
         "ux-writing",
         "copy",
         "review",
         "interface"
       ],
-      "updated": "2026-05-15"
+      "updated": "2026-05-16"
     },
     {
       "name": "translate-pt-to-eng",

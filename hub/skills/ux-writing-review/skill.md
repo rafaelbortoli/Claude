@@ -3,15 +3,15 @@
 id: sk-001
 name: ux-writing-review
 type: skill
-description: Revisa, melhora ou reescreve textos de interface aplicando princípios de UX Writing.
+description: Revisa, melhora ou reescreve textos de interface aplicando princípios de UX Writing, e traduz o resultado para o alemão.
 tags: [ux-writing, copy, review, interface]
 
 # history
 author: Rafael Bortoli
 created: 2026-05-11
 status: stable
-version: 1.0.3
-updated: 2026-05-15
+version: 1.1.1
+updated: 2026-05-16
 
 # system
 scope: global
@@ -24,7 +24,7 @@ dependencies: []
 
 ## O que faz
 
-Revisa, melhora ou reescreve textos de interface (micro-copy, mensagens, labels, botões, erros, tooltips, empty states) aplicando princípios de UX Writing.
+Revisa, melhora ou reescreve textos de interface (micro-copy, mensagens, labels, botões, erros, tooltips, empty states) aplicando princípios de UX Writing, e traduz o resultado para o alemão.
 
 ## Quando usar
 
@@ -62,7 +62,11 @@ Faça as duas perguntas abaixo, uma de cada vez, antes de qualquer revisão:
 11. **Limites por componente** — botões: até 3 palavras; tooltips: até 2 linhas; erros: causa + solução em 1–2 frases
 12. **Erros construtivos** — o que aconteceu + por quê + o que fazer; nunca culpe o usuário
 
-### 3. Regras
+### 3. Tradução para o alemão
+
+Após a revisão, traduza o texto revisado para o alemão. Aplique as mesmas diretrizes de clareza, objetividade e orientação à ação — adaptadas às convenções linguísticas do alemão. Não traduza literalmente: priorize naturalidade e adequação ao contexto de interface.
+
+### 4. Regras
 
 - Melhore a forma, não o conteúdo — não altere o significado
 - Tom: direto, neutro, profissional — sem entusiasmo artificial
