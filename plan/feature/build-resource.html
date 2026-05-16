@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Criação de Recurso — /build-resource</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f1117;
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 24px;
+      min-height: 100vh;
+    }
+    h1 { font-size: 18px; font-weight: 600; color: #a78bfa; margin-bottom: 8px; }
+    p.subtitle { font-size: 13px; color: #64748b; margin-bottom: 12px; }
+    .legend { display: flex; gap: 20px; margin-bottom: 28px; font-size: 12px; flex-wrap: wrap; justify-content: center; }
+    .legend-item { display: flex; align-items: center; gap: 8px; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+    .dot-claude  { background: #4338ca; }
+    .dot-cli     { background: #0369a1; }
+    .dot-warn    { background: #92400e; }
+    .dot-confirm { background: #14532d; }
+    .dot-note    { background: #713f12; }
+    .diagram-wrapper {
+      background: #1e2130;
+      border: 1px solid #2d3148;
+      border-radius: 12px;
+      padding: 32px;
+      width: 100%;
+      max-width: 1300px;
+      overflow-x: auto;
+    }
+    .mermaid { display: flex; justify-content: center; }
+  </style>
+</head>
+<body>
+  <h1>Criação de Recurso — /build-resource</h1>
+  <p class="subtitle">Compatível com: skill · agent · hook · command · plugin</p>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot dot-claude"></div><span>command.md — Claude</span></div>
+    <div class="legend-item"><div class="legend-dot dot-cli"></div><span>CLI — Python</span></div>
+    <div class="legend-item"><div class="legend-dot dot-confirm"></div><span>Preenchimento assistido</span></div>
+    <div class="legend-item"><div class="legend-dot dot-note"></div><span>Particularidade por tipo</span></div>
+  </div>
+  <div class="diagram-wrapper">
+    <div class="mermaid">
+flowchart TD
+    START(["Usuário: /build-resource"]) --> PWD
+
+    %% PASSO 1 — PROJETO
+    PWD["Claude\nExecutar pwd\nListar pastas irmãs com .claude/\nou package.json / pyproject.toml"]
+    PWD --> P1{"AskUserQuestion\nConfirmar caminho\ndo projeto?"}
+    P1 -->|"caminho escolhido"| PROJ["Guardar como projeto"]
+    P1 -->|"Outro caminho"| PROJ_IN["Claude\nPerguntar em texto livre"]
+    PROJ_IN --> PROJ
+
+    %% PASSO 2 — TIPO
+    PROJ --> P2{"AskUserQuestion\nTipo do recurso?\nskill · agent · hook · command · plugin"}
+
+    %% PASSO 3 — NOME
+    P2 -->|"tipo escolhido"| SCAN["Claude\nListar recursos existentes\nem .claude/skills/ .claude/agents/ .claude/commands/\nInferir padrão de nomenclatura\nGerar até 3 sugestões de nome"]
+    SCAN --> P3{"AskUserQuestion\nNome do recurso?"}
+    P3 -->|"nome escolhido"| NOME["Guardar como nome"]
+    P3 -->|"Outro (digitar)"| NOME_IN["Claude\nPerguntar em texto livre"]
+    NOME_IN --> NOME
+
+    %% EXECUÇÃO CLI
+    NOME --> CLI["CLI\nbuild-resource\n--type tipo --name nome\n--dest projeto/.claude"]
+    CLI --> VAL{"CLAUDE.md\nexiste no dest?"}
+    VAL -->|"não"| ERR1(["Erro: projeto inválido\nVerifique --dest"])
+    VAL -->|"sim"| EXIST{"Recurso\njá existe?"}
+    EXIST -->|"sim"| ERR2(["Erro: já existe\nEdite diretamente"])
+    EXIST -->|"não"| BRANCH{"Tipo?"}
+
+    %% BRANCH POR TIPO
+    BRANCH -->|"skill / agent / command"| MD["CLI\nCopiar template .md\nSubstituir placeholders pelo nome\nEscrever name, created, project, source no frontmatter"]
+    BRANCH -->|"plugin"| PJ["CLI\nCopiar plugin.json\nPreencher name, project, created, source"]
+    BRANCH -->|"hook"| HK["CLI\nCriar diretório hooks/nome/\nGerar hook.json\nCopiar hook.sh (chmod 755)"]
+
+    %% SAÍDA HOOK
+    HK --> HK_END(["Orientar:\neditar hook.json (evento, matcher)\neditar hook.sh (lógica)\nusar /publish-resource quando pronto"])
+
+    %% PÓS-EXECUÇÃO — SKILL / AGENT / COMMAND / PLUGIN
+    MD --> SHOW["Claude\nMostrar arquivo criado"]
+    PJ --> SHOW
+
+    %% PREENCHIMENTO ASSISTIDO
+    SHOW --> CHK{"description\nvazio ou placeholder?"}
+    CHK -->|"já preenchido"| DONE_SKIP(["Orientar a revisar campos\nantes de /publish-resource"])
+
+    CHK -->|"vazio"| GD["Claude\nLer seções do arquivo criado\n(O que faz, Quando usar, Instruções)\nGerar 3 variações de descrição"]
+    GD --> P4{"AskUserQuestion\nEscolher description?"}
+    P4 -->|"escolha feita"| GT["Claude\nLer projeto/.claude/CLAUDE.md\n(domain, project_type, audience, keywords)\nLer tags de outros recursos instalados\nGerar até 3 conjuntos de tags"]
+    GT --> P5{"AskUserQuestion\nmultiSelect: true\nEscolher tags?"}
+    P5 -->|"escolha feita"| WRITE["Claude\nEscrever description e tags\nno frontmatter do arquivo criado"]
+    WRITE --> DONE(["Recurso criado e configurado\nPronto para /publish-resource"])
+
+    %% ESTILOS — START / END
+    style START    fill:#7c3aed,color:#fff,stroke:none
+    style DONE     fill:#059669,color:#fff,stroke:none
+    style DONE_SKIP fill:#059669,color:#fff,stroke:none
+    style HK_END   fill:#059669,color:#fff,stroke:none
+    style ERR1     fill:#374151,color:#9ca3af,stroke:none
+    style ERR2     fill:#374151,color:#9ca3af,stroke:none
+
+    %% ESTILOS — CLAUDE
+    style PWD      fill:#4338ca,color:#c7d2fe,stroke:none
+    style PROJ     fill:#4338ca,color:#c7d2fe,stroke:none
+    style PROJ_IN  fill:#4338ca,color:#c7d2fe,stroke:none
+    style SCAN     fill:#4338ca,color:#c7d2fe,stroke:none
+    style NOME     fill:#4338ca,color:#c7d2fe,stroke:none
+    style NOME_IN  fill:#4338ca,color:#c7d2fe,stroke:none
+    style SHOW     fill:#4338ca,color:#c7d2fe,stroke:none
+
+    %% ESTILOS — CLI
+    style CLI      fill:#0c4a6e,color:#7dd3fc,stroke:none
+    style MD       fill:#0c4a6e,color:#7dd3fc,stroke:none
+    style PJ       fill:#0c4a6e,color:#7dd3fc,stroke:none
+    style HK       fill:#0c4a6e,color:#7dd3fc,stroke:none
+
+    %% ESTILOS — PREENCHIMENTO ASSISTIDO
+    style GD       fill:#14532d,color:#86efac,stroke:none
+    style GT       fill:#14532d,color:#86efac,stroke:none
+    style WRITE    fill:#14532d,color:#86efac,stroke:none
+
+    %% ESTILOS — DECISÕES
+    style P1       fill:#1e1b4b,color:#a5b4fc,stroke:#4f46e5
+    style P2       fill:#1e1b4b,color:#a5b4fc,stroke:#4f46e5
+    style P3       fill:#1e1b4b,color:#a5b4fc,stroke:#4f46e5
+    style P4       fill:#1e1b4b,color:#a5b4fc,stroke:#4f46e5
+    style P5       fill:#1e1b4b,color:#a5b4fc,stroke:#4f46e5
+    style VAL      fill:#1e1b4b,color:#a5b4fc,stroke:#4f46e5
+    style EXIST    fill:#1e1b4b,color:#a5b4fc,stroke:#4f46e5
+    style BRANCH   fill:#1e1b4b,color:#a5b4fc,stroke:#4f46e5
+    style CHK      fill:#1e1b4b,color:#a5b4fc,stroke:#4f46e5
+    </div>
+  </div>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      flowchart: { curve: 'basis', padding: 20 },
+      themeVariables: {
+        background: '#1e2130',
+        primaryColor: '#2d3148',
+        primaryTextColor: '#e2e8f0',
+        primaryBorderColor: '#4f5882',
+        lineColor: '#64748b',
+        secondaryColor: '#1e2130',
+        tertiaryColor: '#1e2130',
+      }
+    });
+  </script>
+</body>
+</html>
