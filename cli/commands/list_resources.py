@@ -111,7 +111,12 @@ def _collect_hub(hub: Path, resource_type: str) -> list[dict]:
             if not md.exists():
                 continue
             fm = frontmatter.read(md)
-            rows.append({"id": fm.get("id", ""), "name": d.name, "description": fm.get("description", "")})
+            rows.append({
+                "id":          fm.get("id", ""),
+                "name":        d.name,
+                "version":     fm.get("version", ""),
+                "description": fm.get("description", ""),
+            })
 
     return rows
 
@@ -171,7 +176,11 @@ def _collect_installed(dest_dir: Path, resource_type: str) -> list[dict]:
             desc = fm.get("description", "")
             if locked:
                 desc = f"[personalizado] {desc}"
-            rows.append({"name": f.stem, "description": desc})
+            rows.append({
+                "name":        f.stem,
+                "version":     fm.get("version", ""),
+                "description": desc,
+            })
 
     return rows
 

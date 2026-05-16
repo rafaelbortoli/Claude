@@ -96,6 +96,7 @@ def _make_build_args(resource_type, name, dest):
     a.resource_type = resource_type
     a.name = name
     a.dest = str(dest)
+    a.prepare = False
     return a
 
 

@@ -6,6 +6,7 @@ from datetime import date
 from pathlib import Path
 
 from cli import config
+from cli.commands import list_resources
 from cli.utils import files, frontmatter
 from cli.utils.logger import log
 
@@ -14,8 +15,10 @@ def register(sub):
     p = sub.add_parser("install-resource", help="Instala um recurso do hub no projeto atual")
     p.add_argument("--type", required=True, dest="resource_type",
                    help="Tipo do recurso (skill, agent, hook, command, plugin, instruction)")
-    p.add_argument("--name", required=True, help="Nome do recurso")
+    p.add_argument("--name", default="", help="Nome do recurso (obrigatório fora do modo --prepare)")
     p.add_argument("--dest", default="", help="Diretório .claude/ destino (padrão: .claude/ do projeto atual)")
+    p.add_argument("--prepare", action="store_true",
+                   help="Retorna JSON com recursos disponíveis e instalados para popular opções no command.md")
     p.set_defaults(func=run)
 
 
@@ -23,6 +26,18 @@ def run(args):
     hub = config.hub_dir()
     dest_dir = Path(args.dest).expanduser().resolve() if args.dest else Path.cwd() / ".claude"
     resource_type = args.resource_type
+
+    if args.prepare:
+        try:
+            result = _prepare(hub, dest_dir, resource_type)
+            print(json.dumps(result, ensure_ascii=False))
+        except Exception as e:
+            print(json.dumps({"error": str(e)}, ensure_ascii=False))
+        return
+
+    if not args.name:
+        raise ValueError("--name é obrigatório fora do modo --prepare")
+
     name = args.name
 
     if not (dest_dir / "CLAUDE.md").exists():
@@ -48,6 +63,33 @@ def run(args):
         dispatch[resource_type](hub, dest_dir, resource_type, name, project_name)
     else:
         dispatch[resource_type](hub, dest_dir, name, project_name)
+
+
+def _prepare(hub: Path, dest_dir: Path, resource_type: str) -> dict:
+    """Computa recursos disponíveis no hub e já instalados no projeto."""
+    if not (dest_dir / "CLAUDE.md").exists():
+        raise FileNotFoundError(f"Projeto não encontrado em: {dest_dir}")
+
+    project_name = _get_project_name(dest_dir)
+    current_path = str(dest_dir.parent)
+
+    available = list_resources._collect_hub(hub, resource_type)
+    installed = list_resources._collect_installed(dest_dir, resource_type)
+    installed_names = {r["name"] for r in installed}
+
+    return {
+        "context": {
+            "current_path": current_path,
+            "project_name": project_name,
+        },
+        "available": available,
+        "installed": installed,
+        "meta": {
+            "installed_names": sorted(installed_names),
+            "has_available": bool(available),
+            "has_installed": bool(installed),
+        },
+    }
 
 
 def _get_project_name(dest_dir: Path) -> str:
