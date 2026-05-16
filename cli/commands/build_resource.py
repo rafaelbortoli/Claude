@@ -23,18 +23,32 @@ def register(sub):
     p = sub.add_parser("build-resource", help="Cria um novo recurso a partir do template")
     p.add_argument("--type", required=True, dest="resource_type",
                    help="Tipo do recurso (skill, agent, hook, command, plugin)")
-    p.add_argument("--name", required=True, help="Nome do recurso")
+    p.add_argument("--name", default="", help="Nome do recurso (obrigatório fora do modo --prepare)")
     p.add_argument("--dest", default="", help="Diretório .claude/ destino (padrão: .claude/ do projeto atual)")
+    p.add_argument("--prepare", action="store_true",
+                   help="Retorna JSON com contexto para popular opções no command.md")
     p.set_defaults(func=run)
 
 
 def run(args):
-    hub = config.hub_dir()
     dest_dir = Path(args.dest).expanduser().resolve() if args.dest else Path.cwd() / ".claude"
     resource_type = args.resource_type
+
+    if args.prepare:
+        try:
+            result = _prepare(dest_dir, resource_type)
+            print(json.dumps(result, ensure_ascii=False))
+        except Exception as e:
+            print(json.dumps({"error": str(e)}, ensure_ascii=False))
+        return
+
+    if not args.name:
+        raise ValueError("--name é obrigatório fora do modo --prepare")
+
+    hub = config.hub_dir()
     name = args.name
 
-    # T5: validar presença de CLAUDE.md no diretório .claude/ do projeto
+    # validar presença de CLAUDE.md no diretório .claude/ do projeto
     if not (dest_dir / "CLAUDE.md").exists():
         raise FileNotFoundError(
             f"Projeto não encontrado em: {dest_dir}\n"
@@ -54,6 +68,63 @@ def run(args):
         _build_plugin(hub, dest_dir, name, project_name, today, author)
     else:
         _build_md_resource(hub, dest_dir, resource_type, name, project_name, today, author)
+
+
+def _prepare(dest_dir: Path, resource_type: str) -> dict:
+    """Computa contexto para o command.md popular AskUserQuestion sem inferência."""
+    if resource_type not in _TEMPLATE_MAP:
+        raise ValueError(f"Tipo inválido: {resource_type}. Válidos: {', '.join(_TEMPLATE_MAP)}")
+    if not (dest_dir / "CLAUDE.md").exists():
+        raise FileNotFoundError(f"Projeto não encontrado em: {dest_dir}")
+
+    project_name = _get_project_name(dest_dir)
+    current_path = str(dest_dir.parent)
+
+    type_folder = dest_dir / f"{resource_type}s"
+    existing_names = sorted(
+        f.stem for f in type_folder.glob("*.md")
+        if type_folder.exists()
+    ) if type_folder.exists() else []
+
+    return {
+        "context": {
+            "current_path": current_path,
+            "project_name": project_name,
+        },
+        "meta": {
+            "has_existing_resources": bool(existing_names),
+            "naming_pattern":         _infer_naming_pattern(existing_names),
+            "existing_names":         existing_names,
+        },
+        "suggestions": {
+            "tags": _extract_tag_suggestions(dest_dir),
+        },
+    }
+
+
+def _infer_naming_pattern(names: list) -> str:
+    """Detecta padrão de nomenclatura a partir dos nomes existentes."""
+    if not names:
+        return "<nome>"
+    part_counts = [len(n.split('-')) for n in names]
+    most_common = max(set(part_counts), key=part_counts.count)
+    return '-'.join([f'<parte-{i + 1}>' for i in range(most_common)])
+
+
+def _extract_tag_suggestions(dest_dir: Path) -> list:
+    """Extrai conjuntos de tags dos resources instalados, agrupados por frequência."""
+    counter: dict = {}
+    for folder in ["skills", "agents"]:
+        folder_path = dest_dir / folder
+        if not folder_path.exists():
+            continue
+        for f in folder_path.glob("*.md"):
+            tags = frontmatter.read(f).get("tags", [])
+            if isinstance(tags, list):
+                for tag in tags:
+                    counter[tag] = counter.get(tag, 0) + 1
+    sorted_tags = sorted(counter, key=lambda t: counter[t], reverse=True)
+    return [sorted_tags[i:i + 3] for i in range(0, min(len(sorted_tags), 9), 3)][:3]
 
 
 def _get_project_name(dest_dir: Path) -> str:

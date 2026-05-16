@@ -1,9 +1,12 @@
+import os
 from pathlib import Path
 
 HUB_PATH_FILE = Path.home() / ".claude" / "hub-path"
 
 
 def hub_dir() -> Path:
+    if env := os.environ.get("CLI_HUB_PATH"):
+        return Path(env)
     if not HUB_PATH_FILE.exists():
         raise RuntimeError("~/.claude/hub-path não encontrado. Execute /claude-start primeiro.")
     return Path(HUB_PATH_FILE.read_text().strip())

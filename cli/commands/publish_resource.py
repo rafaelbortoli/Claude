@@ -263,7 +263,10 @@ def _show_diff(existing: Path, new: Path) -> None:
     print()
 
 
-def _parse_tags(tags_raw: str) -> list:
+def _parse_tags(tags_raw) -> list:
+    """Aceita lista (retorno de frontmatter.read) ou string YAML inline."""
+    if isinstance(tags_raw, list):
+        return tags_raw
     if not tags_raw or tags_raw == "[]":
         return []
     return [t.strip() for t in tags_raw.strip("[]").split(",") if t.strip()]
