@@ -67,8 +67,13 @@ def run(args):
         dispatch[resource_type](hub, dest_dir, name, project_name)
 
 
+_VALID_TYPES = {"skill", "agent", "hook", "command", "plugin", "instruction"}
+
+
 def _prepare(hub: Path, dest_dir: Path, resource_type: str) -> dict:
     """Computa recursos disponíveis no hub e já instalados no projeto."""
+    if resource_type not in _VALID_TYPES:
+        raise ValueError(f"Tipo inválido: {resource_type}. Válidos: {', '.join(sorted(_VALID_TYPES))}")
     if not (dest_dir / "CLAUDE.md").exists():
         raise FileNotFoundError(f"Projeto não encontrado em: {dest_dir}")
 

@@ -277,3 +277,111 @@ class TestInstallResourcePrepare:
             env_hub=hub,
         )
         assert result.stderr == ""
+
+
+# ---------------------------------------------------------------------------
+# Contrato de erro — cobertura transversal aos 3 comandos
+# ---------------------------------------------------------------------------
+
+class TestErrorContract:
+    """
+    Verifica que --prepare nunca vaza exceções:
+    - stdout sempre é JSON válido
+    - exit code sempre é 0
+    - stderr sempre é vazio
+    - campo "error" presente com mensagem não vazia
+    """
+
+    # --- tipo inválido ---
+
+    def test_build_resource_invalid_type_exit_0(self, tmp_path):
+        claude_dir = _project(tmp_path)
+        result = _run(["build-resource", "--type", "invalido", "--prepare", "--dest", str(claude_dir)])
+        assert result.returncode == 0
+
+    def test_build_resource_invalid_type_returns_json_error(self, tmp_path):
+        claude_dir = _project(tmp_path)
+        result = _run(["build-resource", "--type", "invalido", "--prepare", "--dest", str(claude_dir)])
+        data = json.loads(result.stdout)
+        assert "error" in data
+        assert data["error"] != ""
+
+    def test_build_resource_invalid_type_stderr_empty(self, tmp_path):
+        claude_dir = _project(tmp_path)
+        result = _run(["build-resource", "--type", "invalido", "--prepare", "--dest", str(claude_dir)])
+        assert result.stderr == ""
+
+    def test_install_resource_invalid_type_exit_0(self, tmp_path):
+        claude_dir = _project(tmp_path / "project")
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "invalido", "--prepare", "--dest", str(claude_dir)],
+            env_hub=hub,
+        )
+        assert result.returncode == 0
+
+    def test_install_resource_invalid_type_returns_json_error(self, tmp_path):
+        claude_dir = _project(tmp_path / "project")
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "invalido", "--prepare", "--dest", str(claude_dir)],
+            env_hub=hub,
+        )
+        data = json.loads(result.stdout)
+        assert "error" in data
+        assert data["error"] != ""
+
+    def test_install_resource_invalid_type_stderr_empty(self, tmp_path):
+        claude_dir = _project(tmp_path / "project")
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "invalido", "--prepare", "--dest", str(claude_dir)],
+            env_hub=hub,
+        )
+        assert result.stderr == ""
+
+    # --- mensagem de erro não vazia ---
+
+    def test_build_resource_error_message_not_empty_on_missing_claude_md(self, tmp_path):
+        (tmp_path / ".claude").mkdir()
+        result = _run(["build-resource", "--type", "skill", "--prepare", "--dest", str(tmp_path / ".claude")])
+        data = json.loads(result.stdout)
+        assert data["error"] != ""
+
+    def test_install_resource_error_message_not_empty_on_missing_claude_md(self, tmp_path):
+        (tmp_path / ".claude").mkdir()
+        hub = _hub(tmp_path / "hub")
+        result = _run(
+            ["install-resource", "--type", "skill", "--prepare", "--dest", str(tmp_path / ".claude")],
+            env_hub=hub,
+        )
+        data = json.loads(result.stdout)
+        assert data["error"] != ""
+
+    def test_install_resource_error_message_not_empty_on_missing_hub(self, tmp_path):
+        claude_dir = _project(tmp_path)
+        env = os.environ.copy()
+        env.pop("CLI_HUB_PATH", None)
+        env["HOME"] = str(tmp_path)
+        result = subprocess.run(
+            [sys.executable, "-m", "cli", "install-resource", "--type", "skill",
+             "--prepare", "--dest", str(claude_dir)],
+            capture_output=True, text=True, env=env,
+        )
+        data = json.loads(result.stdout)
+        assert data["error"] != ""
+
+    # --- setup-claude: --path inexistente não é erro (retorna como candidato) ---
+
+    def test_setup_claude_nonexistent_path_exit_0(self, tmp_path):
+        nonexistent = tmp_path / "nao-existe"
+        result = _run(["setup-claude", "--prepare", "--path", str(nonexistent)])
+        assert result.returncode == 0
+
+    def test_setup_claude_nonexistent_path_returns_json_not_error(self, tmp_path):
+        """--path inexistente é válido — setup-claude não valida existência do dir."""
+        nonexistent = tmp_path / "nao-existe"
+        result = _run(["setup-claude", "--prepare", "--path", str(nonexistent)])
+        data = json.loads(result.stdout)
+        assert "error" not in data
+        assert "context" in data

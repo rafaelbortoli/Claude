@@ -72,6 +72,8 @@ def run(args):
 
 def _prepare(dest_dir: Path, resource_type: str) -> dict:
     """Computa contexto para o command.md popular AskUserQuestion sem inferência."""
+    if resource_type not in _TEMPLATE_MAP:
+        raise ValueError(f"Tipo inválido: {resource_type}. Válidos: {', '.join(_TEMPLATE_MAP)}")
     if not (dest_dir / "CLAUDE.md").exists():
         raise FileNotFoundError(f"Projeto não encontrado em: {dest_dir}")
 
